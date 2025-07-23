@@ -44,7 +44,7 @@ fvv_ret_t fvv_v3c_unit_destroy(fvv_v3c_unit_t *self)
 }
 
 fvv_ret_t fvv_v3c_unit_pack(fvv_v3c_unit_t *self,
-                            uint32_t        numBytesInV3CUnit)
+                            uint64_t        numBytesInV3CUnit)
 {
   if (!self)
   {
@@ -200,7 +200,7 @@ fvv_ret_t fvv_v3c_unit_payload_destroy(fvv_v3c_unit_payload_t *self)
 }
 
 fvv_ret_t fvv_v3c_unit_payload_pack(fvv_v3c_unit_payload_t *self,
-                                    uint32_t numBytesInV3CPayload)
+                                    uint64_t numBytesInV3CPayload)
 {
   if (!self)
   {
@@ -282,7 +282,7 @@ fvv_atlas_sub_bitstream_destroy(fvv_atlas_sub_bitstream_t *self)
 
 fvv_ret_t
 fvv_atlas_sub_bitstream_pack(fvv_atlas_sub_bitstream_t *self,
-                             uint32_t                   numBytes)
+                             uint64_t                   numBytes)
 {
   if (!self)
   {
@@ -657,24 +657,142 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
 // 8.3.4.2 Profile, tier, and level syntax
 fvv_ret_t fvv_profile_tier_level_init(fvv_profile_tier_level_t *self,
                                       fvv_v3c_parameter_set_t  *vps,
-                                      fvv_bitstream_t *data);
-fvv_ret_t
-fvv_profile_tier_level_destroy(fvv_profile_tier_level_t *self);
+                                      fvv_bitstream_t          *data)
+{
+  *self      = (fvv_profile_tier_level_t){0};
 
+  self->vps  = vps;
+  self->data = data;
+
+  self->pack = fvv_profile_tier_level_pack;
+
+  self->ptci =
+      (fvv_profile_toolset_constraint_information_t *)malloc(
+          sizeof(fvv_profile_toolset_constraint_information_t));
+
+  fvv_profile_toolset_constraint_information_init(
+      self->ptci, vps, data);
+
+  return FVV_RET_SUCCESS;
+}
 fvv_ret_t
-fvv_profile_tier_level_pack(fvv_profile_tier_level_t *self);
+fvv_profile_tier_level_destroy(fvv_profile_tier_level_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIIALIZED;
+  }
+  if (self->ptci)
+  {
+    fvv_profile_toolset_constraint_information_destroy(self->ptci);
+    free(self->ptci);
+  }
+  *self = (fvv_profile_tier_level_t){0};
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_profile_tier_level_pack(fvv_profile_tier_level_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  fvv_bitstream_t *buff = FVV_NULL;
+  buff                  = self->data;
+  uint32_t i            = 0;
+
+  buff->pad(buff, self->ptl_tier_flag, FVV_BIT_PTL_TIER_FLAG);
+  buff->pad(buff,
+            self->ptl_profile_codec_group_idc,
+            FVV_BIT_PTL_PROFILE_CODEC_GROUP_IDC);
+  buff->pad(buff,
+            self->ptl_profile_toolset_idc,
+            FVV_BIT_PTL_PROFILE_TOOLSET_IDC);
+  buff->pad(buff,
+            self->ptl_profile_reconstruction_idc,
+            FVV_BIT_PTL_PROFILE_RECONSTRUCTION_IDC);
+  buff->pad(buff,
+            self->ptl_reserved_zero_16bits,
+            FVV_BIT_PTL_RESERVED_ZERO_16BITS);
+  buff->pad(buff,
+            self->ptl_reserved_0xffff_16bits,
+            FVV_BIT_PTL_RESERVED_0XFFFF_16BITS);
+  buff->pad(buff, self->ptl_level_idc, FVV_BIT_PTL_LEVEL_IDC);
+  buff->pad(buff,
+            self->ptl_num_sub_profiles,
+            FVV_BIT_PTL_NUM_SUB_PROFILES);
+  buff->pad(buff,
+            self->ptl_extended_sub_profile_flag,
+            FVV_BIT_PTL_EXTENDED_SUB_PROFILE_FLAG);
+
+  for (i = 0; i < self->ptl_num_sub_profiles; i++)
+  {
+    buff->pad(buff,
+              self->ptl_sub_profile_idc[i],
+              FVV_BIT_PTL_SUB_PROFILE_IDC);
+  }
+  buff->pad(buff,
+            self->ptl_tool_constraints_present_flag,
+            FVV_BIT_PTL_TOOL_CONSTRAINTS_PRESENT_FLAG);
+  if (self->ptl_toolset_constraints_present_flag)
+  {
+    self->ptci->pack(self->ptci);
+  }
+
+  return FVV_RET_SUCCESS;
+}
 // }
 
 // {
 // 8.3.4.3 Occupancy information syntax
 fvv_occupancy_information_init(fvv_occupancy_information_t *self,
                                fvv_v3c_parameter_set_t     *vps,
-                               fvv_bitstream_t             *data);
+                               fvv_bitstream_t             *data)
+{
+  *self      = (fvv_occupancy_information_t){0};
+
+  self->vps  = vps;
+  self->data = data;
+
+  self->pack = fvv_occupancy_information_pack;
+
+  return FVV_RET_SUCCESS;
+}
 fvv_ret_t
-fvv_occupancy_information_destroy(fvv_occupancy_information_t *self);
+fvv_occupancy_information_destroy(fvv_occupancy_information_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  *self = (fvv_occupancy_information_t){0};
+  return FVV_RET_SUCCESS;
+}
 fvv_ret_t
 fvv_occupancy_information_pack(fvv_occupancy_information_t *self,
-                               uint32_t                     atlasID);
+                               uint64_t                     atlasID)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  fvv_bitstream_t *buff = FVV_NULL;
+  buff                  = self->data;
+
+  buff->pad(buff,
+            self->oi_occupancy_codec_id[atlasID],
+            FVV_BIT_OI_OCCUPANCY_CODEC_ID);
+  buff->pad(buff,
+            self->oi_lossy_occupancy_compression_threshold[atlasID],
+            FVV_BIT_OI_LOSSY_OCCUPANCY_COMPRESSION_THRESHOLD);
+  buff->pad(buff,
+            self->oi_occupancy_2d_bit_depth_minus1[atlasID],
+            FVV_BIT_OI_OCCUPANCY_2D_BIT_DEPTH_MINUS1);
+  buff->pad(buff,
+            self->oi_occupancy_MSB_align_flag[atlasID],
+            FVV_BIT_OI_OCCUPANCY_MSB_ALIGN_FLAG);
+  return FVV_RET_SUCCESS;
+}
 // }
 
 // {
@@ -682,12 +800,60 @@ fvv_occupancy_information_pack(fvv_occupancy_information_t *self,
 fvv_ret_t
 fvv_geometry_information_init(fvv_geometry_information_t *self,
                               fvv_v3c_parameter_set_t    *vps,
-                              fvv_bitstream_t            *data);
+                              fvv_bitstream_t            *data)
+{
+  *self      = (fvv_geometry_information_t){0};
+
+  self->vps  = vps;
+  self->data = data;
+  self->pack = fvv_geometry_information_pack;
+
+  return FVV_RET_SUCCESS;
+}
+
 fvv_ret_t
-fvv_geometry_information_destroy(fvv_geometry_information_t *self);
+fvv_geometry_information_destroy(fvv_geometry_information_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  *self = (fvv_geometry_information_t){0};
+  return FVV_RET_SUCCESS;
+}
 fvv_ret_t
 fvv_geometry_information_pack(fvv_geometry_information_t *self,
-                              uint32_t                    atlasID);
+                              uint64_t                    atlasID)
+{
+
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+
+  fvv_bitstream_t *buff = FVV_NULL;
+  buff                  = self->data;
+  buff->pad(buff,
+            self->gi_geometry_codec_id[atlasID],
+            FVV_BIT_GI_GEOMETRY_CODEC_ID);
+  buff->pad(buff,
+            self->gi_geometry_2d_bit_depth_minus1[atlasID],
+            FVV_BIT_GI_GEOMETRY_2D_BIT_DEPTH_MINUS1);
+  buff->pad(buff,
+            self->gi_geometry_MSB_align_flag[atlasID],
+            FVV_BIT_GI_GEOMETRY_MSB_ALIGN_FLAG);
+  buff->pad(
+      buff,
+      self->gi_geometry_3d_coordinates_bit_depth_minus1[atlasID],
+      FVV_BIT_GI_GEOMETRY_3D_COORDINATES_BIT_DEPTH_MINUS1);
+  if (self->vps_auxiliary_video_present_flag[atlasID])
+  {
+    buff->pad(buff,
+              self->gi_auxiliary_geometry_codec_id[atlasID],
+              FVV_BIT_GI_AUXILIARY_GEOMETRY_CODEC_ID);
+  }
+  return FVV_RET_SUCCESS;
+}
 // }
 
 // {
@@ -695,12 +861,114 @@ fvv_geometry_information_pack(fvv_geometry_information_t *self,
 fvv_ret_t
 fvv_attribute_information_init(fvv_attribute_information_t *self,
                                fvv_v3c_parameter_set_t     *vps,
-                               fvv_bitstream_t             *data);
-fvv_ret_t
-fvv_attribute_information_destroy(fvv_attribute_information_t *self);
+                               fvv_bitstream_t             *data)
+{
+  *self      = (fvv_attribute_information_t){0};
 
-fvv_ret_t fvv_attribute_information_pack(
-    fvv_attribute_information_t *self.uint32_t atlasID);
+  self->vps  = vps;
+  self->data = data;
+
+  self->fvv_attribute_information_pack;
+
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_attribute_information_destroy(fvv_attribute_information_t *self)
+{
+  (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+
+  *self = (fvv_attribute_information_t){0};
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t
+fvv_attribute_information_pack(fvv_attribute_information_t *self,
+                               uint64_t                     atlasID)
+{
+  (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  fvv_bitstream_t *buff                = FVV_NULL;
+  uint32_t         i                   = 0;
+  uint32_t         j                   = 0;
+  uint32_t         k                   = 0;
+  uint32_t         remainingDimensions = 0;
+  buff                                 = self->data;
+
+  buff->pad(buff,
+            self->ai_attribute_count[atlasID],
+            FVV_BIT_AI_ATTRIBUTE_COUNT);
+  for (i = 0; i < self->ai_attribute_count[atlasID]; i++)
+  {
+    buff->pad(buff,
+              self->ai_attribute_type_id[atlasID][i],
+              FVV_BIT_AI_ATTRIBUTE_TYPE_ID);
+    buff->pad(buff,
+              self->ai_attribute_codec_id[atlasID][i],
+              FVV_BIT_AI_ATTRIBUTE_CODEC_ID);
+    if (self->vps_auxiliary_video_present_flag[atlasID])
+    {
+      buff->pad(buff,
+                self->ai_auxiliary_attribute_codec_id[atlasID][i],
+                FVV_BIT_AI_AUXILIARY_ATTRIBUTE_CODEC_ID);
+    }
+    if (self->vps_map_count_minus1[atlasID] > 0)
+    {
+      buff->pad(
+          buff,
+          self->ai_attribute_map_absolute_coding_persistence_flag
+              [atlasID][i],
+          FVV_BIT_AI_ATTRIBUTE_MAP_ABSOLUTE_CODING_PERSISTENCE_FLAG);
+    }
+    buff->pad(buff,
+              self->ai_attribute_dimension_minus1[atlasID][i],
+              FVV_BIT_AI_ATTRIBUTE_DIMENSION_MINUS1);
+    if (self->ai_attribute_dimension_minus1[atlasID][i] > 0)
+    {
+      buff->pad(
+          buff,
+          self->ai_attribute_dimension_partitions_minus1[atlasID][i],
+          FVV_BIT_AI_ATTRIBUTE_DIMENSION_PARTITIONS_MINUS1);
+
+      remainingDimensions =
+          self->ai_attribute_dimension_minus1[atlasID][i];
+      k = self->ai_attribute_dimension_partitions_minus1[atlasID][i];
+      for (j = 0; j < k; j++)
+      {
+        if (k – j == remainingDimensions)
+        {
+          self->ai_attribute_partition_channels_minus1[atlasID][i]
+                                                      [j] = 0;
+        }
+        else
+        {
+          buff->pad(
+              buff,
+              self->ai_attribute_partition_channels_minus1[atlasID]
+                                                          [i][j],
+              FVV_BIT_AI_ATTRIBUTE_PARTITION_CHANNELS_MINUS1);
+        }
+        remainingDimensions –=
+            self->ai_attribute_partition_channels_minus1[atlasID][i]
+                                                        [j] +
+            1;
+      }
+      self->ai_attribute_partition_channels_minus1[atlasID][i][k] =
+          remainingDimensions;
+    }
+    buff->pad(buff,
+              self->ai_attribute_2d_bit_depth_minus1[atlasID][i],
+              FVV_BIT_AI_ATTRIBUTE_2D_BIT_DEPTH_MINUS1);
+    buff->pad(buff,
+              self->ai_attribute_MSB_align_flag[atlasID][i],
+              FVV_BIT_AI_ATTRIBUTE_MSB_ALIGN_FLAG);
+  }
+  return FVV_RET_SUCCESS;
+}
 // }
 
 // {
@@ -708,10 +976,145 @@ fvv_ret_t fvv_attribute_information_pack(
 fvv_ret_t fvv_profile_toolset_constraints_information_init(
     fvv_profile_toolset_constraints_information_t *self,
     fvv_v3c_parameter_set_t                       *vps,
-    fvv_bitstream_t                               *data);
+    fvv_bitstream_t                               *data)
+{
+  *self      = (fvv_profile_toolset_constraints_information_t){0};
+  self->vps  = vps;
+  self->data = data;
+
+  self->pack = fvv_profile_toolset_constraints_information_pack;
+
+  return FVV_RET_SUCCESS;
+}
 fvv_ret_t fvv_profile_toolset_constraints_information_destroy(
-    fvv_profile_toolset_constraints_information_t *self);
+    fvv_profile_toolset_constraints_information_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  *self = (fvv_profile_toolset_constraints_information_t){0};
+  return FVV_RET_SUCCESS;
+}
 fvv_ret_t fvv_profile_toolset_constraints_information_pack(
-    fvv_profile_toolset_constraints_information_t *self);
+    fvv_profile_toolset_constraints_information_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+
+  buff->pad(buff,
+            self->ptc_one_v3c_frame_only_flag,
+            FVV_BIT_PTC_ONE_V3C_FRAME_ONLY_FLAG);
+  buff->pad(buff,
+            self->ptc_eom_constraint_flag,
+            FVV_BIT_PTC_EOM_CONSTRAINT_FLAG);
+  buff->pad(buff,
+            self->ptc_max_map_count_minus1,
+            FVV_BIT_PTC_MAX_MAP_COUNT_MINUS1);
+  buff->pad(buff,
+            self->ptc_max_atlas_count_minus1,
+            FVV_BIT_PTC_MAX_ATLAS_COUNT_MINUS1);
+  buff->pad(buff,
+            self->ptc_multiple_map_streams_constraint_flag,
+            FVV_BIT_PTC_MULTIPLE_MAP_STREAMS_CONSTRAINT_FLAG);
+  buff->pad(buff,
+            self->ptc_plr_constraint_flag,
+            FVV_BIT_PTC_PLR_CONSTRAINT_FLAG);
+  buff->pad(buff,
+            self->ptc_attribute_max_dimension_minus1,
+            FVV_BIT_PTC_ATTRIBUTE_MAX_DIMENSION_MINUS1);
+  buff->pad(buff,
+            self->ptc_attribute_max_dimension_partitions_minus1,
+            FVV_BIT_PTC_ATTRIBUTE_MAX_DIMENSION_PARTITIONS_MINUS1);
+  buff->pad(buff,
+            self->ptc_no_eight_orientations_constraint_flag,
+            FVV_BIT_PTC_NO_EIGHT_ORIENTATIONS_CONSTRAINT_FLAG);
+  buff->pad(
+      buff,
+      self->ptc_no_45degree_projection_patch_constraint_flag,
+      FVV_BIT_PTC_NO_45DEGREE_PROJECTION_PATCH_CONSTRAINT_FLAG);
+  buff->pad(buff,
+            self->ptc_reserved_zero_6bits,
+            FVV_BIT_PTC_RESERVED_ZERO_6BITS);
+  buff->pad(buff,
+            self->ptc_num_reserved_constraint_bytes,
+            FVV_BIT_PTC_NUM_RESERVED_CONSTRAINT_BYTES);
+
+  for (i = 0; i < self->ptc_num_reserved_constraint_bytes; i++)
+  {
+    buff->pad(buff,
+              self->ptc_reserved_constraint_byte[i],
+              fvv_bit_ptc_reserved_constraint_byte);
+  }
+  return FVV_RET_SUCCESS;
+}
+// }
+// }
+
+// {
+// 8.3.5 NAL unit syntax
+// {
+// 8.3.5.1 General NAL unit syntax
+fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
+                            fvv_bitstream_t *data,
+                            uint64_t         rbsp_size)
+{
+  *self           = (fvv_nal_unit_t){0};
+
+  self->data      = data;
+  self->rbsp_size = rbsp_size;
+
+  self->pack      = fvv_nal_unit_pack;
+
+  self->nuh =
+      (fvv_nal_unit_header_t *)malloc(sizeof(fvv_nal_unit_header_t));
+  fvv_nal_unit_header_init(self->nuh, data);
+
+  self->rbsp = (uint32_t *)calloc(rbsp_size, sizeof(uint32_t));
+
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_nal_unit_destroy(fvv_nal_unit_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->rbsp_byte)
+  {
+    free(self->rbsp_byte);
+  }
+  if (self->nuh)
+  {
+    fvv_nal_unit_header_destroy(self->nuh);
+    free(self->nuh);
+  }
+  *self = (fvv_nal_unit_t){0};
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_nal_unit_pack(fvv_nal_unit_t *self,
+                            uint64_t        NumBytesInNalUnit)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  fvv_bitstream_t *buff = FVV_NULL;
+  buff                  = self->data;
+
+  buff->pad(buff,
+            self->nal_forbidden_zero_bit,
+            FVV_BIT_NAL_FORBIDDEN_ZERO_BIT);
+  buff->pad(buff, self->nal_unit_type, FVV_BIT_NAL_UNIT_TYPE);
+  buff->pad(buff, self->nal_layer_id, FVV_BIT_NAL_LAYER_ID);
+  buff->pad(buff,
+            self->nal_temporal_id_plus1,
+            FVV_BIT_NAL_TEMPORAL_ID_PLUS1);
+
+  return FVV_RET_SUCCESS;
+}
 // }
 // }
