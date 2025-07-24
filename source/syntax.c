@@ -1059,12 +1059,12 @@ fvv_ret_t fvv_profile_toolset_constraints_information_pack(
 // 8.3.5.1 General NAL unit syntax
 fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
                             fvv_bitstream_t *data,
-                            uint64_t         rbsp_size)
+                            uint64_t         rbsp_byte_size)
 {
   *self           = (fvv_nal_unit_t){0};
 
   self->data      = data;
-  self->rbsp_size = rbsp_size;
+  self->rbsp_byte_size = rbsp_byte_size;
 
   self->pack      = fvv_nal_unit_pack;
 
@@ -1072,7 +1072,7 @@ fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
       (fvv_nal_unit_header_t *)malloc(sizeof(fvv_nal_unit_header_t));
   fvv_nal_unit_header_init(self->nuh, data);
 
-  self->rbsp = (uint32_t *)calloc(rbsp_size, sizeof(uint32_t));
+  self->rbsp = (uint32_t *)calloc(rbsp_byte_size, sizeof(uint32_t));
 
   return FVV_RET_SUCCESS;
 }

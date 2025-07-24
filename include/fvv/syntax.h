@@ -437,7 +437,7 @@ fvv_ret_t fvv_profile_toolset_constraints_information_pack(
 struct fvv_nal_unit_t
 {
   uint32_t              *rbsp_byte;
-  uint64_t               rbsp_size;
+  uint64_t               rbsp_byte_size;
   fvv_nal_unit_header_t *nuh;
 
   fvv_bitstream_t       *data;
@@ -448,7 +448,7 @@ struct fvv_nal_unit_t
 
 fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
                             fvv_bitstream_t *data,
-                            uint64_t         rbsp_size);
+                            uint64_t         rbsp_byte_size);
 fvv_ret_t fvv_nal_unit_destroy(fvv_nal_unit_t *self);
 
 fvv_ret_t fvv_nal_unit_pack(fvv_nal_unit_t *self,
@@ -465,16 +465,16 @@ struct fvv_nal_unit_header_t
   fvv_bitstream_t *data;
 
   fvv_ret_t (*pack)(fvv_nal_unit_header_t *self);
-}
+};
 
-fvv_ret_t
-          fvv_nal_unit_header_init(fvv_nal_unit_header_t *self,
+fvv_ret_t fvv_nal_unit_header_init(fvv_nal_unit_header_t *self,
                                    fvv_bitstream_t       *data);
 fvv_ret_t fvv_nal_unit_header_destroy(fvv_nal_unit_header_t *self);
 fvv_ret_t fvv_nal_unit_header_pack(fvv_nal_unit_header_t *self);
 
 // 8.3.6 Raw byte sequence payloads, trailing bits, and byte
-// alignment syntax 8.3.6.1 Atlas sequence parameter set RBSP syntax
+// alignment syntax 
+// 8.3.6.1 Atlas sequence parameter set RBSP syntax
 // 8.3.6.1.1 General atlas sequence parameter set RBSP syntax
 struct fvv_atlas_sequence_parameter_set_rbsp_t
 {
@@ -528,4 +528,286 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_destroy(
 fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
     fvv_atlas_sequence_parameter_set_rbsp_t *self);
 
+// 8.3.6.1.2 Point local reconstruction information syntax
+struct fvv_asps_plr_information_t
+{
+  uint32_t
+      plri_map_present_flag[(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) +
+                            1];            // u(1)
+  uint32_t plri_number_of_modes_minus1[i]; // u(4)
+  uint32_t plri_interpolate_flag
+      [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
+      [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1]; // u(1)
+  uint32_t plri_filling_flag
+      [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
+      [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1]; // u(1)
+  uint32_t plri_minimum_depth
+      [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
+      [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1]; // u(2)
+  uint32_t plri_neighbour_minus1
+      [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
+      [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1]; // u(2)
+  uint32_t plri_block_threshold_per_patch_minus1
+      [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]; // u(6)
+
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_asps_plr_information_t *self,
+                    uint64_t                    mapCountMinus1);
+};
+
+fvv_ret_t fvv_fvv_asps_plr_information_init(
+    fvv_asps_plr_information_t              *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data);
+fvv_ret_t fvv_fvv_asps_plr_information_destroy(
+    fvv_asps_plr_information_t *self);
+fvv_ret_t
+fvv_fvv_asps_plr_information_pack(fvv_asps_plr_information_t *self,
+                                  uint64_t mapCountMinus1);
+
+// 8.3.6.2 Atlas frame parameter set RBSP syntax
+// 8.3.6.2.1 General atlas frame parameter set RBSP syntax
+struct fvv_atlas_frame_parameter_set_rbsp_t
+{
+  uint32_t afps_atlas_frame_parameter_set_id;               // ue(v)
+  uint32_t afps_atlas_sequence_parameter_set_id;            // ue(v)
+  uint32_t afps_output_flag_present_flag;                   // u(1)
+  uint32_t afps_num_ref_idx_default_active_minus1;          // ue(v)
+  uint32_t afps_additional_lt_afoc_lsb_len;                 // ue(v)
+  uint32_t afps_lod_mode_enabled_flag;                      // u(1)
+  uint32_t afps_raw_3d_offset_bit_count_explicit_mode_flag; // u(1)
+  uint32_t afps_extension_present_flag;                     // u(1)
+  uint32_t afps_extension_8bits;                            // u(8)
+  uint32_t afps_extension_data_flag;                        // u(1)
+  fvv_atlas_frame_tile_information_t      *afti;
+  fvv_rbsp_trailing_bits_t                *rtb;
+
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_atlas_frame_parameter_set_rbsp_t *self);
+};
+fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_init(
+    fvv_atlas_frame_parameter_set_rbsp_t    *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data);
+fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_destroy(
+    fvv_atlas_frame_parameter_set_rbsp_t *self);
+fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_pack(
+    fvv_atlas_frame_parameter_set_rbsp_t *self);
+// 8.3.6.2.2 Atlas frame tile information syntax
+struct fvv_atlas_frame_tile_information_t
+{
+  uint32_t  afti_single_tile_in_atlas_frame_flag;       // u(1)
+  uint32_t  afti_uniform_partition_spacing_flag;        // u(1)
+  uint32_t  afti_partition_cols_width_minus1;           // ue(v)
+  uint32_t  afti_partition_rows_height_minus1;          // ue(v)
+  uint32_t  afti_num_partition_columns_minus1;          // ue(v)
+  uint32_t  afti_num_partition_rows_minus1;             // ue(v)
+  uint32_t *afti_partition_column_width_minus1;         // ue(v)
+  uint32_t *afti_partition_row_height_minus1;           // ue(v)
+  uint32_t  afti_single_partition_per_tile_flag;        // u(1)
+  uint32_t  afti_num_tiles_in_atlas_frame_minus1;       // ue(v)
+  uint32_t *afti_top_left_partition_idx;                // u(v)
+  uint32_t *afti_bottom_right_partition_column_offset;  // ue(v)
+  uint32_t *afti_bottom_right_partition_row_offset;     // ue(v)
+  uint32_t  afti_auxiliary_video_tile_row_width_minus1; // ue(v)
+  uint32_t *afti_auxiliary_video_tile_row_height;       // ue(v)
+  uint32_t  afti_signalled_tile_id_flag;                // u(1)
+  uint32_t  afti_signalled_tile_id_length_minus1;       // ue(v)
+  uint32_t *afti_tile_id;                               // u(v)
+
+  uint64_t  afti_partition_column_width_minus1_size;
+  uint64_t  afti_partition_column_height_minus1_size;
+  uint64_t  afti_top_left_partition_idx_size;
+  uint64_t  afti_bottom_right_partition_column_offset_size;
+  uint64_t  afti_bottom_right_partition_row_offset_size;
+  uint64_t  afti_auxiliary_video_tile_row_height_size;
+  uint64_t  afti_tile_id_size;
+
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_atlas_frame_tile_information_t *self);
+};
+fvv_ret_t fvv_atlas_frame_tile_information_init(
+    fvv_atlas_frame_tile_information_t      *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data);
+
+fvv_ret_t fvv_atlas_frame_tile_information_destroy(
+    fvv_atlas_frame_tile_information_t *self);
+fvv_ret_t fvv_atlas_frame_tile_information_pack(
+    fvv_atlas_frame_tile_information_t *self);
+
+// 8.3.6.3 Atlas adaptation parameter set RBSP syntax
+struct fvv_atlas_adaptation_parameter_set_rbsp_t
+{
+  uint32_t aaps_atlas_adaptation_parameter_set_id; // ue(v)
+  uint32_t aaps_extension_present_flag;            // u(1)
+  uint32_t aaps_vpcc_extension_present_flag;       // u(1)
+  uint32_t aaps_extension_7bits;                   // u(7)
+  uint32_t aaps_extension_data_flag;               // u(1)
+  fvv_aaps_vpcc_extension_t *ave; /* Specified in Annex H*/
+  fvv_rbsp_trailing_bits_t  *rtb;
+
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_atlas_adaptation_parameter_set_rbsp_t *self);
+};
+
+fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_init(
+    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t   *aspsr,
+    fvv_bitstream_t                           *data);
+fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_destroy(
+    fvv_atlas_adaptation_parameter_set_rbsp_t *self);
+fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_pack(
+    fvv_atlas_adaptation_parameter_set_rbsp_t *self);
+
+// 8.3.6.4 Supplemental enhancement information RBSP syntax
+struct fvv_sei_rbsp_t
+{
+  fvv_sei_message_t                       *se;
+  fvv_rbsp_trailing_bits_t                *rtb;
+
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_sei_rbsp_t *self);
+};
+
+fvv_ret_t
+          fvv_sei_rbsp_init(fvv_sei_rbsp_t                          *self,
+                            fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+                            fvv_bitstream_t                         *data);
+fvv_ret_t fvv_sei_rbsp_destroy(fvv_sei_rbsp_t *self);
+fvv_ret_t fvv_sei_rbsp_pack(fvv_sei_rbsp_t *self);
+
+// 8.3.6.5 Access unit delimiter RBSP syntax
+struct fvv_access_unit_delimiter_rbsp_t
+{
+  uint32_t                                 aframe_type; // u(3)
+  fvv_rbsp_trailing_bits_t                *rtb;
+
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_access_unit_delimiter_rbsp_t *self);
+};
+fvv_ret_t fvv_access_unit_delimiter_rbsp_init(
+    fvv_access_unit_delimiter_rbsp_t        *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data);
+fvv_ret_t fvv_access_unit_delimiter_rbsp_destroy(
+    fvv_access_unit_delimiter_rbsp_t *self);
+fvv_ret_t fvv_access_unit_delimiter_rbsp_pack(
+    fvv_access_unit_delimiter_rbsp_t *self);
+
+// 8.3.6.6 End of sequence RBSP syntax
+struct fvv_end_of_sequence_rbsp_t
+{
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_end_of_sequence_rbsp_t *self);
+};
+
+fvv_ret_t fvv_end_of_sequence_rbsp_init(
+    fvv_end_of_sequence_rbsp_t              *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data);
+fvv_ret_t
+fvv_end_of_sequence_rbsp_destroy(fvv_end_of_sequence_rbsp_t *self);
+fvv_ret_t
+fvv_end_of_sequence_rbsp_pack(fvv_end_of_sequence_rbsp_t *self);
+
+// 8.3.6.7 End of bitstream RBSP syntax
+struct fvv_end_of_atlas_sub_bitstream_rbsp_t
+{
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_end_of_atlas_sub_bitstream_rbsp_t *self);
+};
+
+fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_init(
+    fvv_end_of_atlas_sub_bitstream_rbsp_t   *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data);
+fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_destroy(
+    fvv_end_of_atlas_sub_bitstream_rbsp_t *self);
+fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_pack(
+    fvv_end_of_atlas_sub_bitstream_rbsp_t *self);
+
+// 8.3.6.8 Filler data RBSP syntax
+struct fvv_filler_data_rbsp_t
+{
+  uint32_t                                 ff_byte; // f(8)
+  fvv_rbsp_trailing_bits_t                *rtb;
+
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_filler_data_rbsp_t *self);
+};
+fvv_ret_t fvv_filler_data_rbsp_init(
+    fvv_filler_data_rbsp_t                  *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data);
+fvv_ret_t fvv_filler_data_rbsp_destroy(fvv_filler_data_rbsp_t *self);
+fvv_ret_t fvv_filler_data_rbsp_pack(fvv_filler_data_rbsp_t *self);
+
+// 8.3.6.9 Atlas tile layer RBSP syntax
+struct fvv_atlas_tile_layer_rbsp_t
+{
+  fvv_atlas_tile_header_t                 *ath;
+  fvv_atlas_tile_data_unit_t              *atdu;
+  fvv_rbsp_trailing_bits_t                *rtb;
+
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_atlas_tile_layer_rbsp_t *self,
+                    uint64_t                     tileID);
+};
+
+fvv_ret_t fvv_atlas_tile_layer_rbsp_init(
+    fvv_atlas_tile_layer_rbsp_t             *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data);
+fvv_ret_t
+fvv_atlas_tile_layer_rbsp_destroy(fvv_atlas_tile_layer_rbsp_t *self);
+fvv_ret_t
+fvv_atlas_tile_layer_rbsp_pack(fvv_atlas_tile_layer_rbsp_t *self,
+                           uint64_t                     tileID);
+
+// 8.3.6.10 RBSP trailing bit syntax
+struct fvv_rbsp_trailing_bits_t
+{
+  uint32_t rbsp_stop_one_bit;       // /* equal to 1 */ f(1)
+  uint32_t rbsp_alignment_zero_bit; // /* equal to 0 */
+
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_rbsp_trailing_bits_t *self);
+};
+
+fvv_ret_t fvv_rbsp_trailing_bits_init(
+    fvv_rbsp_trailing_bits_t                *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data);
+fvv_ret_t fvv_rbsp_trailing_bits_destroy(fvv_rbsp_trailing_bits_t *self);
+fvv_ret_t fvv_rbsp_trailing_bits_pack(fvv_rbsp_trailing_bits_t *self);
+
+// 8.3.6.11 Atlas tile header syntax
+struct fvv_atlas_tile_header_t
+{
+
+};
+// 8.3.6.12 Reference list structure syntax
 #endif
