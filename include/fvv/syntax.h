@@ -478,40 +478,54 @@ fvv_ret_t fvv_nal_unit_header_pack(fvv_nal_unit_header_t *self);
 // 8.3.6.1.1 General atlas sequence parameter set RBSP syntax
 struct fvv_atlas_sequence_parameter_set_rbsp_t
 {
-asps_atlas_sequence_parameter_set_id
-asps_frame_width
-asps_frame_height
-asps_geometry_3d_bit_depth_minus1
-asps_geometry_2d_bit_depth_minus1
-asps_log2_max_atlas_frame_order_cnt_lsb_minus4
-asps_max_dec_atlas_frame_buffering_minus1
-asps_long_term_ref_atlas_frames_flag
-asps_num_ref_atlas_frame_lists_in_asps
-asps_use_eight_orientations_flag
-asps_extended_projection_enabled_flag
-asps_max_number_projections_minus1
-asps_normal_axis_limits_quantization_enabled_flag
-asps_normal_axis_max_delta_value_enabled_flag
-asps_patch_precedence_order_flag
-asps_log2_patch_packing_block_size
-asps_patch_size_quantizer_present_flag
-asps_map_count_minus1
-asps_pixel_deinterleaving_enabled_flag
-asps_raw_patch_enabled_flag
-asps_eom_patch_enabled_flag
-asps_eom_fix_bit_count_minus1
-asps_auxiliary_video_enabled_flag
-asps_plr_enabled_flag
-asps_vui_parameters_present_flag
-asps_extension_present_flag
-asps_vpcc_extension_present_flag
-asps_extension_7bits
-asps_extension_data_flag
-ref_list_struct()
-asps_map_pixel_deinterleaving_flag[]
-asps_plr_information()
-vui_parameters( )
-asps_vpcc_extension( ) /* Specified in Annex H*/
-rbsp_trailing_bits( )
+  uint32_t asps_atlas_sequence_parameter_set_id;
+  uint32_t asps_frame_width;
+  uint32_t asps_frame_height;
+  uint32_t asps_geometry_3d_bit_depth_minus1;
+  uint32_t asps_geometry_2d_bit_depth_minus1;
+  uint32_t asps_log2_max_atlas_frame_order_cnt_lsb_minus4;
+  uint32_t asps_max_dec_atlas_frame_buffering_minus1;
+  uint32_t asps_long_term_ref_atlas_frames_flag;
+  uint32_t asps_num_ref_atlas_frame_lists_in_asps;
+  uint32_t asps_use_eight_orientations_flag;
+  uint32_t asps_extended_projection_enabled_flag;
+  uint32_t asps_max_number_projections_minus1;
+  uint32_t asps_normal_axis_limits_quantization_enabled_flag;
+  uint32_t asps_normal_axis_max_delta_value_enabled_flag;
+  uint32_t asps_patch_precedence_order_flag;
+  uint32_t asps_log2_patch_packing_block_size;
+  uint32_t asps_patch_size_quantizer_present_flag;
+  uint32_t asps_map_count_minus1;
+  uint32_t asps_pixel_deinterleaving_enabled_flag;
+  uint32_t asps_raw_patch_enabled_flag;
+  uint32_t asps_eom_patch_enabled_flag;
+  uint32_t asps_eom_fix_bit_count_minus1;
+  uint32_t asps_auxiliary_video_enabled_flag;
+  uint32_t asps_plr_enabled_flag;
+  uint32_t asps_vui_parameters_present_flag;
+  uint32_t asps_extension_present_flag;
+  uint32_t asps_vpcc_extension_present_flag;
+  uint32_t asps_extension_7bits;
+  uint32_t asps_extension_data_flag;
+  uint32_t asps_map_pixel_deinterleaving_flag
+      [0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1];
+
+  fvv_ref_list_struct        *rls;
+  fvv_asps_plr_information_t *api;
+  fvv_vui_parameters_t       *vp;
+  fvv_asps_vpcc_extension_t  *ave; /* Specified in Annex H*/
+  fvv_rbsp_trailing_bits_t   *rtb;
+
+  fvv_bitstream_t            *data;
+
+  fvv_ret_t (*pack)(fvv_atlas_sequence_parameter_set_rbsp_t *self);
 };
+fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_init(
+    fvv_atlas_sequence_parameter_set_rbsp_t *self,
+    fvv_bitstream_t                         *data);
+fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_destroy(
+    fvv_atlas_sequence_parameter_set_rbsp_t *self);
+fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
+    fvv_atlas_sequence_parameter_set_rbsp_t *self);
+
 #endif
