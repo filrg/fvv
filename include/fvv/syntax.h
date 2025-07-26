@@ -883,15 +883,16 @@ struct fvv_ref_list_struct_t
   fvv_ret_t (*pack)(fvv_ref_list_struct_t *self, uint64_t rlsIdx);
 };
 
-fvv_ret_t
-          fvv_ref_list_struct_init(fvv_ref_list_struct_t *self,
-                                   fvv_atlas_sequence_parameter_set_rbsp_t
-                                       *aspsr fvv_bitstream_t *data,
-                                   uint64_t num_ref_entries_size,
-                                   uint64_t st_ref_atlas_frame_flag_size[2],
-                                   uint64_t abs_delta_afoc_st_size[2],
-                                   uint64_t straf_entry_sign_flag[2],
-                                   uint64_t afoc_lsb_lt[2]);
+// TODO: this really need a look
+fvv_ret_t fvv_ref_list_struct_init(
+    fvv_ref_list_struct_t                   *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data,
+    uint64_t                                 num_ref_entries_size,
+    uint64_t st_ref_atlas_frame_flag_size[2],
+    uint64_t abs_delta_afoc_st_size[2],
+    uint64_t straf_entry_sign_flag[2],
+    uint64_t afoc_lsb_lt[2]);
 fvv_ret_t fvv_ref_list_struct_destroy(fvv_ref_list_struct_t *self);
 fvv_ret_t fvv_ref_list_struct_pack(fvv_ref_list_struct_t *self,
                                    uint64_t               rlsIdx);

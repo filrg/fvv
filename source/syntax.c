@@ -1186,11 +1186,14 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_init(
   self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
 
-  fvv_ref_list_struct_init(self->rls, data);
-  fvv_asps_plr_information_init(self->api, data);
-  fvv_vui_parameters_init(self->vp, data);
-  fvv_asps_vpcc_extension_init(self->ave, data);
-  fvv_rbsp_trailing_bits_init(self->rtb, data);
+  fvv_ref_list_struct_init(
+      self->rls,
+      aspsr,
+      data); // TODO: update this after finalize this function
+  fvv_asps_plr_information_init(self->api, aspsr, data);
+  fvv_vui_parameters_init(self->vp, aspsr, data);
+  fvv_asps_vpcc_extension_init(self->ave, aspsr, data);
+  fvv_rbsp_trailing_bits_init(self->rtb, aspsr, data);
 
   return FVV_RET_SUCCESS;
 }
@@ -1240,7 +1243,7 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
   fvv_bitstream_t *buff = FVV_NULL;
   uint64_t         i    = 0;
   uint64_t         j    = 0;
-  fvv_bool_t ret = 0;
+  fvv_bool_t       ret  = 0;
   buff                  = self->data;
 
   buff->pad(buff,
@@ -1381,8 +1384,8 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
       buff->pad(buff,
                 self->asps_extension_data_flag,
                 FVV_BIT_ASPS_EXTENSION_DATA_FLAG);
-    
-    buff->more_rbsp_data(buff, &ret);
+
+      buff->more_rbsp_data(buff, &ret);
     }
   }
   self->rtb->pack(self->rtb);
@@ -1391,6 +1394,84 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
 }
 
 // }
+// 8.3.6.1.2 Point local reconstruction information syntax
+// {
+
+fvv_ret_t fvv_fvv_asps_plr_information_init(
+    fvv_asps_plr_information_t              *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data)
+{
+  *self       = (fvv_asps_plr_information_t){0};
+
+  self->aspsr = aspsr;
+  self->data  = data;
+
+  self->pack  = fvv_asps_plr_information_pack;
+
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_fvv_asps_plr_information_destroy(
+    fvv_asps_plr_information_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITALIZED;
+  }
+  *self = (fvv_asps_plr_information_t){0};
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_fvv_asps_plr_information_pack(fvv_asps_plr_information_t *self,
+                                  uint64_t mapCountMinus1)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITALIZED;
+  }
+
+  fvv_bitstream_t *buff = FVV_NULL;
+  uint64_t         i    = 0;
+  uint64_t         j    = 0;
+
+  buff                  = self->data;
+
+  for (i = 0; i < self->mapCountMinus1 + 1; i++)
+  {
+    buff->pad(buff,
+              self->plri_map_present_flag[i],
+              FVV_BIT_PLRI_MAP_PRESENT_FLAG);
+    if (self->plri_map_present_flag[i])
+    {
+      buff->pad(buff,
+                self->plri_number_of_modes_minus1[i],
+                FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1);
+      for (j = 0; j < self->plri_number_of_modes_minus1[i] + 1; j++)
+      {
+        buff->pad(buff,
+                  self->plri_interpolate_flag[i][j],
+                  FVV_BIT_PLRI_INTERPOLATE_FLAG);
+        buff->pad(buff,
+                  self->plri_filling_flag[i][j],
+                  FVV_BIT_PLRI_FILLING_FLAG);
+        buff->pad(buff,
+                  self->plri_minimum_depth[i][j],
+                  FVV_BIT_PLRI_MINIMUM_DEPTH);
+        buff->pad(buff,
+                  self->plri_neighbour_minus1[i][j],
+                  FVV_BIT_PLRI_NEIGHBOUR_MINUS1);
+      }
+      buff->pad(buff,
+                self->plri_block_threshold_per_patch_minus1[i],
+                FVV_BIT_PLRI_BLOCK_THRESHOLD_PER_PATCH_MINUS1);
+    }
+  }
+
+  return FVV_RET_SUCCESS;
+}
+
+// }
+
 // }
 // }
 // }
