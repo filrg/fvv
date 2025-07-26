@@ -1,10 +1,10 @@
 #include <fvv/syntax.h>
 
-// {
 // 8.3.2 V3C unit syntax
-
 // {
+
 // 8.3.2.1 General V3C unit syntax
+// {
 fvv_ret_t fvv_v3c_unit_init(fvv_v3c_unit_t  *self,
                             fvv_bitstream_t *data)
 {
@@ -63,8 +63,8 @@ fvv_ret_t fvv_v3c_unit_pack(fvv_v3c_unit_t *self,
 }
 // }
 
-// {
 // 8.3.2.2 V3C unit header syntax
+// {
 fvv_ret_t fvv_v3c_unit_header_init(fvv_v3c_unit_header_t *self,
                                    fvv_v3c_unit_t        *vu,
                                    fvv_bitstream_t       *data)
@@ -148,8 +148,8 @@ fvv_ret_t fvv_v3c_unit_header_pack(fvv_v3c_unit_header_t *self)
 }
 // }
 
-// {
 // 8.3.2.3 V3C unit payload syntax
+// {
 fvv_ret_t fvv_v3c_unit_payload_init(fvv_v3c_unit_payload_t *self,
                                     fvv_v3c_unit_t         *vu,
                                     fvv_bitstream_t        *data)
@@ -236,8 +236,8 @@ fvv_ret_t fvv_v3c_unit_payload_pack(fvv_v3c_unit_payload_t *self,
 }
 // }
 
-// {
 // 8.3.2.4 Atlas sub-bitstream syntax
+// {
 fvv_ret_t
 fvv_atlas_sub_bitstream_init(fvv_atlas_sub_bitstream_t *self,
                              fvv_v3c_unit_t            *vu,
@@ -312,11 +312,11 @@ fvv_atlas_sub_bitstream_pack(fvv_atlas_sub_bitstream_t *self,
 
 // }
 
-// {
 // D.2 Sample stream NAL unit
-
 // {
+
 // D.2.1 Sample stream NAL header syntax
+// {
 fvv_ret_t fvv_sample_stream_nal_header_init(
     fvv_sample_stream_nal_header_t *self,
     fvv_v3c_unit_t                 *vu,
@@ -360,8 +360,8 @@ fvv_ret_t fvv_sample_stream_nal_header_pack(
 }
 // }
 
-// {
 // D.2.2 Sample stream NAL unit syntax
+// {
 fvv_ret_t
 fvv_sample_stream_nal_unit_init(fvv_sample_stream_nal_unit_t *self,
                                 fvv_v3c_unit_t               *vu,
@@ -423,8 +423,8 @@ fvv_sample_stream_nal_unit_pack(fvv_sample_stream_nal_unit_t *self)
 
 // }
 
-// {
 // 8.3.3 Byte alignment syntax
+// {
 fvv_ret_t fvv_byte_alignment_init(fvv_byte_alignment_t *self,
                                   fvv_bitstream_t      *data)
 {
@@ -474,11 +474,11 @@ fvv_ret_t fvv_byte_alignment_pack(fvv_byte_alignment_t *self)
 }
 // }
 
-// {
 // 8.3.4 V3C parameter set syntax
-
 // {
+
 // 8.3.4.1 General V3C parameter set syntax
+// {
 fvv_ret_t fvv_v3c_parameter_set_init(
     fvv_v3c_parameter_set_t *self, fvv_bitstream_t *data;
     //    uint64_t vps_atlas_id_size,
@@ -691,8 +691,8 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
 }
 // }
 
-// {
 // 8.3.4.2 Profile, tier, and level syntax
+// {
 fvv_ret_t fvv_profile_tier_level_init(fvv_profile_tier_level_t *self,
                                       fvv_v3c_parameter_set_t  *vps,
                                       fvv_bitstream_t          *data)
@@ -781,8 +781,8 @@ fvv_ret_t fvv_profile_tier_level_pack(fvv_profile_tier_level_t *self)
 }
 // }
 
-// {
 // 8.3.4.3 Occupancy information syntax
+// {
 fvv_occupancy_information_init(fvv_occupancy_information_t *self,
                                fvv_v3c_parameter_set_t     *vps,
                                fvv_bitstream_t             *data)
@@ -833,8 +833,8 @@ fvv_occupancy_information_pack(fvv_occupancy_information_t *self,
 }
 // }
 
-// {
 // 8.3.4.4 Geometry information syntax
+// {
 fvv_ret_t
 fvv_geometry_information_init(fvv_geometry_information_t *self,
                               fvv_v3c_parameter_set_t    *vps,
@@ -894,8 +894,8 @@ fvv_geometry_information_pack(fvv_geometry_information_t *self,
 }
 // }
 
-// {
 // 8.3.4.5 Attribute information syntax
+// {
 fvv_ret_t
 fvv_attribute_information_init(fvv_attribute_information_t *self,
                                fvv_v3c_parameter_set_t     *vps,
@@ -1009,8 +1009,8 @@ fvv_attribute_information_pack(fvv_attribute_information_t *self,
 }
 // }
 
-// {
 // 8.3.4.6 Profile toolset constraints information syntax
+// {
 fvv_ret_t fvv_profile_toolset_constraints_information_init(
     fvv_profile_toolset_constraints_information_t *self,
     fvv_v3c_parameter_set_t                       *vps,
@@ -1091,10 +1091,10 @@ fvv_ret_t fvv_profile_toolset_constraints_information_pack(
 // }
 // }
 
-// {
 // 8.3.5 NAL unit syntax
 // {
 // 8.3.5.1 General NAL unit syntax
+// {
 fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
                             fvv_bitstream_t *data,
                             uint64_t         rbsp_byte_size)
@@ -1157,10 +1157,10 @@ fvv_ret_t fvv_nal_unit_pack(fvv_nal_unit_t *self,
 // }
 // }
 
-// {
 // 8.3.6 Raw byte sequence payloads, trailing bits, and byte
 // alignment syntax
 // {
+
 // 8.3.6.1 Atlas sequence parameter set RBSP syntax
 // {
 // 8.3.6.1.1 General atlas sequence parameter set RBSP syntax
@@ -1471,7 +1471,117 @@ fvv_fvv_asps_plr_information_pack(fvv_asps_plr_information_t *self,
 }
 
 // }
+// }
+// 8.3.6.2 Atlas frame parameter set RBSP syntax
+// {
+// 8.3.6.2.1 General atlas frame parameter set RBSP syntax
+// {
+fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_init(
+    fvv_atlas_frame_parameter_set_rbsp_t    *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data)
+{
+  *self       = (fvv_atlas_frame_parameter_set_rbsp_t){0};
 
+  self->data  = data;
+  self->aspsr = aspsr;
+
+  self->pack  = fvv_atlas_frame_parameter_set_rbsp_pack;
+
+  self->afti  = (fvv_atlas_frame_tile_information_t *)malloc(
+      sizeof(fvv_atlas_frame_tile_information_t));
+  self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
+      sizeof(fvv_rbsp_trailing_bits_t));
+
+  fvv_atlas_frame_tile_information_init(self->afti, aspsr, data);
+  fvv_rbsp_trailing_bits_init(self->rtb, aspsr, data);
+
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_destroy(
+    fvv_atlas_frame_parameter_set_rbsp_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->afti)
+  {
+    fvv_atlas_frame_tile_information_destroy(self->afti);
+    free(self->afti);
+  }
+  if (self->rtb)
+  {
+    fvv_rbsp_trailing_bits_destroy(self->rtb);
+    free(self->rtb);
+  }
+
+  *self = (fvv_atlas_frame_parameter_set_rbsp_t){0};
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_pack(
+    fvv_atlas_frame_parameter_set_rbsp_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  fvv_bitstream_t *buff           = FVV_NULL;
+  fvv_bool_t       more_rbsp_data = 0;
+  buff                            = self->data;
+
+  buff->pad(buff,
+            self->afps_atlas_frame_parameter_set_id,
+            FVV_BIT_AFPS_ATLAS_FRAME_PARAMETER_SET_ID);
+  buff->pad(buff,
+            self->afps_atlas_sequence_parameter_set_id,
+            FVV_BIT_AFPS_ATLAS_SEQUENCE_PARAMETER_SET_ID);
+
+  self->afti->pack(self->afti);
+
+  buff->pad(buff,
+            self->afps_output_flag_present_flag,
+            FVV_BIT_AFPS_OUTPUT_FLAG_PRESENT_FLAG);
+  buff->pad(buff,
+            self->afps_num_ref_idx_default_active_minus1,
+            FVV_BIT_AFPS_NUM_REF_IDX_DEFAULT_ACTIVE_MINUS1);
+  buff->pad(buff,
+            self->afps_additional_lt_afoc_lsb_len,
+            FVV_BIT_AFPS_ADDITIONAL_LT_AFOC_LSB_LEN);
+  buff->pad(buff,
+            self->afps_lod_mode_enabled_flag,
+            FVV_BIT_AFPS_LOD_MODE_ENABLED_FLAG);
+  buff->pad(buff,
+            self->afps_raw_3d_offset_bit_count_explicit_mode_flag,
+            FVV_BIT_AFPS_RAW_3D_OFFSET_BIT_COUNT_EXPLICIT_MODE_FLAG);
+  buff->pad(buff,
+            self->afps_extension_present_flag,
+            FVV_BIT_AFPS_EXTENSION_PRESENT_FLAG);
+
+  if (self->afps_extension_present_flag)
+  {
+    buff->pad(buff,
+              self->afps_extension_8bits,
+              FVV_BIT_AFPS_EXTENSION_8BITS);
+  }
+  if (self->afps_extension_8bits)
+  {
+
+    buff->more_rbsp_data(buff, &more_rbsp_data);
+    while (more_rbsp_data)
+    {
+      buff->pad(buff,
+                self->afps_extension_data_flag,
+                FVV_BIT_AFPS_EXTENSION_DATA_FLAG);
+
+      buff->more_rbsp_data(buff, &more_rbsp_data);
+    }
+  }
+  self->rtb->pack(self->rtb);
+  return FVV_RET_SUCCESS;
+}
 // }
 // }
+
 // }
