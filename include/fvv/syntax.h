@@ -75,16 +75,16 @@ struct fvv_v3c_unit_header_t
   fvv_v3c_unit_t  *vu;
   fvv_bitstream_t *data;
 
-  uint32_t         vuh_unit_type;                 // u(5)
-  uint32_t         vuh_v3c_parameter_set_id;      // u(4)
-  uint32_t         vuh_atlas_id;                  // u(6)
-  uint32_t         vuh_attribute_index;           // u(7)
-  uint32_t         vuh_attribute_partition_index; // u(5)
-  uint32_t         vuh_map_index;                 // u(4)
-  uint32_t         vuh_auxiliary_video_flag;      // u(1)
-  uint32_t         vuh_reserved_zero_12bits;      // u(12)
-  uint32_t         vuh_reserved_zero_17bits;      // u(17)
-  uint32_t         vuh_reserved_zero_27bits;      // u(27)
+  uint64_t         vuh_unit_type;                 // u(5)
+  uint64_t         vuh_v3c_parameter_set_id;      // u(4)
+  uint64_t         vuh_atlas_id;                  // u(6)
+  uint64_t         vuh_attribute_index;           // u(7)
+  uint64_t         vuh_attribute_partition_index; // u(5)
+  uint64_t         vuh_map_index;                 // u(4)
+  uint64_t         vuh_auxiliary_video_flag;      // u(1)
+  uint64_t         vuh_reserved_zero_12bits;      // u(12)
+  uint64_t         vuh_reserved_zero_17bits;      // u(17)
+  uint64_t         vuh_reserved_zero_27bits;      // u(27)
 
   fvv_ret_t (*pack)(fvv_v3c_unit_header_t *self);
 };
@@ -149,8 +149,8 @@ struct fvv_sample_stream_nal_header_t
   fvv_bitstream_t *data;
   fvv_v3c_unit_t  *vu;
 
-  uint32_t         ssnh_unit_size_precision_bytes_minus1; // u(3)
-  uint32_t         ssnh_reserved_zero_5bits;              // u(5)
+  uint64_t         ssnh_unit_size_precision_bytes_minus1; // u(3)
+  uint64_t         ssnh_reserved_zero_5bits;              // u(5)
 
   fvv_ret_t (*pack)(fvv_sample_stream_nal_header_t *self);
 };
@@ -170,7 +170,7 @@ struct fvv_sample_stream_nal_unit_t
   fvv_v3c_unit_t  *vu;
   fvv_bitstream_t *data;
 
-  uint32_t         ssnu_nal_unit_size; // u(v)
+  uint64_t         ssnu_nal_unit_size; // u(v)
 
   fvv_nal_unit_t  *nu;
 
@@ -189,8 +189,8 @@ fvv_sample_stream_nal_unit_pack(fvv_sample_stream_nal_unit_t *self);
 // 8.3.3 Byte alignment syntax
 struct fvv_byte_alignment_t
 {
-  uint32_t         alignment_bit_equal_to_one;  // f(1)
-  uint32_t         alignment_bit_equal_to_zero; // f(1)
+  uint64_t         alignment_bit_equal_to_one;  // f(1)
+  uint64_t         alignment_bit_equal_to_zero; // f(1)
 
   fvv_bitstream_t *data;
 
@@ -209,40 +209,53 @@ struct fvv_v3c_parameter_set_t
 {
   fvv_bitstream_t *data;
 
-  uint32_t         vps_v3c_parameter_set_id; // u(4)
-  uint32_t         vps_reserved_zero_8bits;  // u(8)
-  uint32_t         vps_atlas_count_minus1;   // u(6)
-  uint32_t vps_atlas_id[(0x1 << FVV_BIT_VPS_ATLAS_COUNT_MINUS1) +
+  uint64_t         vps_v3c_parameter_set_id; // u(4)
+  uint64_t         vps_reserved_zero_8bits;  // u(8)
+  uint64_t         vps_atlas_count_minus1;   // u(6)
+  uint64_t vps_atlas_id[(0x1 << FVV_BIT_VPS_ATLAS_COUNT_MINUS1) +
                         1];                               // u(6)
-  uint32_t vps_frame_width[0x1 << FVV_BIT_VPS_ATLAS_ID];  // ue(v)
-  uint32_t vps_frame_height[0x1 << FVV_BIT_VPS_ATLAS_ID]; // ue(v)
-  uint32_t vps_map_count_minus1[0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(4)
-  uint32_t vps_multiple_map_streams_present_flag
+  uint64_t vps_frame_width[0x1 << FVV_BIT_VPS_ATLAS_ID];  // ue(v)
+  uint64_t vps_frame_height[0x1 << FVV_BIT_VPS_ATLAS_ID]; // ue(v)
+  uint64_t vps_map_count_minus1[0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(4)
+  uint64_t vps_multiple_map_streams_present_flag
       [0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(1)
-  uint32_t vps_map_absolute_coding_enabled_flag
+  uint64_t vps_map_absolute_coding_enabled_flag
       [0x1 << FVV_BIT_VPS_ATLAS_ID]
       [0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1]; // u(1)
-  uint32_t vps_map_predictor_index_diff
+  uint64_t vps_map_predictor_index_diff
       [0x1 << FVV_BIT_VPS_ATLAS_ID]
       [0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1]; // ue(v)
-  uint32_t vps_auxiliary_video_present_flag
+  uint64_t vps_auxiliary_video_present_flag
       [0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(1)
-  uint32_t vps_occupancy_video_present_flag
+  uint64_t vps_occupancy_video_present_flag
       [0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(1)
-  uint32_t vps_geometry_video_present_flag
+  uint64_t vps_geometry_video_present_flag
       [0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(1)
-  uint32_t vps_attribute_video_present_flag
+  uint64_t vps_attribute_video_present_flag
       [0x1 << FVV_BIT_VPS_ATLAS_ID];                        // u(1)
-  uint32_t                     vps_extension_present_flag;  // u(1)
-  uint32_t                     vps_extension_8bits;         // u(8)
-  uint32_t                     vps_extension_length_minus1; // ue(v)
-  uint32_t                     vps_extension_data_byte;     // u(8)
+  uint64_t                     vps_extension_present_flag;  // u(1)
+  uint64_t                     vps_extension_8bits;         // u(8)
+  uint64_t                     vps_extension_length_minus1; // ue(v)
+  uint64_t                     vps_extension_data_byte;     // u(8)
 
   fvv_profile_tier_level_t    *ptl;
   fvv_occupancy_information_t *oi;
   fvv_geometry_information_t  *gi;
   fvv_attribute_information_t *ai;
   fvv_byte_alignment_t        *ba;
+
+  // uint64_t                     vps_atlas_id_size;
+  // uint64_t                     vps_frame_width_size;
+  // uint64_t                     vps_frame_height_size;
+  // uint64_t                     vps_map_count_minus1_size;
+  // uint64_t vps_multiple_map_streams_present_flag_size[2];
+  // uint64_t vps_map_absolute_coding_enabled_flag_size[2];
+  // uint64_t vps_map_predictor_index_diff_size;
+  // uint64_t vps_auxiliary_video_present_flag_size;
+  // uint64_t vps_occupancy_video_present_flag_size;
+  // uint64_t vps_geometry_video_present_flag_size;
+  // uint64_t vps_attribute_video_present_flag_size;
+  // uint64_t vps_extension_present_flag_size;
 
   fvv_ret_t (*pack)(fvv_v3c_parameter_set_t *self);
 };
@@ -260,19 +273,19 @@ struct fvv_profile_tier_level_t
   fvv_v3c_parameter_set_t *vps;
   fvv_bitstream_t         *data;
 
-  uint32_t                 ptl_tier_flag;                  // u(1)
-  uint32_t                 ptl_profile_codec_group_idc;    // u(7)
-  uint32_t                 ptl_profile_toolset_idc;        // u(8)
-  uint32_t                 ptl_profile_reconstruction_idc; // u(8)
-  uint32_t                 ptl_reserved_zero_16bits;       // u(16)
-  uint32_t                 ptl_reserved_0xffff_16bits;     // u(16)
-  uint32_t                 ptl_level_idc;                  // u(8)
-  uint32_t                 ptl_num_sub_profiles;           // u(6)
-  uint32_t                 ptl_extended_sub_profile_flag;  // u(1)
-  uint32_t
+  uint64_t                 ptl_tier_flag;                  // u(1)
+  uint64_t                 ptl_profile_codec_group_idc;    // u(7)
+  uint64_t                 ptl_profile_toolset_idc;        // u(8)
+  uint64_t                 ptl_profile_reconstruction_idc; // u(8)
+  uint64_t                 ptl_reserved_zero_16bits;       // u(16)
+  uint64_t                 ptl_reserved_0xffff_16bits;     // u(16)
+  uint64_t                 ptl_level_idc;                  // u(8)
+  uint64_t                 ptl_num_sub_profiles;           // u(6)
+  uint64_t                 ptl_extended_sub_profile_flag;  // u(1)
+  uint64_t
            ptl_sub_profile_idc[0x1
                           << FVV_BIT_PTL_NUM_SUB_PROFILES]; // u(v)
-  uint32_t ptl_tool_constraints_present_flag; // u(1)
+  uint64_t ptl_tool_constraints_present_flag; // u(1)
 
   fvv_profile_toolset_constraints_information_t *ptci;
 
@@ -294,13 +307,13 @@ struct fvv_occupancy_information_t
   fvv_v3c_parameter_set_t *vps;
   fvv_bitstream_t         *data;
 
-  uint32_t
+  uint64_t
       oi_occupancy_codec_id[0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(8)
-  uint32_t oi_lossy_occupancy_compression_threshold
+  uint64_t oi_lossy_occupancy_compression_threshold
       [0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(8)
-  uint32_t oi_occupancy_2d_bit_depth_minus1
+  uint64_t oi_occupancy_2d_bit_depth_minus1
       [0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(5)
-  uint32_t
+  uint64_t
       oi_occupancy_MSB_align_flag[0x1
                                   << FVV_BIT_VPS_ATLAS_ID]; // u(1)
 
@@ -322,15 +335,15 @@ struct fvv_geometry_information_t
   fvv_v3c_parameter_set_t *vps;
   fvv_bitstream_t         *data;
 
-  uint32_t gi_geometry_codec_id[0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(8)
-  uint32_t gi_geometry_2d_bit_depth_minus1
+  uint64_t gi_geometry_codec_id[0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(8)
+  uint64_t gi_geometry_2d_bit_depth_minus1
       [0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(5)
-  uint32_t
+  uint64_t
            gi_geometry_MSB_align_flag[0x1
                                  << FVV_BIT_VPS_ATLAS_ID]; // u(1)
-  uint32_t gi_geometry_3d_coordinates_bit_depth_minus1
+  uint64_t gi_geometry_3d_coordinates_bit_depth_minus1
       [0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(5)
-  uint32_t gi_auxiliary_geometry_codec_id
+  uint64_t gi_auxiliary_geometry_codec_id
       [0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(8)
 
   fvv_ret_t (*pack)(fvv_geometry_information_t *self,
@@ -352,36 +365,36 @@ struct fvv_attribute_information_t
   fvv_v3c_parameter_set_t *vps;
   fvv_bitstream_t         *data;
 
-  uint32_t ai_attribute_count[0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(7)
-  uint32_t
+  uint64_t ai_attribute_count[0x1 << FVV_BIT_VPS_ATLAS_ID]; // u(7)
+  uint64_t
       ai_attribute_type_id[0x1 << FVV_BIT_VPS_ATLAS_ID]
                           [0x1
                            << FVV_BIT_AI_ATTRIBUTE_COUNT]; // u(4)
-  uint32_t
+  uint64_t
       ai_attribute_codec_id[0x1 << FVV_BIT_VPS_ATLAS_ID]
                            [0x1
                             << FVV_BIT_AI_ATTRIBUTE_COUNT]; // u(8)
-  uint32_t ai_auxiliary_attribute_codec_id
+  uint64_t ai_auxiliary_attribute_codec_id
       [0x1 << FVV_BIT_VPS_ATLAS_ID]
       [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT]; // u(8)
-  uint32_t ai_attribute_map_absolute_coding_persistence_flag
+  uint64_t ai_attribute_map_absolute_coding_persistence_flag
       [0x1 << FVV_BIT_VPS_ATLAS_ID]
       [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT]; // u(1)
-  uint32_t ai_attribute_dimension_minus1
+  uint64_t ai_attribute_dimension_minus1
       [0x1 << FVV_BIT_VPS_ATLAS_ID]
       [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT]; // u(6)
-  uint32_t ai_attribute_dimension_partitions_minus1
+  uint64_t ai_attribute_dimension_partitions_minus1
       [0x1 << FVV_BIT_VPS_ATLAS_ID]
       [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT]; // u(6)
-  uint32_t ai_attribute_partition_channels_minus1
+  uint64_t ai_attribute_partition_channels_minus1
       [0x1 << FVV_BIT_VPS_ATLAS_ID]
       [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT]
       [0x1
        << FVV_BIT_AI_ATTRIBUTE_DIMENSION_PARTITIONS_MINUS1]; // ue(v)
-  uint32_t ai_attribute_2d_bit_depth_minus1
+  uint64_t ai_attribute_2d_bit_depth_minus1
       [0x1 << FVV_BIT_VPS_ATLAS_ID]
       [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT]; // u(5)
-  uint32_t ai_attribute_MSB_align_flag
+  uint64_t ai_attribute_MSB_align_flag
       [0x1 << FVV_BIT_VPS_ATLAS_ID]
       [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT]; // u(1)
 
@@ -405,19 +418,19 @@ struct fvv_profile_toolset_constraints_information_t
   fvv_v3c_parameter_set_t *vps;
   fvv_bitstream_t         *data;
 
-  uint32_t                 ptc_one_v3c_frame_only_flag;      // u(1)
-  uint32_t                 ptc_eom_constraint_flag;          // u(1)
-  uint32_t                 ptc_max_map_count_minus1;         // u(4)
-  uint32_t                 ptc_max_atlas_count_minus1;       // u(4)
-  uint32_t ptc_multiple_map_streams_constraint_flag;         // u(1)
-  uint32_t ptc_plr_constraint_flag;                          // u(1)
-  uint32_t ptc_attribute_max_dimension_minus1;               // u(6)
-  uint32_t ptc_attribute_max_dimension_partitions_minus1;    // u(6)
-  uint32_t ptc_no_eight_orientations_constraint_flag;        // u(1)
-  uint32_t ptc_no_45degree_projection_patch_constraint_flag; // u(1)
-  uint32_t ptc_reserved_zero_6bits;                          // u(6)
-  uint32_t ptc_num_reserved_constraint_bytes;                // u(8)
-  uint32_t ptc_reserved_constraint_byte
+  uint64_t                 ptc_one_v3c_frame_only_flag;      // u(1)
+  uint64_t                 ptc_eom_constraint_flag;          // u(1)
+  uint64_t                 ptc_max_map_count_minus1;         // u(4)
+  uint64_t                 ptc_max_atlas_count_minus1;       // u(4)
+  uint64_t ptc_multiple_map_streams_constraint_flag;         // u(1)
+  uint64_t ptc_plr_constraint_flag;                          // u(1)
+  uint64_t ptc_attribute_max_dimension_minus1;               // u(6)
+  uint64_t ptc_attribute_max_dimension_partitions_minus1;    // u(6)
+  uint64_t ptc_no_eight_orientations_constraint_flag;        // u(1)
+  uint64_t ptc_no_45degree_projection_patch_constraint_flag; // u(1)
+  uint64_t ptc_reserved_zero_6bits;                          // u(6)
+  uint64_t ptc_num_reserved_constraint_bytes;                // u(8)
+  uint64_t ptc_reserved_constraint_byte
       [0x1 << FVV_BIT_PTC_NUM_RESERVED_CONSTRAINT_BYTES]; // u(8)
 
   fvv_ret_t (*pack)(
@@ -436,7 +449,7 @@ fvv_ret_t fvv_profile_toolset_constraints_information_pack(
 // 8.3.5.1 General NAL unit syntax
 struct fvv_nal_unit_t
 {
-  uint32_t              *rbsp_byte;
+  uint64_t              *rbsp_byte;
   uint64_t               rbsp_byte_size;
   fvv_nal_unit_header_t *nuh;
 
@@ -457,10 +470,10 @@ fvv_ret_t fvv_nal_unit_pack(fvv_nal_unit_t *self,
 // 8.3.5.2 NAL unit header syntax
 struct fvv_nal_unit_header_t
 {
-  uint32_t         nal_forbidden_zero_bit;
-  uint32_t         nal_unit_type;
-  uint32_t         nal_layer_id;
-  uint32_t         nal_temporal_id_plus1;
+  uint64_t         nal_forbidden_zero_bit;
+  uint64_t         nal_unit_type;
+  uint64_t         nal_layer_id;
+  uint64_t         nal_temporal_id_plus1;
 
   fvv_bitstream_t *data;
 
@@ -473,44 +486,44 @@ fvv_ret_t fvv_nal_unit_header_destroy(fvv_nal_unit_header_t *self);
 fvv_ret_t fvv_nal_unit_header_pack(fvv_nal_unit_header_t *self);
 
 // 8.3.6 Raw byte sequence payloads, trailing bits, and byte
-// alignment syntax 
+// alignment syntax
 // 8.3.6.1 Atlas sequence parameter set RBSP syntax
 // 8.3.6.1.1 General atlas sequence parameter set RBSP syntax
 struct fvv_atlas_sequence_parameter_set_rbsp_t
 {
-  uint32_t asps_atlas_sequence_parameter_set_id;
-  uint32_t asps_frame_width;
-  uint32_t asps_frame_height;
-  uint32_t asps_geometry_3d_bit_depth_minus1;
-  uint32_t asps_geometry_2d_bit_depth_minus1;
-  uint32_t asps_log2_max_atlas_frame_order_cnt_lsb_minus4;
-  uint32_t asps_max_dec_atlas_frame_buffering_minus1;
-  uint32_t asps_long_term_ref_atlas_frames_flag;
-  uint32_t asps_num_ref_atlas_frame_lists_in_asps;
-  uint32_t asps_use_eight_orientations_flag;
-  uint32_t asps_extended_projection_enabled_flag;
-  uint32_t asps_max_number_projections_minus1;
-  uint32_t asps_normal_axis_limits_quantization_enabled_flag;
-  uint32_t asps_normal_axis_max_delta_value_enabled_flag;
-  uint32_t asps_patch_precedence_order_flag;
-  uint32_t asps_log2_patch_packing_block_size;
-  uint32_t asps_patch_size_quantizer_present_flag;
-  uint32_t asps_map_count_minus1;
-  uint32_t asps_pixel_deinterleaving_enabled_flag;
-  uint32_t asps_raw_patch_enabled_flag;
-  uint32_t asps_eom_patch_enabled_flag;
-  uint32_t asps_eom_fix_bit_count_minus1;
-  uint32_t asps_auxiliary_video_enabled_flag;
-  uint32_t asps_plr_enabled_flag;
-  uint32_t asps_vui_parameters_present_flag;
-  uint32_t asps_extension_present_flag;
-  uint32_t asps_vpcc_extension_present_flag;
-  uint32_t asps_extension_7bits;
-  uint32_t asps_extension_data_flag;
-  uint32_t asps_map_pixel_deinterleaving_flag
+  uint64_t asps_atlas_sequence_parameter_set_id;
+  uint64_t asps_frame_width;
+  uint64_t asps_frame_height;
+  uint64_t asps_geometry_3d_bit_depth_minus1;
+  uint64_t asps_geometry_2d_bit_depth_minus1;
+  uint64_t asps_log2_max_atlas_frame_order_cnt_lsb_minus4;
+  uint64_t asps_max_dec_atlas_frame_buffering_minus1;
+  uint64_t asps_long_term_ref_atlas_frames_flag;
+  uint64_t asps_num_ref_atlas_frame_lists_in_asps;
+  uint64_t asps_use_eight_orientations_flag;
+  uint64_t asps_extended_projection_enabled_flag;
+  uint64_t asps_max_number_projections_minus1;
+  uint64_t asps_normal_axis_limits_quantization_enabled_flag;
+  uint64_t asps_normal_axis_max_delta_value_enabled_flag;
+  uint64_t asps_patch_precedence_order_flag;
+  uint64_t asps_log2_patch_packing_block_size;
+  uint64_t asps_patch_size_quantizer_present_flag;
+  uint64_t asps_map_count_minus1;
+  uint64_t asps_pixel_deinterleaving_enabled_flag;
+  uint64_t asps_raw_patch_enabled_flag;
+  uint64_t asps_eom_patch_enabled_flag;
+  uint64_t asps_eom_fix_bit_count_minus1;
+  uint64_t asps_auxiliary_video_enabled_flag;
+  uint64_t asps_plr_enabled_flag;
+  uint64_t asps_vui_parameters_present_flag;
+  uint64_t asps_extension_present_flag;
+  uint64_t asps_vpcc_extension_present_flag;
+  uint64_t asps_extension_7bits;
+  uint64_t asps_extension_data_flag;
+  uint64_t asps_map_pixel_deinterleaving_flag
       [0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1];
 
-  fvv_ref_list_struct        *rls;
+  fvv_ref_list_struct_t      *rls;
   fvv_asps_plr_information_t *api;
   fvv_vui_parameters_t       *vp;
   fvv_asps_vpcc_extension_t  *ave; /* Specified in Annex H*/
@@ -531,23 +544,23 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
 // 8.3.6.1.2 Point local reconstruction information syntax
 struct fvv_asps_plr_information_t
 {
-  uint32_t
+  uint64_t
       plri_map_present_flag[(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) +
                             1];            // u(1)
-  uint32_t plri_number_of_modes_minus1[i]; // u(4)
-  uint32_t plri_interpolate_flag
+  uint64_t plri_number_of_modes_minus1[i]; // u(4)
+  uint64_t plri_interpolate_flag
       [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
       [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1]; // u(1)
-  uint32_t plri_filling_flag
+  uint64_t plri_filling_flag
       [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
       [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1]; // u(1)
-  uint32_t plri_minimum_depth
+  uint64_t plri_minimum_depth
       [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
       [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1]; // u(2)
-  uint32_t plri_neighbour_minus1
+  uint64_t plri_neighbour_minus1
       [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
       [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1]; // u(2)
-  uint32_t plri_block_threshold_per_patch_minus1
+  uint64_t plri_block_threshold_per_patch_minus1
       [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]; // u(6)
 
   fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
@@ -571,16 +584,16 @@ fvv_fvv_asps_plr_information_pack(fvv_asps_plr_information_t *self,
 // 8.3.6.2.1 General atlas frame parameter set RBSP syntax
 struct fvv_atlas_frame_parameter_set_rbsp_t
 {
-  uint32_t afps_atlas_frame_parameter_set_id;               // ue(v)
-  uint32_t afps_atlas_sequence_parameter_set_id;            // ue(v)
-  uint32_t afps_output_flag_present_flag;                   // u(1)
-  uint32_t afps_num_ref_idx_default_active_minus1;          // ue(v)
-  uint32_t afps_additional_lt_afoc_lsb_len;                 // ue(v)
-  uint32_t afps_lod_mode_enabled_flag;                      // u(1)
-  uint32_t afps_raw_3d_offset_bit_count_explicit_mode_flag; // u(1)
-  uint32_t afps_extension_present_flag;                     // u(1)
-  uint32_t afps_extension_8bits;                            // u(8)
-  uint32_t afps_extension_data_flag;                        // u(1)
+  uint64_t afps_atlas_frame_parameter_set_id;               // ue(v)
+  uint64_t afps_atlas_sequence_parameter_set_id;            // ue(v)
+  uint64_t afps_output_flag_present_flag;                   // u(1)
+  uint64_t afps_num_ref_idx_default_active_minus1;          // ue(v)
+  uint64_t afps_additional_lt_afoc_lsb_len;                 // ue(v)
+  uint64_t afps_lod_mode_enabled_flag;                      // u(1)
+  uint64_t afps_raw_3d_offset_bit_count_explicit_mode_flag; // u(1)
+  uint64_t afps_extension_present_flag;                     // u(1)
+  uint64_t afps_extension_8bits;                            // u(8)
+  uint64_t afps_extension_data_flag;                        // u(1)
   fvv_atlas_frame_tile_information_t      *afti;
   fvv_rbsp_trailing_bits_t                *rtb;
 
@@ -600,24 +613,24 @@ fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_pack(
 // 8.3.6.2.2 Atlas frame tile information syntax
 struct fvv_atlas_frame_tile_information_t
 {
-  uint32_t  afti_single_tile_in_atlas_frame_flag;       // u(1)
-  uint32_t  afti_uniform_partition_spacing_flag;        // u(1)
-  uint32_t  afti_partition_cols_width_minus1;           // ue(v)
-  uint32_t  afti_partition_rows_height_minus1;          // ue(v)
-  uint32_t  afti_num_partition_columns_minus1;          // ue(v)
-  uint32_t  afti_num_partition_rows_minus1;             // ue(v)
-  uint32_t *afti_partition_column_width_minus1;         // ue(v)
-  uint32_t *afti_partition_row_height_minus1;           // ue(v)
-  uint32_t  afti_single_partition_per_tile_flag;        // u(1)
-  uint32_t  afti_num_tiles_in_atlas_frame_minus1;       // ue(v)
-  uint32_t *afti_top_left_partition_idx;                // u(v)
-  uint32_t *afti_bottom_right_partition_column_offset;  // ue(v)
-  uint32_t *afti_bottom_right_partition_row_offset;     // ue(v)
-  uint32_t  afti_auxiliary_video_tile_row_width_minus1; // ue(v)
-  uint32_t *afti_auxiliary_video_tile_row_height;       // ue(v)
-  uint32_t  afti_signalled_tile_id_flag;                // u(1)
-  uint32_t  afti_signalled_tile_id_length_minus1;       // ue(v)
-  uint32_t *afti_tile_id;                               // u(v)
+  uint64_t  afti_single_tile_in_atlas_frame_flag;       // u(1)
+  uint64_t  afti_uniform_partition_spacing_flag;        // u(1)
+  uint64_t  afti_partition_cols_width_minus1;           // ue(v)
+  uint64_t  afti_partition_rows_height_minus1;          // ue(v)
+  uint64_t  afti_num_partition_columns_minus1;          // ue(v)
+  uint64_t  afti_num_partition_rows_minus1;             // ue(v)
+  uint64_t *afti_partition_column_width_minus1;         // ue(v)
+  uint64_t *afti_partition_row_height_minus1;           // ue(v)
+  uint64_t  afti_single_partition_per_tile_flag;        // u(1)
+  uint64_t  afti_num_tiles_in_atlas_frame_minus1;       // ue(v)
+  uint64_t *afti_top_left_partition_idx;                // u(v)
+  uint64_t *afti_bottom_right_partition_column_offset;  // ue(v)
+  uint64_t *afti_bottom_right_partition_row_offset;     // ue(v)
+  uint64_t  afti_auxiliary_video_tile_row_width_minus1; // ue(v)
+  uint64_t *afti_auxiliary_video_tile_row_height;       // ue(v)
+  uint64_t  afti_signalled_tile_id_flag;                // u(1)
+  uint64_t  afti_signalled_tile_id_length_minus1;       // ue(v)
+  uint64_t *afti_tile_id;                               // u(v)
 
   uint64_t  afti_partition_column_width_minus1_size;
   uint64_t  afti_partition_column_height_minus1_size;
@@ -645,11 +658,11 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
 // 8.3.6.3 Atlas adaptation parameter set RBSP syntax
 struct fvv_atlas_adaptation_parameter_set_rbsp_t
 {
-  uint32_t aaps_atlas_adaptation_parameter_set_id; // ue(v)
-  uint32_t aaps_extension_present_flag;            // u(1)
-  uint32_t aaps_vpcc_extension_present_flag;       // u(1)
-  uint32_t aaps_extension_7bits;                   // u(7)
-  uint32_t aaps_extension_data_flag;               // u(1)
+  uint64_t aaps_atlas_adaptation_parameter_set_id; // ue(v)
+  uint64_t aaps_extension_present_flag;            // u(1)
+  uint64_t aaps_vpcc_extension_present_flag;       // u(1)
+  uint64_t aaps_extension_7bits;                   // u(7)
+  uint64_t aaps_extension_data_flag;               // u(1)
   fvv_aaps_vpcc_extension_t *ave; /* Specified in Annex H*/
   fvv_rbsp_trailing_bits_t  *rtb;
 
@@ -690,7 +703,7 @@ fvv_ret_t fvv_sei_rbsp_pack(fvv_sei_rbsp_t *self);
 // 8.3.6.5 Access unit delimiter RBSP syntax
 struct fvv_access_unit_delimiter_rbsp_t
 {
-  uint32_t                                 aframe_type; // u(3)
+  uint64_t                                 aframe_type; // u(3)
   fvv_rbsp_trailing_bits_t                *rtb;
 
   fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
@@ -746,7 +759,7 @@ fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_pack(
 // 8.3.6.8 Filler data RBSP syntax
 struct fvv_filler_data_rbsp_t
 {
-  uint32_t                                 ff_byte; // f(8)
+  uint64_t                                 ff_byte; // f(8)
   fvv_rbsp_trailing_bits_t                *rtb;
 
   fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
@@ -783,13 +796,13 @@ fvv_ret_t
 fvv_atlas_tile_layer_rbsp_destroy(fvv_atlas_tile_layer_rbsp_t *self);
 fvv_ret_t
 fvv_atlas_tile_layer_rbsp_pack(fvv_atlas_tile_layer_rbsp_t *self,
-                           uint64_t                     tileID);
+                               uint64_t                     tileID);
 
 // 8.3.6.10 RBSP trailing bit syntax
 struct fvv_rbsp_trailing_bits_t
 {
-  uint32_t rbsp_stop_one_bit;       // /* equal to 1 */ f(1)
-  uint32_t rbsp_alignment_zero_bit; // /* equal to 0 */
+  uint64_t rbsp_stop_one_bit;       // /* equal to 1 */ f(1)
+  uint64_t rbsp_alignment_zero_bit; // /* equal to 0 */
 
   fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
   fvv_bitstream_t                         *data;
@@ -801,13 +814,85 @@ fvv_ret_t fvv_rbsp_trailing_bits_init(
     fvv_rbsp_trailing_bits_t                *self,
     fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
     fvv_bitstream_t                         *data);
-fvv_ret_t fvv_rbsp_trailing_bits_destroy(fvv_rbsp_trailing_bits_t *self);
-fvv_ret_t fvv_rbsp_trailing_bits_pack(fvv_rbsp_trailing_bits_t *self);
+fvv_ret_t
+fvv_rbsp_trailing_bits_destroy(fvv_rbsp_trailing_bits_t *self);
+fvv_ret_t
+fvv_rbsp_trailing_bits_pack(fvv_rbsp_trailing_bits_t *self);
 
 // 8.3.6.11 Atlas tile header syntax
 struct fvv_atlas_tile_header_t
 {
+  uint64_t  ath_no_output_of_prior_atlas_frames_flag; // u(1)
+  uint64_t  ath_atlas_frame_parameter_set_id;         // ue(v)
+  uint64_t  ath_atlas_adaptation_parameter_set_id;    // ue(v)
+  uint64_t  ath_id;                                   // u(v)
+  uint64_t  ath_type;                                 // ue(v)
+  uint64_t  ath_atlas_output_flag;                    // u(1)
+  uint64_t  ath_atlas_frm_order_cnt_lsb;              // u(v)
+  uint64_t  ath_ref_atlas_frame_list_asps_flag;       // u(1)
+  uint64_t  ath_ref_atlas_frame_list_idx;             // u(v)
+  uint64_t *ath_additional_afoc_lsb_present_flag;     // u(1)
+  uint64_t *ath_additional_afoc_lsb_val;              // u(v)
+  uint64_t  ath_pos_min_d_quantizer;                  // u(5)
+  uint64_t  ath_pos_delta_max_d_quantizer;            // u(5)
+  uint64_t  ath_patch_size_x_info_quantizer;          // u(3)
+  uint64_t  ath_patch_size_y_info_quantizer;          // u(3)
+  uint64_t  ath_raw_3d_offset_axis_bit_count_minus1;  // u(v)
+  uint64_t  ath_num_ref_idx_active_override_flag;     // u(1)
+  uint64_t  ath_num_ref_idx_active_minus1;            // ue(v)
+  fvv_ref_list_struct_t *rls;
+  fvv_byte_alignment_t  *ba;
 
+  uint64_t               ath_additional_afoc_lsb_present_flag_size;
+  uint64_t               ath_additional_afoc_lsb_val_size;
+
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_atlas_tile_header_t *self);
 };
+
+fvv_ret_t fvv_atlas_tile_header_init(
+    fvv_atlas_tile_header_t                 *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data,
+    uint64_t ath_additional_afoc_lsb_present_flag_size,
+    uint64_t ath_additional_afoc_lsb_val_size);
+fvv_ret_t
+fvv_atlas_tile_header_destroy(fvv_atlas_tile_header_t *self);
+fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self);
+
 // 8.3.6.12 Reference list structure syntax
+struct fvv_ref_list_struct_t
+{
+  uint64_t  *num_ref_entries;         // ue(v)
+  uint64_t **st_ref_atlas_frame_flag; // u(1)
+  uint64_t **abs_delta_afoc_st;       // ue(v)
+  uint64_t **straf_entry_sign_flag;   // u(1)
+  uint64_t **afoc_lsb_lt;             // u(v)
+
+  uint64_t   num_ref_entries_size;
+  uint64_t   st_ref_atlas_frame_flag_size[2];
+  uint64_t   abs_delta_afoc_st_size[2];
+  uint64_t   straf_entry_sign_flag[2];
+  uint64_t   afoc_lsb_lt[2];
+
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_bitstream_t                         *data;
+
+  fvv_ret_t (*pack)(fvv_ref_list_struct_t *self, uint64_t rlsIdx);
+};
+
+fvv_ret_t
+          fvv_ref_list_struct_init(fvv_ref_list_struct_t *self,
+                                   fvv_atlas_sequence_parameter_set_rbsp_t
+                                       *aspsr fvv_bitstream_t *data,
+                                   uint64_t num_ref_entries_size,
+                                   uint64_t st_ref_atlas_frame_flag_size[2],
+                                   uint64_t abs_delta_afoc_st_size[2],
+                                   uint64_t straf_entry_sign_flag[2],
+                                   uint64_t afoc_lsb_lt[2]);
+fvv_ret_t fvv_ref_list_struct_destroy(fvv_ref_list_struct_t *self);
+fvv_ret_t fvv_ref_list_struct_pack(fvv_ref_list_struct_t *self,
+                                   uint64_t               rlsIdx);
 #endif

@@ -4,9 +4,9 @@ int main()
 {
   fvv_bitstream_t bits = {0};
 
-  uint32_t        foo  = 0x000000FA; // u(8)
-  uint32_t        bar  = 0x00001357; // u(13)
-  uint32_t        baz  = 0x00000004; // u(3)
+  uint64_t        foo  = 0x000000FA; // u(8)
+  uint64_t        bar  = 0x00001357; // u(13)
+  uint64_t        baz  = 0x00000004; // u(3)
 
   fvv_bitstream_init(&bits);
   

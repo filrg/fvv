@@ -404,7 +404,7 @@ fvv_sample_stream_nal_unit_pack(fvv_sample_stream_nal_unit_t *self)
   }
   fvv_bitstream_t *buff                                  = FVV_NULL;
   fvv_nal_unit_t  *nu                                    = FVV_NULL;
-  uint32_t         ssnh_unit_size_precision_bytes_minus1 = 0;
+  uint64_t         ssnh_unit_size_precision_bytes_minus1 = 0;
 
   buff = self->data;
   nu   = self->nu;
@@ -479,12 +479,50 @@ fvv_ret_t fvv_byte_alignment_pack(fvv_byte_alignment_t *self)
 
 // {
 // 8.3.4.1 General V3C parameter set syntax
-fvv_ret_t fvv_v3c_parameter_set_init(fvv_v3c_parameter_set_t *self,
-                                     fvv_bitstream_t         *data)
+fvv_ret_t fvv_v3c_parameter_set_init(
+    fvv_v3c_parameter_set_t *self, fvv_bitstream_t *data;
+    //    uint64_t vps_atlas_id_size,
+    //    uint64_t                       vps_frame_width_size,
+    //    uint64_t                       vps_frame_height_size,
+    //    uint64_t                       vps_map_count_minus1_size,
+    //    uint64_t vps_multiple_map_streams_present_flag_size[2],
+    //    uint64_t vps_map_absolute_coding_enabled_flag_size[2],
+    //    uint64_t vps_map_predictor_index_diff_size,
+    //    uint64_t vps_auxiliary_video_present_flag_size,
+    //    uint64_t vps_occupancy_video_present_flag_size,
+    //    uint64_t vps_geometry_video_present_flag_size,
+    //    uint64_t vps_attribute_video_present_flag_size,
+    //    uint64_t vps_extension_present_flag_size
+)
 {
   *self      = (fvv_v3c_parameter_set_t){0};
   self->data = data;
   self->pack = fvv_v3c_parameter_set_pack;
+
+  //   self->vps_atlas_id_size         = vps_atlas_id_size;
+  //   self->vps_frame_width_size      = vps_frame_width_size;
+  //   self->vps_frame_height_size     = vps_frame_height_size;
+  //   self->vps_map_count_minus1_size = vps_map_count_minus1_size;
+  //   self->vps_multiple_map_streams_present_flag_size[0] =
+  //       vps_multiple_map_streams_present_flag_size;
+  //   self->vps_map_absolute_coding_enabled_flag_size[0] =
+  //       vps_map_absolute_coding_enabled_flag_size;
+  //   self->vps_multiple_map_streams_present_flag_size[1] =
+  //       vps_multiple_map_streams_present_flag_size;
+  //   self->vps_map_absolute_coding_enabled_flag_size[1] =
+  //       vps_map_absolute_coding_enabled_flag_size;
+  //   self->vps_map_predictor_index_diff_size =
+  //       vps_map_predictor_index_diff_size;
+  //   self->vps_auxiliary_video_present_flag_size =
+  //       vps_auxiliary_video_present_flag_size;
+  //   self->vps_occupancy_video_present_flag_size =
+  //       vps_occupancy_video_present_flag_size;
+  //   self->vps_geometry_video_present_flag_size =
+  //       vps_geometry_video_present_flag_size;
+  //   self->vps_attribute_video_present_flag_size =
+  //       vps_attribute_video_present_flag_size;
+  //   self->vps_extension_present_flag_size =
+  //       vps_extension_present_flag_size;
 
   self->ptl  = (fvv_profile_tier_level_t *)malloc(
       sizeof(fvv_profile_tier_level_t));
@@ -548,9 +586,9 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
     return FVV_RET_UNINITIALZIED;
   }
   fvv_bitstream_t *buff = FVV_NULL;
-  uint32_t         k    = 0;
-  uint32_t         j    = 0;
-  uint32_t         i    = 0;
+  uint64_t         k    = 0;
+  uint64_t         j    = 0;
+  uint64_t         i    = 0;
   buff                  = self->data;
 
   self->ptl->pack(self->ptl);
@@ -699,7 +737,7 @@ fvv_ret_t fvv_profile_tier_level_pack(fvv_profile_tier_level_t *self)
   }
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
-  uint32_t i            = 0;
+  uint64_t i            = 0;
 
   buff->pad(buff, self->ptl_tier_flag, FVV_BIT_PTL_TIER_FLAG);
   buff->pad(buff,
@@ -893,10 +931,10 @@ fvv_attribute_information_pack(fvv_attribute_information_t *self,
     return FVV_RET_UNINITIALIZED;
   }
   fvv_bitstream_t *buff                = FVV_NULL;
-  uint32_t         i                   = 0;
-  uint32_t         j                   = 0;
-  uint32_t         k                   = 0;
-  uint32_t         remainingDimensions = 0;
+  uint64_t         i                   = 0;
+  uint64_t         j                   = 0;
+  uint64_t         k                   = 0;
+  uint64_t         remainingDimensions = 0;
   buff                                 = self->data;
 
   buff->pad(buff,
@@ -1061,18 +1099,18 @@ fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
                             fvv_bitstream_t *data,
                             uint64_t         rbsp_byte_size)
 {
-  *self           = (fvv_nal_unit_t){0};
+  *self                = (fvv_nal_unit_t){0};
 
-  self->data      = data;
+  self->data           = data;
   self->rbsp_byte_size = rbsp_byte_size;
 
-  self->pack      = fvv_nal_unit_pack;
+  self->pack           = fvv_nal_unit_pack;
 
   self->nuh =
       (fvv_nal_unit_header_t *)malloc(sizeof(fvv_nal_unit_header_t));
   fvv_nal_unit_header_init(self->nuh, data);
 
-  self->rbsp = (uint32_t *)calloc(rbsp_byte_size, sizeof(uint32_t));
+  self->rbsp = (uint64_t *)calloc(rbsp_byte_size, sizeof(uint64_t));
 
   return FVV_RET_SUCCESS;
 }
@@ -1116,5 +1154,243 @@ fvv_ret_t fvv_nal_unit_pack(fvv_nal_unit_t *self,
 
   return FVV_RET_SUCCESS;
 }
+// }
+// }
+
+// {
+// 8.3.6 Raw byte sequence payloads, trailing bits, and byte
+// alignment syntax
+// {
+// 8.3.6.1 Atlas sequence parameter set RBSP syntax
+// {
+// 8.3.6.1.1 General atlas sequence parameter set RBSP syntax
+// {
+
+fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_init(
+    fvv_atlas_sequence_parameter_set_rbsp_t *self,
+    fvv_bitstream_t                         *data)
+{
+  *self      = (fvv_atlas_sequence_parameter_set_rbsp_t){0};
+
+  self->data = data;
+  self->pack = fvv_atlas_sequence_parameter_set_rbsp_pack;
+
+  self->rls =
+      (fvv_ref_list_struct_t *)malloc(sizeof(fvv_ref_list_struct_t));
+  self->api = (fvv_asps_plr_information_t *)malloc(
+      sizeof(fvv_asps_plr_information_t));
+  self->vp =
+      (fvv_vui_parameters_t *)malloc(sizeof(fvv_vui_parameters_t));
+  self->ave = (fvv_asps_vpcc_extension_t)malloc(
+      sizeof(fvv_asps_vpcc_extension_t));
+  self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
+      sizeof(fvv_rbsp_trailing_bits_t));
+
+  fvv_ref_list_struct_init(self->rls, data);
+  fvv_asps_plr_information_init(self->api, data);
+  fvv_vui_parameters_init(self->vp, data);
+  fvv_asps_vpcc_extension_init(self->ave, data);
+  fvv_rbsp_trailing_bits_init(self->rtb, data);
+
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_destroy(
+    fvv_atlas_sequence_parameter_set_rbsp_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->rls)
+  {
+    fvv_ref_list_struct_destroy(self->rls);
+    free(self->rls);
+  }
+  if (self->api)
+  {
+    fvv_asps_plr_information_destroy(self->api);
+    free(self->api);
+  }
+  if (self->vp)
+  {
+    fvv_vui_parameters_destroy(self->vp);
+    free(self->vp);
+  }
+  if (self->ave)
+  {
+    fvv_asps_vpcc_extension_destroy(self->ave);
+    free(self->ave);
+  }
+  if (self->rtb)
+  {
+    fvv_rbsp_trailing_bits_destroy(self->rtb);
+    free(self->rtb);
+  }
+
+  *self = (fvv_atlas_sequence_parameter_set_rbsp_t){0};
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
+    fvv_atlas_sequence_parameter_set_rbsp_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  fvv_bitstream_t *buff = FVV_NULL;
+  uint64_t         i    = 0;
+  uint64_t         j    = 0;
+  fvv_bool_t ret = 0;
+  buff                  = self->data;
+
+  buff->pad(buff,
+            self->asps_atlas_sequence_parameter_set_id,
+            FVV_BIT_ASPS_ATLAS_SEQUENCE_PARAMETER_SET_ID);
+  buff->pad(buff, self->asps_frame_width, FVV_BIT_ASPS_FRAME_WIDTH);
+  buff->pad(
+      buff, self->asps_frame_height, FVV_BIT_ASPS_FRAME_HEIGHT);
+  buff->pad(buff,
+            self->asps_geometry_3d_bit_depth_minus1,
+            FVV_BIT_ASPS_GEOMETRY_3D_BIT_DEPTH_MINUS1);
+  buff->pad(buff,
+            self->asps_geometry_2d_bit_depth_minus1,
+            FVV_BIT_ASPS_GEOMETRY_2D_BIT_DEPTH_MINUS1);
+  buff->pad(buff,
+            self->asps_log2_max_atlas_frame_order_cnt_lsb_minus4,
+            FVV_BIT_ASPS_LOG2_MAX_ATLAS_FRAME_ORDER_CNT_LSB_MINUS4);
+  buff->pad(buff,
+            self->asps_max_dec_atlas_frame_buffering_minus1,
+            FVV_BIT_ASPS_MAX_DEC_ATLAS_FRAME_BUFFERING_MINUS1);
+  buff->pad(buff,
+            self->asps_long_term_ref_atlas_frames_flag,
+            FVV_BIT_ASPS_LONG_TERM_REF_ATLAS_FRAMES_FLAG);
+  buff->pad(buff,
+            self->asps_num_ref_atlas_frame_lists_in_asps,
+            FVV_BIT_ASPS_NUM_REF_ATLAS_FRAME_LISTS_IN_ASPS);
+
+  for (i = 0; i < self->asps_num_ref_atlas_frame_lists_in_asps; i++)
+  {
+    self->rls->pack(self->rls, i);
+  }
+
+  buff->pad(buff,
+            self->asps_use_eight_orientations_flag,
+            fvv_bit_asps_use_eight_orientations_flag);
+  buff->pad(buff,
+            self->asps_extended_projection_enabled_flag,
+            fvv_bit_asps_extended_projection_enabled_flag);
+  if (self->asps_extended_projection_enabled_flag)
+  {
+    buff->pad(buff,
+              self->asps_max_number_projections_minus1,
+              fvv_bit_asps_max_number_projections_minus1);
+  }
+  buff->pad(
+      buff,
+      self->asps_normal_axis_limits_quantization_enabled_flag,
+      FVV_BIT_ASPS_NORMAL_AXIS_LIMITS_QUANTIZATION_ENABLED_FLAG);
+  buff->pad(buff,
+            self->asps_normal_axis_max_delta_value_enabled_flag,
+            FVV_BIT_ASPS_NORMAL_AXIS_MAX_DELTA_VALUE_ENABLED_FLAG);
+  buff->pad(buff,
+            self->asps_patch_precedence_order_flag,
+            FVV_BIT_ASPS_PATCH_PRECEDENCE_ORDER_FLAG);
+  buff->pad(buff,
+            self->asps_log2_patch_packing_block_size,
+            FVV_BIT_ASPS_LOG2_PATCH_PACKING_BLOCK_SIZE);
+  buff->pad(buff,
+            self->asps_patch_size_quantizer_present_flag,
+            FVV_BIT_ASPS_PATCH_SIZE_QUANTIZER_PRESENT_FLAG);
+  buff->pad(buff,
+            self->asps_map_count_minus1,
+            FVV_BIT_ASPS_MAP_COUNT_MINUS1);
+  buff->pad(buff,
+            self->asps_pixel_deinterleaving_enabled_flag,
+            FVV_BITASPS_PIXEL_DEINTERLEAVING_ENABLED_FLAG);
+
+  if (self->asps_pixel_deinterleaving_enabled_flag)
+  {
+    for (j = 0; j <= self->asps_map_count_minus1; j++)
+    {
+      buff->pad(buff,
+                self->asps_map_pixel_deinterleaving_flag[j],
+                FVV_BIT_ASPS_MAP_PIXEL_DEINTERLEAVING_FLAG);
+    }
+  }
+
+  buff->pad(buff,
+            self->asps_raw_patch_enabled_flag,
+            FVV_BIT_ASPS_RAW_PATCH_ENABLED_FLAG);
+  buff->pad(buff,
+            self->asps_eom_patch_enabled_flag,
+            FVV_BIT_ASPS_EOM_PATCH_ENABLED_FLAG);
+  if (self->asps_eom_patch_enabled_flag &&
+      self->asps_map_count_minus1 == 0)
+  {
+    buff->pad(buff,
+              self->asps_eom_fix_bit_count_minus1,
+              FVV_BIT_ASPS_EOM_FIX_BIT_COUNT_MINUS1);
+  }
+  if (self->asps_raw_patch_enabled_flag ||
+      self->asps_eom_patch_enabled_flag)
+  {
+    buff->pad(buff,
+              self->asps_auxiliary_video_enabled_flag,
+              FVV_BIT_ASPS_AUXILIARY_VIDEO_ENABLED_FLAG);
+  }
+  buff->pad(buff,
+            self->asps_plr_enabled_flag,
+            FVV_BIT_ASPS_PLR_ENABLED_FLAG);
+
+  if (self->asps_plr_enabled_flag)
+  {
+    self->api->pack(self->api, self->asps_map_count_minus1);
+  }
+
+  buff->pad(buff,
+            self->asps_vui_parameters_present_flag,
+            FVV_BIT_ASPS_VUI_PARAMETERS_PRESENT_FLAG);
+
+  if (self->asps_vui_parameters_present_flag)
+  {
+    self->vp->pack(self->vp);
+  }
+
+  buff->pad(buff,
+            self->asps_extension_present_flag,
+            FVV_BIT_ASPS_EXTENSION_PRESENT_FLAG);
+  if (asps_extension_present_flag)
+  {
+    buff->pad(buff,
+              self->asps_vpcc_extension_present_flag,
+              FVV_BIT_ASPS_VPCC_EXTENSION_PRESENT_FLAG);
+    buff->pad(buff,
+              self->asps_extension_7bits,
+              FVV_BIT_ASPS_EXTENSION_7BITS);
+  }
+
+  if (self->asps_vpcc_extension_present_flag)
+  {
+    self->ave->pack(self->ave);
+  }
+  if (self->asps_extension_7bits)
+  {
+    buff->more_rbsp_data(buff, &ret);
+    while (ret)
+    {
+      buff->pad(buff,
+                self->asps_extension_data_flag,
+                FVV_BIT_ASPS_EXTENSION_DATA_FLAG);
+    
+    buff->more_rbsp_data(buff, &ret);
+    }
+  }
+  self->rtb->pack(self->rtb);
+
+  return FVV_RET_SUCCESS;
+}
+
+// }
+// }
 // }
 // }
