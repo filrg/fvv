@@ -8,9 +8,14 @@
 fvv_ret_t fvv_v3c_unit_init(fvv_v3c_unit_t  *self,
                             fvv_bitstream_t *data)
 {
-  *self      = (fvv_v3c_unit_t){0};
-  self->pack = fvv_v3c_unit_pack;
-  self->data = data;
+  *self           = (fvv_v3c_unit_t){0};
+
+  self->pack      = fvv_v3c_unit_pack;
+  self->copy_from = fvv_v3c_unit_copy_from;
+  self->set_vuh   = fvv_v3c_unit_set_vuh;
+  self->set_vup   = fvv_v3c_unit_set_vup;
+
+  self->data      = data;
 
   self->vuh =
       (fvv_v3c_unit_header_t *)malloc(sizeof(fvv_v3c_unit_header_t));
@@ -61,6 +66,40 @@ fvv_ret_t fvv_v3c_unit_pack(fvv_v3c_unit_t *self,
 
   return FVV_RET_SUCCESS;
 }
+
+fvv_ret_t fvv_v3c_unit_copy_from(fvv_v3c_unit_t *self,
+                                 fvv_v3c_unit_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_vuh(self, other->vuh);
+  self->set_vup(self, other->vup);
+
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_unit_set_vuh(fvv_v3c_unit_t        *self,
+                               fvv_v3c_unit_header_t *vuh)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vuh->copy_from(self->vuh, vuh);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_unit_set_vup(fvv_v3c_unit_t         *self,
+                               fvv_v3c_unit_payload_t *vup)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vup->copy_from(self->vup, vup);
+  return FVV_RET_SUCCESS;
+}
+
 // }
 
 // 8.3.2.2 V3C unit header syntax
@@ -69,8 +108,27 @@ fvv_ret_t fvv_v3c_unit_header_init(fvv_v3c_unit_header_t *self,
                                    fvv_v3c_unit_t        *vu,
                                    fvv_bitstream_t       *data)
 {
-  *self      = (fvv_v3c_unit_header_t){0};
-  self->pack = fvv_v3c_unit_header_pack;
+  *self                   = (fvv_v3c_unit_header_t){0};
+  self->pack              = fvv_v3c_unit_header_pack;
+  self->copy_from         = fvv_v3c_unit_header_copy_from;
+  self->set_vuh_unit_type = fvv_v3c_unit_header_set_vuh_unit_type;
+  self->set_vuh_v3c_parameter_set_id =
+      fvv_v3c_unit_header_set_vuh_v3c_parameter_set_id;
+  self->set_vuh_atlas_id = fvv_v3c_unit_header_set_vuh_atlas_id;
+  self->set_vuh_attribute_index =
+      fvv_v3c_unit_header_set_vuh_attribute_index;
+  self->set_vuh_attribute_partition_index =
+      fvv_v3c_unit_header_set_vuh_attribute_partition_index;
+  self->set_vuh_map_index = fvv_v3c_unit_header_set_vuh_map_index;
+  self->set_vuh_auxiliary_video_flag =
+      fvv_v3c_unit_header_set_vuh_auxiliary_video_flag;
+  self->set_vuh_reserved_zero_12bits =
+      fvv_v3c_unit_header_set_vuh_reserved_zero_12bits;
+  self->set_vuh_reserved_zero_17bits =
+      fvv_v3c_unit_header_set_vuh_reserved_zero_17bits;
+  self->set_vuh_reserved_zero_27bits =
+      fvv_v3c_unit_header_set_vuh_reserved_zero_27bits;
+
   self->vu   = vu;
   self->data = data;
 
@@ -146,6 +204,148 @@ fvv_ret_t fvv_v3c_unit_header_pack(fvv_v3c_unit_header_t *self)
   }
   return FVV_RET_SUCCESS;
 }
+
+fvv_ret_t fvv_v3c_unit_header_copy_from(fvv_v3c_unit_header_t *self,
+                                        fvv_v3c_unit_header_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+
+  self->set_vuh_unit_type(self, other->vuh_unit_type);
+  self->set_vuh_v3c_parameter_set_id(
+      self, other->vuh_v3c_parameter_set_id);
+  self->set_vuh_atlas_id(self, other->vuh_atlas_id);
+  self->set_vuh_attribute_index(self, other->vuh_attribute_index);
+  self->set_vuh_attribute_partition_index(
+      self, other->vuh_attribute_partition_index);
+  self->set_vuh_map_index(self, other->vuh_map_index);
+  self->set_vuh_auxiliary_video_flag(
+      self, other->vuh_auxiliary_video_flag);
+  self->set_vuh_reserved_zero_12bits(
+      self, other->vuh_reserved_zero_12bits);
+  self->set_vuh_reserved_zero_17bits(
+      self, other->vuh_reserved_zero_17bits);
+  self->set_vuh_reserved_zero_27bits(
+      self, other->vuh_reserved_zero_27bits);
+
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_v3c_unit_header_set_vuh_unit_type(fvv_v3c_unit_header_t *self,
+                                      uint64_t vuh_unit_type)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vuh_unit_type = vuh_unit_type;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_unit_header_set_vuh_v3c_parameter_set_id(
+    fvv_v3c_unit_header_t *self, uint64_t vuh_v3c_parameter_set_id)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vuh_v3c_parameter_set_id = vuh_v3c_parameter_set_id;
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t
+fvv_v3c_unit_header_set_vuh_atlas_id(fvv_v3c_unit_header_t *self,
+                                     uint64_t vuh_atlas_id)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vuh_atlas_id = vuh_atlas_id;
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_v3c_unit_header_set_vuh_attribute_index(
+    fvv_v3c_unit_header_t *self, uint64_t vuh_attribute_index)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vuh_attribute_index = vuh_attribute_index;
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_v3c_unit_header_set_vuh_attribute_partition_index(
+    fvv_v3c_unit_header_t *self,
+    uint64_t               vuh_attribute_partition_index)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vuh_attribute_partition_index =
+      vuh_attribute_partition_index;
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t
+fvv_v3c_unit_header_set_vuh_map_index(fvv_v3c_unit_header_t *self,
+                                      uint64_t vuh_map_index)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vuh_map_index = vuh_map_index;
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_v3c_unit_header_set_vuh_auxiliary_video_flag(
+    fvv_v3c_unit_header_t *self, uint64_t vuh_auxiliary_video_flag)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vuh_auxiliary_video_flag = vuh_auxiliary_video_flag;
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_v3c_unit_header_set_vuh_reserved_zero_12bits(
+    fvv_v3c_unit_header_t *self, uint64_t vuh_reserved_zero_12bits)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vuh_reserved_zero_12bits = vuh_reserved_zero_12bits;
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_v3c_unit_header_set_vuh_reserved_zero_17bits(
+    fvv_v3c_unit_header_t *self, uint64_t vuh_reserved_zero_17bits)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vuh_reserved_zero_17bits = vuh_reserved_zero_17bits;
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_v3c_unit_header_set_vuh_reserved_zero_27bits(
+    fvv_v3c_unit_header_t *self, uint64_t vuh_reserved_zero_27bits)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vuh_reserved_zero_27bits = vuh_reserved_zero_27bits;
+  return FVV_RET_SUCCESS;
+}
+
 // }
 
 // 8.3.2.3 V3C unit payload syntax
@@ -167,11 +367,11 @@ fvv_ret_t fvv_v3c_unit_payload_init(fvv_v3c_unit_payload_t *self,
   self->vsb = (fvv_video_sub_bitstream_t *)malloc(
       sizeof(fvv_video_sub_bitstream_t));
 
-  fvv_v3c_parameter_set_init(self->vps, vu, data);
+  fvv_v3c_parameter_set_init(self->vps, data);
   fvv_atlas_sub_bitstream_init(self->asb, vu, data);
   fvv_video_sub_bitstream_init(self->vsb, vu, data);
 
-  return FVV_RET_SUCESS;
+  return FVV_RET_SUCCESS;
 }
 fvv_ret_t fvv_v3c_unit_payload_destroy(fvv_v3c_unit_payload_t *self)
 {
@@ -214,13 +414,13 @@ fvv_ret_t fvv_v3c_unit_payload_pack(fvv_v3c_unit_payload_t *self,
 
   vuh                             = self->vu->vuh;
   buff                            = self->data;
-  vsp                             = self->vps;
+  vps                             = self->vps;
   asb                             = self->asb;
   vsb                             = self->vsb;
 
   if (vuh->vuh_unit_type == FVV_V3C_VPS)
   {
-    vps->pack(vsp, numBytesInV3CPayload);
+    vps->pack(vps);
   }
   else if (vuh->vuh_unit_type == FVV_V3C_AD)
   {
@@ -234,6 +434,52 @@ fvv_ret_t fvv_v3c_unit_payload_pack(fvv_v3c_unit_payload_t *self,
   }
   return FVV_RET_SUCCESS;
 }
+fvv_ret_t
+fvv_v3c_unit_payload_copy_from(fvv_v3c_unit_payload_t *self,
+                               fvv_v3c_unit_payload_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_vps(self, other->vps);
+  self->set_asb(self, other->asb);
+  self->set_vsb(self, other->vsb);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_unit_payload_set_vps(fvv_v3c_unit_payload_t  *self,
+                                       fvv_v3c_parameter_set_t *vps)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vps->copy_from(self->vps, vps);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_v3c_unit_payload_set_asb(fvv_v3c_unit_payload_t    *self,
+                             fvv_atlas_sub_bitstream_t *asb)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->asb->copy_from(self->asb, asb);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_v3c_unit_payload_set_vsb(fvv_v3c_unit_payload_t    *self,
+                             fvv_video_sub_bitstream_t *vsb)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vsb->copy_from(self->vsb, vsb);
+  return FVV_RET_SUCCESS;
+}
+
 // }
 
 // 8.3.2.4 Atlas sub-bitstream syntax
@@ -308,6 +554,41 @@ fvv_atlas_sub_bitstream_pack(fvv_atlas_sub_bitstream_t *self,
   }
   return FVV_RET_SUCCESS;
 }
+fvv_ret_t
+fvv_atlas_sub_bitstream_copy_from(fvv_atlas_sub_bitstream_t *self,
+                                  fvv_atlas_sub_bitstream_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_ssnh(self, other->ssnh);
+  self->set_ssnu(self, other->ssnu);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_atlas_sub_bitstream_set_ssnh(
+    fvv_atlas_sub_bitstream_t      *self,
+    fvv_sample_stream_nal_header_t *ssnh)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ssnh->copy_from(self->ssnh, ssnh);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_atlas_sub_bitstream_set_ssnu(fvv_atlas_sub_bitstream_t    *self,
+                                 fvv_sample_stream_nal_unit_t *ssnu)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ssnu->copy_from(self->ssnu, ssnu);
+  return FVV_RET_SUCCESS;
+}
+
 // }
 
 // }
@@ -358,6 +639,44 @@ fvv_ret_t fvv_sample_stream_nal_header_pack(
 
   return FVV_RET_SUCCESS;
 }
+fvv_ret_t fvv_sample_stream_nal_header_copy_from(
+    fvv_sample_stream_nal_header_t *self,
+    fvv_sample_stream_nal_header_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_ssnh_unit_size_precision_bytes_minus1(
+      self, other->ssnh_unit_size_precision_bytes_minus1);
+  self->set_ssnh_reserved_zero_5bits(
+      self, other->ssnh_reserved_zero_5bits);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_sample_stream_nal_header_set_ssnh_unit_size_precision_bytes_minus1(
+    fvv_sample_stream_nal_header_t *self,
+    uint64_t ssnh_unit_size_precision_bytes_minus1)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ssnh_unit_size_precision_bytes_minus1 =
+      ssnh_unit_size_precision_bytes_minus1;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_sample_stream_nal_header_set_ssnh_reserved_zero_5bits(
+    fvv_sample_stream_nal_header_t *self,
+    uint64_t                        ssnh_reserved_zero_5bits)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ssnh_reserved_zero_5bits = ssnh_reserved_zero_5bits;
+  return FVV_RET_SUCCESS;
+}
 // }
 
 // D.2.2 Sample stream NAL unit syntax
@@ -375,7 +694,7 @@ fvv_sample_stream_nal_unit_init(fvv_sample_stream_nal_unit_t *self,
 
   self->nu   = (fvv_nal_unit_t *)malloc(sizeof(fvv_nal_unit_t));
 
-  fvv_nal_unit_init(self->nu, data, vu->ssnu_nal_unit_size);
+  fvv_nal_unit_init(self->nu, data);
 
   return FVV_RET_SUCCESS;
 }
@@ -410,13 +729,52 @@ fvv_sample_stream_nal_unit_pack(fvv_sample_stream_nal_unit_t *self)
   nu   = self->nu;
 
   ssnh_unit_size_precision_bytes_minus1 =
-      self->vu->ssnh_unit_size_precision_bytes_minus1;
+      self->vu->vup->asb->ssnh
+          ->ssnh_unit_size_precision_bytes_minus1;
 
   buff->pad(buff,
             self->ssnu_nal_unit_size,
             (ssnh_unit_size_precision_bytes_minus1 + 1) *
                 FVV_BITS_PER_BYTE);
-  nu->pack(nu);
+  nu->pack(nu, self->ssnu_nal_unit_size);
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_sample_stream_nal_unit_copy_from(
+    fvv_sample_stream_nal_unit_t *self,
+    fvv_sample_stream_nal_unit_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (!other)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_ssnu_nal_unit_size(self, other->ssnu_nal_unit_size);
+  self->set_nu(self, other->nu);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_sample_stream_nal_unit_set_ssnu_nal_unit_size(
+    fvv_sample_stream_nal_unit_t *self, uint64_t ssnu_nal_unit_size)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ssnu_nal_unit_size = ssnu_nal_unit_size;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_sample_stream_nal_unit_set_nu(fvv_sample_stream_nal_unit_t *self,
+                                  fvv_nal_unit_t               *nu)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->nu->copy_from(self->nu, nu);
   return FVV_RET_SUCCESS;
 }
 // }
@@ -433,7 +791,7 @@ fvv_ret_t fvv_byte_alignment_init(fvv_byte_alignment_t *self,
   self->alignment_bit_equal_to_one  = 0x1;
   self->alignment_bit_equal_to_zero = 0x0;
 
-  sellf->data                       = data;
+  self->data                        = data;
   self->pack                        = fvv_byte_alignment_pack;
 
   return FVV_RET_SUCCESS;
@@ -472,6 +830,39 @@ fvv_ret_t fvv_byte_alignment_pack(fvv_byte_alignment_t *self)
   }
   return FVV_RET_SUCCESS;
 }
+fvv_ret_t fvv_byte_alignment_copy_from(fvv_byte_alignment_t *self,
+                                       fvv_byte_alignment_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_alignment_bit_equal_to_one(
+      self, other->alignment_bit_equal_to_one);
+  self->set_alignment_bit_equal_to_zero(
+      self, other->alignment_bit_equal_to_zero);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_byte_alignment_set_alignment_bit_equal_to_one(
+    fvv_byte_alignment_t *self, uint64_t alignment_bit_equal_to_one)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->alignment_bit_equal_to_one = alignment_bit_equal_to_one;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_byte_alignment_set_alignment_bit_equal_to_zero(
+    fvv_byte_alignment_t *self, uint64_t alignment_bit_equal_to_zero)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->alignment_bit_equal_to_zero = alignment_bit_equal_to_zero;
+  return FVV_RET_SUCCESS;
+}
 // }
 
 // 8.3.4 V3C parameter set syntax
@@ -479,52 +870,55 @@ fvv_ret_t fvv_byte_alignment_pack(fvv_byte_alignment_t *self)
 
 // 8.3.4.1 General V3C parameter set syntax
 // {
-fvv_ret_t fvv_v3c_parameter_set_init(
-    fvv_v3c_parameter_set_t *self, fvv_bitstream_t *data;
-    //    uint64_t vps_atlas_id_size,
-    //    uint64_t                       vps_frame_width_size,
-    //    uint64_t                       vps_frame_height_size,
-    //    uint64_t                       vps_map_count_minus1_size,
-    //    uint64_t vps_multiple_map_streams_present_flag_size[2],
-    //    uint64_t vps_map_absolute_coding_enabled_flag_size[2],
-    //    uint64_t vps_map_predictor_index_diff_size,
-    //    uint64_t vps_auxiliary_video_present_flag_size,
-    //    uint64_t vps_occupancy_video_present_flag_size,
-    //    uint64_t vps_geometry_video_present_flag_size,
-    //    uint64_t vps_attribute_video_present_flag_size,
-    //    uint64_t vps_extension_present_flag_size
-)
+fvv_ret_t fvv_v3c_parameter_set_init(fvv_v3c_parameter_set_t *self,
+                                     fvv_bitstream_t         *data)
 {
-  *self      = (fvv_v3c_parameter_set_t){0};
-  self->data = data;
-  self->pack = fvv_v3c_parameter_set_pack;
+  *self           = (fvv_v3c_parameter_set_t){0};
+  self->data      = data;
+  self->pack      = fvv_v3c_parameter_set_pack;
+  self->copy_from = fvv_v3c_parameter_set_copy_from;
+  self->set_vps_v3c_parameter_set_id =
+      fvv_v3c_parameter_set_set_vps_v3c_parameter_set_id;
+  self->set_vps_reserved_zero_8bits =
+      fvv_v3c_parameter_set_set_vps_reserved_zero_8bits;
+  self->set_vps_atlas_count_minus1 =
+      fvv_v3c_parameter_set_set_vps_atlas_count_minus1;
+  self->set_vps_atlas_id = fvv_v3c_parameter_set_set_vps_atlas_id;
+  self->set_vps_frame_width =
+      fvv_v3c_parameter_set_set_vps_frame_width;
+  self->set_vps_frame_height =
+      fvv_v3c_parameter_set_set_vps_frame_height;
+  self->set_vps_map_count_minus1 =
+      fvv_v3c_parameter_set_set_vps_map_count_minus1;
+  self->set_vps_multiple_map_streams_present_flag =
+      fvv_v3c_parameter_set_set_vps_multiple_map_streams_present_flag;
+  self->set_vps_map_absolute_coding_enabled_flag =
+      fvv_v3c_parameter_set_set_vps_map_absolute_coding_enabled_flag;
+  self->set_vps_map_predictor_index_diff =
+      fvv_v3c_parameter_set_set_vps_map_predictor_index_diff;
+  self->set_vps_auxiliary_video_present_flag =
+      fvv_v3c_parameter_set_set_vps_auxiliary_video_present_flag;
+  self->set_vps_occupancy_video_present_flag =
+      fvv_v3c_parameter_set_set_vps_occupancy_video_present_flag;
+  self->set_vps_geometry_video_present_flag =
+      fvv_v3c_parameter_set_set_vps_geometry_video_present_flag;
+  self->set_vps_attribute_video_present_flag =
+      fvv_v3c_parameter_set_set_vps_attribute_video_present_flag;
+  self->set_vps_extension_present_flag =
+      fvv_v3c_parameter_set_set_vps_extension_present_flag;
+  self->set_vps_extension_8bits =
+      fvv_v3c_parameter_set_set_vps_extension_8bits;
+  self->set_vps_extension_length_minus1 =
+      fvv_v3c_parameter_set_set_vps_extension_length_minus1;
+  self->set_vps_extension_data_byte =
+      fvv_v3c_parameter_set_set_vps_extension_data_byte;
+  self->set_ptl = fvv_v3c_parameter_set_set_ptl;
+  self->set_oi  = fvv_v3c_parameter_set_set_oi;
+  self->set_gi  = fvv_v3c_parameter_set_set_gi;
+  self->set_ai  = fvv_v3c_parameter_set_set_ai;
+  self->set_ba  = fvv_v3c_parameter_set_set_ba;
 
-  //   self->vps_atlas_id_size         = vps_atlas_id_size;
-  //   self->vps_frame_width_size      = vps_frame_width_size;
-  //   self->vps_frame_height_size     = vps_frame_height_size;
-  //   self->vps_map_count_minus1_size = vps_map_count_minus1_size;
-  //   self->vps_multiple_map_streams_present_flag_size[0] =
-  //       vps_multiple_map_streams_present_flag_size;
-  //   self->vps_map_absolute_coding_enabled_flag_size[0] =
-  //       vps_map_absolute_coding_enabled_flag_size;
-  //   self->vps_multiple_map_streams_present_flag_size[1] =
-  //       vps_multiple_map_streams_present_flag_size;
-  //   self->vps_map_absolute_coding_enabled_flag_size[1] =
-  //       vps_map_absolute_coding_enabled_flag_size;
-  //   self->vps_map_predictor_index_diff_size =
-  //       vps_map_predictor_index_diff_size;
-  //   self->vps_auxiliary_video_present_flag_size =
-  //       vps_auxiliary_video_present_flag_size;
-  //   self->vps_occupancy_video_present_flag_size =
-  //       vps_occupancy_video_present_flag_size;
-  //   self->vps_geometry_video_present_flag_size =
-  //       vps_geometry_video_present_flag_size;
-  //   self->vps_attribute_video_present_flag_size =
-  //       vps_attribute_video_present_flag_size;
-  //   self->vps_extension_present_flag_size =
-  //       vps_extension_present_flag_size;
-
-  self->ptl  = (fvv_profile_tier_level_t *)malloc(
+  self->ptl     = (fvv_profile_tier_level_t *)malloc(
       sizeof(fvv_profile_tier_level_t));
   self->oi = (fvv_occupancy_information_t *)malloc(
       sizeof(fvv_occupancy_information_t));
@@ -553,7 +947,7 @@ fvv_v3c_parameter_set_destroy(fvv_v3c_parameter_set_t *self)
   if (self->ptl)
   {
     fvv_profile_tier_level_destroy(self->ptl);
-    free(self_ > ptl);
+    free(self->ptl);
   }
   if (self->oi)
   {
@@ -572,7 +966,7 @@ fvv_v3c_parameter_set_destroy(fvv_v3c_parameter_set_t *self)
   }
   if (self->ba)
   {
-    fvv_byte_alignment_init(self->ba);
+    fvv_byte_alignment_destroy(self->ba);
     free(self->ba);
   }
   *self = (fvv_v3c_parameter_set_t){0};
@@ -583,7 +977,7 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
 {
   if (!self)
   {
-    return FVV_RET_UNINITIALZIED;
+    return FVV_RET_UNINITIALIZED;
   }
   fvv_bitstream_t *buff = FVV_NULL;
   uint64_t         k    = 0;
@@ -689,6 +1083,293 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
 
   return FVV_RET_SUCCESS;
 }
+fvv_ret_t fvv_v3c_parameter_set_set_vps_v3c_parameter_set_id(
+    fvv_v3c_parameter_set_t *self, uint64_t vps_v3c_parameter_set_id)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vps_v3c_parameter_set_id = vps_v3c_parameter_set_id;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_reserved_zero_8bits(
+    fvv_v3c_parameter_set_t *self, uint64_t vps_reserved_zero_8bits)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vps_reserved_zero_8bits = vps_reserved_zero_8bits;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_atlas_count_minus1(
+    fvv_v3c_parameter_set_t *self, uint64_t vps_atlas_count_minus1)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vps_atlas_count_minus1 = vps_atlas_count_minus1;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_atlas_id(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t
+        vps_atlas_id[(0x1 << FVV_BIT_VPS_ATLAS_COUNT_MINUS1) + 1])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->vps_atlas_id,
+         vps_atlas_id,
+         sizeof(uint64_t) *
+             ((0x1 << FVV_BIT_VPS_ATLAS_COUNT_MINUS1) + 1));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_frame_width(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t vps_frame_width[0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->vps_frame_width,
+         vps_frame_width,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_frame_height(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t vps_frame_height[0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->vps_frame_height,
+         vps_frame_height,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_map_count_minus1(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t vps_map_count_minus1[0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->vps_map_count_minus1,
+         vps_map_count_minus1,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_v3c_parameter_set_set_vps_multiple_map_streams_present_flag(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t                 vps_multiple_map_streams_present_flag
+        [0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->vps_multiple_map_streams_present_flag,
+         vps_multiple_map_streams_present_flag,
+         sizeof(uint64_t) * 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_v3c_parameter_set_set_vps_map_absolute_coding_enabled_flag(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t                 vps_map_absolute_coding_enabled_flag
+        [0x1 << FVV_BIT_VPS_ATLAS_ID]
+        [0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->vps_map_absolute_coding_enabled_flag,
+         vps_map_absolute_coding_enabled_flag,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
+             (0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_map_predictor_index_diff(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t                 vps_map_predictor_index_diff
+        [0x1 << FVV_BIT_VPS_ATLAS_ID]
+        [0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->vps_map_predictor_index_diff,
+         vps_map_predictor_index_diff,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
+             (0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_auxiliary_video_present_flag(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t
+        vps_auxiliary_video_present_flag[0x1
+                                         << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->vps_auxiliary_video_present_flag,
+         vps_auxiliary_video_present_flag,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_occupancy_video_present_flag(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t
+        vps_occupancy_video_present_flag[0x1
+                                         << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->vps_occupancy_video_present_flag,
+         vps_occupancy_video_present_flag,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_geometry_video_present_flag(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t
+        vps_geometry_video_present_flag[0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->vps_geometry_video_present_flag,
+         vps_geometry_video_present_flag,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_attribute_video_present_flag(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t
+        vps_attribute_video_present_flag[0x1
+                                         << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->vps_attribute_video_present_flag,
+         vps_attribute_video_present_flag,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_extension_present_flag(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t                 vps_extension_present_flag)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vps_extension_present_flag = vps_extension_present_flag;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_extension_8bits(
+    fvv_v3c_parameter_set_t *self, uint64_t vps_extension_8bits)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vps_extension_8bits = vps_extension_8bits;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_extension_length_minus1(
+    fvv_v3c_parameter_set_t *self,
+    uint64_t                 vps_extension_length_minus1)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vps_extension_length_minus1 = vps_extension_length_minus1;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_vps_extension_data_byte(
+    fvv_v3c_parameter_set_t *self, uint64_t vps_extension_data_byte)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->vps_extension_data_byte = vps_extension_data_byte;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_v3c_parameter_set_set_ptl(fvv_v3c_parameter_set_t  *self,
+                              fvv_profile_tier_level_t *ptl)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptl->copy_from(self->ptl, ptl);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_v3c_parameter_set_set_oi(fvv_v3c_parameter_set_t     *self,
+                             fvv_occupancy_information_t *oi)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->oi->copy_from(self->oi, oi);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_v3c_parameter_set_set_gi(fvv_v3c_parameter_set_t    *self,
+                             fvv_geometry_information_t *gi)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->gi->copy_from(self->gi, gi);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_v3c_parameter_set_set_ai(fvv_v3c_parameter_set_t     *self,
+                             fvv_attribute_information_t *ai)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ai->copy_from(self->ai, ai);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_v3c_parameter_set_set_ba(fvv_v3c_parameter_set_t *self,
+                                       fvv_byte_alignment_t    *ba)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ba->copy_from(self->ba, ba);
+  return FVV_RET_SUCCESS;
+}
 // }
 
 // 8.3.4.2 Profile, tier, and level syntax
@@ -697,12 +1378,33 @@ fvv_ret_t fvv_profile_tier_level_init(fvv_profile_tier_level_t *self,
                                       fvv_v3c_parameter_set_t  *vps,
                                       fvv_bitstream_t          *data)
 {
-  *self      = (fvv_profile_tier_level_t){0};
+  *self               = (fvv_profile_tier_level_t){0};
 
-  self->vps  = vps;
-  self->data = data;
-
-  self->pack = fvv_profile_tier_level_pack;
+  self->vps           = vps;
+  self->data          = data;
+  self->pack          = fvv_profile_tier_level_pack;
+  self->copy_from     = fvv_profile_tier_level_copy_from;
+  self->ptl_tier_flag = fvv_profile_tier_level_set_ptl_tier_flag;
+  self->ptl_profile_codec_group_idc =
+      fvv_profile_tier_level_set_ptl_profile_codec_group_idc;
+  self->ptl_profile_toolset_idc =
+      fvv_profile_tier_level_set_ptl_profile_toolset_idc;
+  self->ptl_profile_reconstruction_idc =
+      fvv_profile_tier_level_set_ptl_profile_reconstruction_idc;
+  self->ptl_reserved_zero_16bits =
+      fvv_profile_tier_level_set_ptl_reserved_zero_16bits;
+  self->ptl_reserved_0xffff_16bits =
+      fvv_profile_tier_level_set_ptl_reserved_0xffff_16bits;
+  self->ptl_level_idc = fvv_profile_tier_level_set_ptl_level_idc;
+  self->ptl_num_sub_profiles =
+      fvv_profile_tier_level_set_ptl_num_sub_profiles;
+  self->ptl_extended_sub_profile_flag =
+      fvv_profile_tier_level_set_ptl_extended_sub_profile_flag;
+  self->ptl_sub_profile_idc =
+      fvv_profile_tier_level_set_ptl_sub_profile_idc;
+  self->ptl_tool_constraints_present_flag =
+      fvv_profile_tier_level_set_ptl_tool_constraints_present_flag;
+  self->ptci = fvv_profile_tier_level_set_ptci;
 
   self->ptci =
       (fvv_profile_toolset_constraint_information_t *)malloc(
@@ -718,7 +1420,7 @@ fvv_profile_tier_level_destroy(fvv_profile_tier_level_t *self)
 {
   if (!self)
   {
-    return FVV_RET_UNINITIIALIZED;
+    return FVV_RET_UNINITIALIZED;
   }
   if (self->ptci)
   {
@@ -779,20 +1481,198 @@ fvv_ret_t fvv_profile_tier_level_pack(fvv_profile_tier_level_t *self)
 
   return FVV_RET_SUCCESS;
 }
+
+fvv_ret_t
+fvv_profile_tier_level_copy_from(fvv_profile_tier_level_t *self,
+                                 fvv_profile_tier_level_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_ptl_tier_flag(self, other->ptl_tier_flag);
+  self->set_ptl_profile_codec_group_idc(
+      self, other->ptl_profile_codec_group_idc);
+  self->set_ptl_profile_toolset_idc(self,
+                                    other->ptl_profile_toolset_idc);
+  self->set_ptl_profile_reconstruction_idc(
+      self, other->ptl_profile_reconstruction_idc);
+  self->set_ptl_reserved_zero_16bits(
+      self, other->ptl_reserved_zero_16bits);
+  self->set_ptl_reserved_0xffff_16bits(
+      self, other->ptl_reserved_0xffff_16bits);
+  self->set_ptl_level_idc(self, other->ptl_level_idc);
+  self->set_ptl_num_sub_profiles(self, other->ptl_num_sub_profiles);
+  self->set_ptl_extended_sub_profile_flag(
+      self, other->ptl_extended_sub_profile_flag);
+  self->set_ptl_sub_profile_idc(self, other->ptl_sub_profile_idc);
+  self->set_ptl_tool_constraints_present_flag(
+      self, other->ptl_tool_constraints_present_flag);
+  self->set_ptci(self, other->ptci);
+
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_profile_tier_level_set_ptl_tier_flag(
+    fvv_profile_tier_level_t *self, uint64_t ptl_tier_flag)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptl_tier_flag = ptl_tier_flag;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_profile_tier_level_set_ptl_profile_codec_group_idc(
+    fvv_profile_tier_level_t *self,
+    uint64_t                  ptl_profile_codec_group_idc)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptl_profile_codec_group_idc = ptl_profile_codec_group_idc;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_profile_tier_level_set_ptl_profile_toolset_idc(
+    fvv_profile_tier_level_t *self, uint64_t ptl_profile_toolset_idc)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptl_profile_toolset_idc = ptl_profile_toolset_idc;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_profile_tier_level_set_ptl_profile_reconstruction_idc(
+    fvv_profile_tier_level_t *self,
+    uint64_t                  ptl_profile_reconstruction_idc)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptl_profile_reconstruction_idc =
+      ptl_profile_reconstruction_idc;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_profile_tier_level_set_ptl_reserved_zero_16bits(
+    fvv_profile_tier_level_t *self,
+    uint64_t                  ptl_reserved_zero_16bits)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptl_reserved_zero_16bits = ptl_reserved_zero_16bits;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_profile_tier_level_set_ptl_reserved_0xffff_16bits(
+    fvv_profile_tier_level_t *self,
+    uint64_t                  ptl_reserved_0xffff_16bits)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptl_reserved_0xffff_16bits = ptl_reserved_0xffff_16bits;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_profile_tier_level_set_ptl_level_idc(
+    fvv_profile_tier_level_t *self, uint64_t ptl_level_idc)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptl_level_idc = ptl_level_idc;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_profile_tier_level_set_ptl_num_sub_profiles(
+    fvv_profile_tier_level_t *self, uint64_t ptl_num_sub_profiles)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptl_num_sub_profiles = ptl_num_sub_profiles;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_profile_tier_level_set_ptl_extended_sub_profile_flag(
+    fvv_profile_tier_level_t *self,
+    uint64_t                  ptl_extended_sub_profile_flag)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptl_extended_sub_profile_flag =
+      ptl_extended_sub_profile_flag;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_profile_tier_level_set_ptl_sub_profile_idc(
+    fvv_profile_tier_level_t *self,
+    uint64_t
+        ptl_sub_profile_idc[0x1 << FVV_BIT_PTL_NUM_SUB_PROFILES])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->ptl_sub_profile_idc,
+         ptl_sub_profile_idc,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_PTL_NUM_SUB_PROFILES));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_tier_level_set_ptl_tool_constraints_present_flag(
+    fvv_profile_tier_level_t *self,
+    uint64_t                  ptl_tool_constraints_present_flag)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptl_tool_constraints_present_flag =
+      ptl_tool_constraints_present_flag;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_profile_tier_level_set_ptci(
+    fvv_profile_tier_level_t                      *self,
+    fvv_profile_toolset_constraints_information_t *ptci)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptci->copy_from(self->ptci, ptci);
+  return FVV_RET_SUCCESS;
+}
+
 // }
 
 // 8.3.4.3 Occupancy information syntax
 // {
+fvv_ret_t
 fvv_occupancy_information_init(fvv_occupancy_information_t *self,
                                fvv_v3c_parameter_set_t     *vps,
                                fvv_bitstream_t             *data)
 {
-  *self      = (fvv_occupancy_information_t){0};
+  *self           = (fvv_occupancy_information_t){0};
 
-  self->vps  = vps;
-  self->data = data;
+  self->vps       = vps;
+  self->data      = data;
 
-  self->pack = fvv_occupancy_information_pack;
+  self->pack      = fvv_occupancy_information_pack;
+  self->copy_from = fvv_occupancy_information_copy_from;
+  self->set_oi_occupancy_codec_id =
+      fvv_occupancy_information_set_oi_occupancy_codec_id;
+  self->set_oi_lossy_occupancy_compression_threshold =
+      fvv_occupancy_information_set_oi_lossy_occupancy_compression_threshold;
+  self->set_oi_occupancy_2d_bit_depth_minus1 =
+      fvv_occupancy_information_set_oi_occupancy_2d_bit_depth_minus1;
+  self->set_oi_occupancy_MSB_align_flag =
+      fvv_occupancy_information_set_oi_occupancy_MSB_align_flag;
 
   return FVV_RET_SUCCESS;
 }
@@ -831,6 +1711,82 @@ fvv_occupancy_information_pack(fvv_occupancy_information_t *self,
             FVV_BIT_OI_OCCUPANCY_MSB_ALIGN_FLAG);
   return FVV_RET_SUCCESS;
 }
+fvv_ret_t fvv_occupancy_information_copy_from(
+    fvv_occupancy_information_t *self,
+    fvv_occupancy_information_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_oi_occupancy_codec_id(self,
+                                  other->oi_occupancy_codec_id);
+  self->set_oi_lossy_occupancy_compression_threshold(
+      self, other->oi_lossy_occupancy_compression_threshold);
+  self->set_oi_occupancy_2d_bit_depth_minus1(
+      self, other->oi_occupancy_2d_bit_depth_minus1);
+  self->set_oi_occupancy_MSB_align_flag(
+      self, other->oi_occupancy_MSB_align_flag);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_occupancy_information_set_oi_occupancy_codec_id(
+    fvv_occupancy_information_t *self,
+    uint64_t oi_occupancy_codec_id[0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->oi_occupancy_codec_id,
+         oi_occupancy_codec_id,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_occupancy_information_set_oi_lossy_occupancy_compression_threshold(
+    fvv_occupancy_information_t *self,
+    uint64_t oi_lossy_occupancy_compression_threshold
+        [0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->oi_lossy_occupancy_compression_threshold,
+         oi_lossy_occupancy_compression_threshold,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_occupancy_information_set_oi_occupancy_2d_bit_depth_minus1(
+    fvv_occupancy_information_t *self,
+    uint64_t
+        oi_occupancy_2d_bit_depth_minus1[0x1
+                                         << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->oi_occupancy_2d_bit_depth_minus1,
+         oi_occupancy_2d_bit_depth_minus1,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_occupancy_information_set_oi_occupancy_MSB_align_flag(
+    fvv_occupancy_information_t *self,
+    uint64_t
+        oi_occupancy_MSB_align_flag[0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->oi_occupancy_MSB_align_flag,
+         oi_occupancy_MSB_align_flag,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
 // }
 
 // 8.3.4.4 Geometry information syntax
@@ -840,12 +1796,22 @@ fvv_geometry_information_init(fvv_geometry_information_t *self,
                               fvv_v3c_parameter_set_t    *vps,
                               fvv_bitstream_t            *data)
 {
-  *self      = (fvv_geometry_information_t){0};
+  *self           = (fvv_geometry_information_t){0};
 
-  self->vps  = vps;
-  self->data = data;
-  self->pack = fvv_geometry_information_pack;
-
+  self->vps       = vps;
+  self->data      = data;
+  self->pack      = fvv_geometry_information_pack;
+  self->copy_from = fvv_geometry_information_copy_from;
+  self->set_gi_geometry_codec_id =
+      fvv_geometry_information_set_gi_geometry_codec_id;
+  self->set_gi_geometry_2d_bit_depth_minus1 =
+      fvv_geometry_information_set_gi_geometry_2d_bit_depth_minus1;
+  self->set_gi_geometry_MSB_align_flag =
+      fvv_geometry_information_set_gi_geometry_MSB_align_flag;
+  self->set_gi_geometry_3d_coordinates_bit_depth_minus1 =
+      fvv_geometry_information_set_gi_geometry_3d_coordinates_bit_depth_minus1;
+  self->set_gi_auxiliary_geometry_codec_id =
+      fvv_geometry_information_set_gi_auxiliary_geometry_codec_id;
   return FVV_RET_SUCCESS;
 }
 
@@ -892,6 +1858,96 @@ fvv_geometry_information_pack(fvv_geometry_information_t *self,
   }
   return FVV_RET_SUCCESS;
 }
+fvv_ret_t
+fvv_geometry_information_copy_from(fvv_geometry_information_t *self,
+                                   fvv_geometry_information_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_gi_geometry_codec_id(self, other->gi_geometry_codec_id);
+  self->set_gi_geometry_2d_bit_depth_minus1(
+      self, other->gi_geometry_2d_bit_depth_minus1);
+  self->set_gi_geometry_MSB_align_flag(
+      self, other->gi_geometry_MSB_align_flag);
+  self->set_gi_geometry_3d_coordinates_bit_depth_minus1(
+      self, other->gi_geometry_3d_coordinates_bit_depth_minus1);
+  self->set_gi_auxiliary_geometry_codec_id(
+      self, other->gi_auxiliary_geometry_codec_id);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_geometry_information_set_gi_geometry_codec_id(
+    fvv_geometry_information_t *self,
+    uint64_t gi_geometry_codec_id[0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->gi_geometry_codec_id,
+         gi_geometry_codec_id,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_geometry_information_set_gi_geometry_2d_bit_depth_minus1(
+    fvv_geometry_information_t *self,
+    uint64_t
+        gi_geometry_2d_bit_depth_minus1[0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->gi_geometry_2d_bit_depth_minus1,
+         gi_geometry_2d_bit_depth_minus1,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_geometry_information_set_gi_geometry_MSB_align_flag(
+    fvv_geometry_information_t *self,
+    uint64_t gi_geometry_MSB_align_flag[0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->gi_geometry_MSB_align_flag,
+         gi_geometry_MSB_align_flag,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_geometry_information_set_gi_geometry_3d_coordinates_bit_depth_minus1(
+    fvv_geometry_information_t *self,
+    uint64_t gi_geometry_3d_coordinates_bit_depth_minus1
+        [0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->gi_geometry_3d_coordinates_bit_depth_minus1,
+         gi_geometry_3d_coordinates_bit_depth_minus1,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_geometry_information_set_gi_auxiliary_geometry_codec_id(
+    fvv_geometry_information_t *self,
+    uint64_t
+        gi_auxiliary_geometry_codec_id[0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->gi_auxiliary_geometry_codec_id,
+         gi_auxiliary_geometry_codec_id,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
 // }
 
 // 8.3.4.5 Attribute information syntax
@@ -901,13 +1957,33 @@ fvv_attribute_information_init(fvv_attribute_information_t *self,
                                fvv_v3c_parameter_set_t     *vps,
                                fvv_bitstream_t             *data)
 {
-  *self      = (fvv_attribute_information_t){0};
+  *self           = (fvv_attribute_information_t){0};
 
-  self->vps  = vps;
-  self->data = data;
+  self->vps       = vps;
+  self->data      = data;
 
-  self->fvv_attribute_information_pack;
-
+  self->pack      = fvv_attribute_information_pack;
+  self->copy_from = fvv_attribute_information_copy_from;
+  self->set_ai_attribute_count =
+      fvv_attribute_information_set_ai_attribute_count;
+  self->set_ai_attribute_type_id =
+      fvv_attribute_information_set_ai_attribute_type_id;
+  self->set_ai_attribute_codec_id =
+      fvv_attribute_information_set_ai_attribute_codec_id;
+  self->set_ai_auxiliary_attribute_codec_id =
+      fvv_attribute_information_set_ai_auxiliary_attribute_codec_id;
+  self->set_ai_attribute_map_absolute_coding_persistence_flag =
+      fvv_attribute_information_set_ai_attribute_map_absolute_coding_persistence_flag;
+  self->set_ai_attribute_dimension_minus1 =
+      fvv_attribute_information_set_ai_attribute_dimension_minus1;
+  self->set_ai_attribute_dimension_partitions_minus1 =
+      fvv_attribute_information_set_ai_attribute_dimension_partitions_minus1;
+  self->set_ai_attribute_partition_channels_minus1 =
+      fvv_attribute_information_set_ai_attribute_partition_channels_minus1;
+  self->set_ai_attribute_2d_bit_depth_minus1 =
+      fvv_attribute_information_set_ai_attribute_2d_bit_depth_minus1;
+  self->set_ai_attribute_MSB_align_flag =
+      fvv_attribute_information_set_ai_attribute_MSB_align_flag;
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t
@@ -977,7 +2053,7 @@ fvv_attribute_information_pack(fvv_attribute_information_t *self,
       k = self->ai_attribute_dimension_partitions_minus1[atlasID][i];
       for (j = 0; j < k; j++)
       {
-        if (k – j == remainingDimensions)
+        if (k - j == remainingDimensions)
         {
           self->ai_attribute_partition_channels_minus1[atlasID][i]
                                                       [j] = 0;
@@ -990,7 +2066,7 @@ fvv_attribute_information_pack(fvv_attribute_information_t *self,
                                                           [i][j],
               FVV_BIT_AI_ATTRIBUTE_PARTITION_CHANNELS_MINUS1);
         }
-        remainingDimensions –=
+        remainingDimensions -=
             self->ai_attribute_partition_channels_minus1[atlasID][i]
                                                         [j] +
             1;
@@ -1007,6 +2083,203 @@ fvv_attribute_information_pack(fvv_attribute_information_t *self,
   }
   return FVV_RET_SUCCESS;
 }
+fvv_ret_t fvv_attribute_information_copy_from(
+    fvv_attribute_information_t *self,
+    fvv_attribute_information_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_ai_attribute_count(self, other->ai_attribute_count);
+  self->set_ai_attribute_type_id(self, other->ai_attribute_type_id);
+  self->set_ai_attribute_codec_id(self,
+                                  other->ai_attribute_codec_id);
+  self->set_ai_auxiliary_attribute_codec_id(
+      self, other->ai_auxiliary_attribute_codec_id);
+  self->set_ai_attribute_map_absolute_coding_persistence_flag(
+      self,
+      other->ai_attribute_map_absolute_coding_persistence_flag);
+  self->set_ai_attribute_dimension_minus1(
+      self, other->ai_attribute_dimension_minus1);
+  self->set_ai_attribute_dimension_partitions_minus1(
+      self, other->ai_attribute_dimension_partitions_minus1);
+  self->set_ai_attribute_partition_channels_minus1(
+      self, other->ai_attribute_partition_channels_minus1);
+  self->set_ai_attribute_2d_bit_depth_minus1(
+      self, other->ai_attribute_2d_bit_depth_minus1);
+  self->set_ai_attribute_MSB_align_flag(
+      self, other->ai_attribute_MSB_align_flag);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_attribute_information_set_ai_attribute_count(
+    fvv_attribute_information_t *self,
+    uint64_t ai_attribute_count[0x1 << FVV_BIT_VPS_ATLAS_ID])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->ai_attribute_count,
+         ai_attribute_count,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_attribute_information_set_ai_attribute_type_id(
+    fvv_attribute_information_t *self,
+    uint64_t ai_attribute_type_id[0x1 << FVV_BIT_VPS_ATLAS_ID]
+                                 [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->ai_attribute_type_id,
+         ai_attribute_type_id,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
+             (0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_attribute_information_set_ai_attribute_codec_id(
+    fvv_attribute_information_t *self,
+    uint64_t
+        ai_attribute_codec_id[0x1 << FVV_BIT_VPS_ATLAS_ID]
+                             [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->ai_attribute_codec_id,
+         ai_attribute_codec_id,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
+             (0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_attribute_information_set_ai_auxiliary_attribute_codec_id(
+    fvv_attribute_information_t *self,
+    uint64_t                     ai_auxiliary_attribute_codec_id
+        [0x1 << FVV_BIT_VPS_ATLAS_ID]
+        [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->ai_auxiliary_attribute_codec_id,
+         ai_auxiliary_attribute_codec_id,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
+             (0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_attribute_information_set_ai_attribute_map_absolute_coding_persistence_flag(
+    fvv_attribute_information_t *self,
+    uint64_t ai_attribute_map_absolute_coding_persistence_flag
+        [0x1 << FVV_BIT_VPS_ATLAS_ID]
+        [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->ai_attribute_map_absolute_coding_persistence_flag,
+         ai_attribute_map_absolute_coding_persistence_flag,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
+             (0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_attribute_information_set_ai_attribute_dimension_minus1(
+    fvv_attribute_information_t *self,
+    uint64_t
+        ai_attribute_dimension_minus1[0x1 << FVV_BIT_VPS_ATLAS_ID]
+                                     [0x1
+                                      << FVV_BIT_AI_ATTRIBUTE_COUNT])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->ai_attribute_dimension_minus1,
+         ai_attribute_dimension_minus1,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
+             (0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_attribute_information_set_ai_attribute_dimension_partitions_minus1(
+    fvv_attribute_information_t *self,
+    uint64_t ai_attribute_dimension_partitions_minus1
+        [0x1 << FVV_BIT_VPS_ATLAS_ID]
+        [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->ai_attribute_dimension_partitions_minus1,
+         ai_attribute_dimension_partitions_minus1,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
+             (0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_attribute_information_set_ai_attribute_partition_channels_minus1(
+    fvv_attribute_information_t *self,
+    uint64_t ai_attribute_partition_channels_minus1
+        [0x1 << FVV_BIT_VPS_ATLAS_ID]
+        [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT]
+        [0x1 << FVV_BIT_AI_ATTRIBUTE_DIMENSION_PARTITIONS_MINUS1])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(
+      self->ai_attribute_partition_channels_minus1,
+      ai_attribute_partition_channels_minus1,
+      sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
+          (0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT) *
+          (0x1 << FVV_BIT_AI_ATTRIBUTE_DIMENSION_PARTITIONS_MINUS1));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_attribute_information_set_ai_attribute_2d_bit_depth_minus1(
+    fvv_attribute_information_t *self,
+    uint64_t                     ai_attribute_2d_bit_depth_minus1
+        [0x1 << FVV_BIT_VPS_ATLAS_ID]
+        [0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->ai_attribute_2d_bit_depth_minus1,
+         ai_attribute_2d_bit_depth_minus1,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
+             (0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT));
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_attribute_information_set_ai_attribute_MSB_align_flag(
+    fvv_attribute_information_t *self,
+    uint64_t
+        ai_attribute_MSB_align_flag[0x1 << FVV_BIT_VPS_ATLAS_ID]
+                                   [0x1
+                                    << FVV_BIT_AI_ATTRIBUTE_COUNT])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->ai_attribute_MSB_align_flag,
+         ai_attribute_MSB_align_flag,
+         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
+             (0x1 << FVV_BIT_AI_ATTRIBUTE_COUNT));
+  return FVV_RET_SUCCESS;
+}
+
 // }
 
 // 8.3.4.6 Profile toolset constraints information syntax
@@ -1021,7 +2294,34 @@ fvv_ret_t fvv_profile_toolset_constraints_information_init(
   self->data = data;
 
   self->pack = fvv_profile_toolset_constraints_information_pack;
-
+  self->copy_from =
+      fvv_profile_toolset_constraints_information_copy_from;
+  self->set_ptc_one_v3c_frame_only_flag =
+      fvv_profile_toolset_constraints_information_set_ptc_one_v3c_frame_only_flag;
+  self->set_ptc_eom_constraint_flag =
+      fvv_profile_toolset_constraints_information_set_ptc_eom_constraint_flag;
+  self->set_ptc_max_map_count_minus1 =
+      fvv_profile_toolset_constraints_information_set_ptc_max_map_count_minus1;
+  self->set_ptc_max_atlas_count_minus1 =
+      fvv_profile_toolset_constraints_information_set_ptc_max_atlas_count_minus1;
+  self->set_ptc_multiple_map_streams_constraint_flag =
+      fvv_profile_toolset_constraints_information_set_ptc_multiple_map_streams_constraint_flag;
+  self->set_ptc_plr_constraint_flag =
+      fvv_profile_toolset_constraints_information_set_ptc_plr_constraint_flag;
+  self->set_ptc_attribute_max_dimension_minus1 =
+      fvv_profile_toolset_constraints_information_set_ptc_attribute_max_dimension_minus1;
+  self->set_ptc_attribute_max_dimension_partitions_minus1 =
+      fvv_profile_toolset_constraints_information_set_ptc_attribute_max_dimension_partitions_minus1;
+  self->set_ptc_no_eight_orientations_constraint_flag =
+      fvv_profile_toolset_constraints_information_set_ptc_no_eight_orientations_constraint_flag;
+  self->set_ptc_no_45degree_projection_patch_constraint_flag =
+      fvv_profile_toolset_constraints_information_set_ptc_no_45degree_projection_patch_constraint_flag;
+  self->set_ptc_reserved_zero_6bits =
+      fvv_profile_toolset_constraints_information_set_ptc_reserved_zero_6bits;
+  self->set_ptc_num_reserved_constraint_bytes =
+      fvv_profile_toolset_constraints_information_set_ptc_num_reserved_constraint_bytes;
+  self->set_ptc_reserved_constraint_byte =
+      fvv_profile_toolset_constraints_information_set_ptc_reserved_constraint_byte;
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t fvv_profile_toolset_constraints_information_destroy(
@@ -1088,6 +2388,209 @@ fvv_ret_t fvv_profile_toolset_constraints_information_pack(
   }
   return FVV_RET_SUCCESS;
 }
+fvv_ret_t fvv_profile_toolset_constraints_information_copy_from(
+    fvv_profile_toolset_constraints_information_t *self,
+    fvv_profile_toolset_constraints_information_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_ptc_one_v3c_frame_only_flag(
+      self, other->ptc_one_v3c_frame_only_flag);
+  self->set_ptc_eom_constraint_flag(self,
+                                    other->ptc_eom_constraint_flag);
+  self->set_ptc_max_map_count_minus1(
+      self, other->ptc_max_map_count_minus1);
+  self->set_ptc_max_atlas_count_minus1(
+      self, other->ptc_max_atlas_count_minus1);
+  self->set_ptc_multiple_map_streams_constraint_flag(
+      self, other->ptc_multiple_map_streams_constraint_flag);
+  self->set_ptc_plr_constraint_flag(self,
+                                    other->ptc_plr_constraint_flag);
+  self->set_ptc_attribute_max_dimension_minus1(
+      self, other->ptc_attribute_max_dimension_minus1);
+  self->set_ptc_attribute_max_dimension_partitions_minus1(
+      self, other->ptc_attribute_max_dimension_partitions_minus1);
+  self->set_ptc_no_eight_orientations_constraint_flag(
+      self, other->ptc_no_eight_orientations_constraint_flag);
+  self->set_ptc_no_45degree_projection_patch_constraint_flag(
+      self, other->ptc_no_45degree_projection_patch_constraint_flag);
+  self->set_ptc_reserved_zero_6bits(self,
+                                    other->ptc_reserved_zero_6bits);
+  self->set_ptc_num_reserved_constraint_bytes(
+      self, other->ptc_num_reserved_constraint_bytes);
+  self->set_ptc_reserved_constraint_byte(
+      self, other->ptc_reserved_constraint_byte);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_one_v3c_frame_only_flag(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_one_v3c_frame_only_flag)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_one_v3c_frame_only_flag = ptc_one_v3c_frame_only_flag;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_eom_constraint_flag(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_eom_constraint_flag)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_eom_constraint_flag = ptc_eom_constraint_flag;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_max_map_count_minus1(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_max_map_count_minus1)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_max_map_count_minus1 = ptc_max_map_count_minus1;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_max_atlas_count_minus1(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_max_atlas_count_minus1)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_max_atlas_count_minus1 = ptc_max_atlas_count_minus1;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_multiple_map_streams_constraint_flag(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_multiple_map_streams_constraint_flag)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_multiple_map_streams_constraint_flag =
+      ptc_multiple_map_streams_constraint_flag;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_plr_constraint_flag(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_plr_constraint_flag)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_plr_constraint_flag = ptc_plr_constraint_flag;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_attribute_max_dimension_minus1(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_attribute_max_dimension_minus1)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_attribute_max_dimension_minus1 =
+      ptc_attribute_max_dimension_minus1;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_attribute_max_dimension_partitions_minus1(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_attribute_max_dimension_partitions_minus1)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_attribute_max_dimension_partitions_minus1 =
+      ptc_attribute_max_dimension_partitions_minus1;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_no_eight_orientations_constraint_flag(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_no_eight_orientations_constraint_flag)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_no_eight_orientations_constraint_flag =
+      ptc_no_eight_orientations_constraint_flag;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_no_45degree_projection_patch_constraint_flag(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_no_45degree_projection_patch_constraint_flag)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_no_45degree_projection_patch_constraint_flag =
+      ptc_no_45degree_projection_patch_constraint_flag;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_reserved_zero_6bits(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_reserved_zero_6bits)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_reserved_zero_6bits = ptc_reserved_zero_6bits;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_num_reserved_constraint_bytes(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_num_reserved_constraint_bytes)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->ptc_num_reserved_constraint_bytes =
+      ptc_num_reserved_constraint_bytes;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_profile_toolset_constraints_information_set_ptc_reserved_constraint_byte(
+    fvv_profile_toolset_constraints_information_t *self,
+    uint64_t ptc_reserved_constraint_byte
+        [0x1 << FVV_BIT_PTC_NUM_RESERVED_CONSTRAINT_BYTES])
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  memcpy(self->ptc_reserved_constraint_byte,
+         ptc_reserved_constraint_byte,
+         sizeof(uint64_t) *
+             (0x1 << FVV_BIT_PTC_NUM_RESERVED_CONSTRAINT_BYTES));
+  return FVV_RET_SUCCESS;
+}
+
 // }
 // }
 
@@ -1096,21 +2599,20 @@ fvv_ret_t fvv_profile_toolset_constraints_information_pack(
 // 8.3.5.1 General NAL unit syntax
 // {
 fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
-                            fvv_bitstream_t *data,
-                            uint64_t         rbsp_byte_size)
+                            fvv_bitstream_t *data)
 {
-  *self                = (fvv_nal_unit_t){0};
+  *self                     = (fvv_nal_unit_t){0};
 
-  self->data           = data;
-  self->rbsp_byte_size = rbsp_byte_size;
+  self->data                = data;
 
-  self->pack           = fvv_nal_unit_pack;
+  self->pack                = fvv_nal_unit_pack;
+  self->copy_from           = fvv_nal_unit_copy_from;
+  self->set_rbsp_byte       = fvv_nal_unit_set_rbsp_byte;
+  self->set_nal_unit_header = fvv_nal_unit_set_nal_unit_header;
 
   self->nuh =
       (fvv_nal_unit_header_t *)malloc(sizeof(fvv_nal_unit_header_t));
   fvv_nal_unit_header_init(self->nuh, data);
-
-  self->rbsp = (uint64_t *)calloc(rbsp_byte_size, sizeof(uint64_t));
 
   return FVV_RET_SUCCESS;
 }
@@ -1140,6 +2642,10 @@ fvv_ret_t fvv_nal_unit_pack(fvv_nal_unit_t *self,
   {
     return FVV_RET_UNINITIALIZED;
   }
+  if (!self->rbsp_byte)
+  {
+    return FVV_RET_FAIL;
+  }
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
 
@@ -1152,6 +2658,157 @@ fvv_ret_t fvv_nal_unit_pack(fvv_nal_unit_t *self,
             self->nal_temporal_id_plus1,
             FVV_BIT_NAL_TEMPORAL_ID_PLUS1);
 
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_nal_unit_copy_from(fvv_nal_unit_t *self,
+                                 fvv_nal_unit_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_rbsp_byte(self, other->rbsp_byte, other->rbsp_byte_size);
+  self->set_nal_unit_header(self, other->nuh);
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_nal_unit_set_rbsp_byte(fvv_nal_unit_t *self,
+                                     const uint64_t *rbsp_byte,
+                                     uint64_t        rbsp_byte_size)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->rbsp_byte)
+  {
+    free(self->rbsp_byte);
+    self->rbsp_byte      = FVV_NULL;
+    self->rbsp_byte_size = 0;
+  }
+
+  self->rbsp_byte = malloc(rbsp_byte_size * sizeof(uint64_t));
+  memcpy(
+      self->rbsp_byte, rbsp_byte, rbsp_byte_size * sizeof(uint64_t));
+  self->rbsp_byte_size = rbsp_byte_size;
+
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t
+fvv_nal_unit_set_nal_unit_header(fvv_nal_unit_t        *self,
+                                 fvv_nal_unit_header_t *nuh)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->nuh->copy_from(self->nuh, nuh);
+  return FVV_RET_SUCCESS;
+}
+// }
+// 8.3.5.2 NAL unit header syntax
+// {
+fvv_ret_t fvv_nal_unit_header_init(fvv_nal_unit_header_t *self,
+                                   fvv_bitstream_t       *data)
+{
+  *self           = (fvv_nal_unit_header_t){0};
+  self->data      = data;
+
+  self->pack      = fvv_nal_unit_header_pack;
+  self->copy_from = fvv_nal_unit_header_copy_from;
+  self->set_nal_forbidden_zero_bit =
+      fvv_nal_unit_header_set_nal_forbidden_zero_bit;
+  self->set_nal_unit_type = fvv_nal_unit_header_set_nal_unit_type;
+  self->set_nal_layer_id  = fvv_nal_unit_header_set_nal_layer_id;
+  self->set_nal_temporal_id_plus1 =
+      fvv_nal_unit_header_set_nal_temporal_id_plus1;
+
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_nal_unit_header_destroy(fvv_nal_unit_header_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  *self = (fvv_nal_unit_header_t){0};
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_nal_unit_header_pack(fvv_nal_unit_header_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  fvv_bitstream_t *buff = FVV_NULL;
+  buff                  = self->data;
+  buff->pad(buff,
+            self->nal_forbidden_zero_bit,
+            FVV_BIT_NAL_FORBIDDEN_ZERO_BIT);
+  buff->pad(buff, self->nal_unit_type, FVV_BIT_NAL_UNIT_TYPE);
+  buff->pad(buff, self->nal_layer_id, FVV_BIT_NAL_LAYER_ID);
+  buff->pad(buff,
+            self->nal_temporal_id_plus1,
+            FVV_BIT_NAL_TEMPORAL_ID_PLUS1);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_nal_unit_header_copy_from(fvv_nal_unit_header_t *self,
+                                        fvv_nal_unit_header_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->set_nal_forbidden_zero_bit(self,
+                                   other->nal_forbidden_zero_bit);
+  self->set_nal_unit_type(self, other->nal_unit_type);
+  self->set_nal_layer_id(self, other->nal_layer_id);
+  self->set_nal_temporal_id_plus1(self,
+                                  other->nal_temporal_id_plus1);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_nal_unit_header_set_nal_forbidden_zero_bit(
+    fvv_nal_unit_header_t *self, uint64_t nal_forbidden_zero_bit)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->nal_forbidden_zero_bit = nal_forbidden_zero_bit;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_nal_unit_header_set_nal_unit_type(fvv_nal_unit_header_t *self,
+                                      uint64_t nal_unit_type)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->nal_unit_type = nal_unit_type;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t
+fvv_nal_unit_header_set_nal_layer_id(fvv_nal_unit_header_t *self,
+                                     uint64_t nal_layer_id)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->nal_layer_id = nal_layer_id;
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_nal_unit_header_set_nal_temporal_id_plus1(
+    fvv_nal_unit_header_t *self, uint64_t nal_temporal_id_plus1)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->nal_temporal_id_plus1 = nal_temporal_id_plus1;
   return FVV_RET_SUCCESS;
 }
 // }
@@ -1186,10 +2843,7 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_init(
   self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
 
-  fvv_ref_list_struct_init(
-      self->rls,
-      aspsr,
-      data); // TODO: update this after finalize this function
+  fvv_ref_list_struct_init(self->rls, aspsr, data);
   fvv_asps_plr_information_init(self->api, aspsr, data);
   fvv_vui_parameters_init(self->vp, aspsr, data);
   fvv_asps_vpcc_extension_init(self->ave, aspsr, data);
@@ -1582,6 +3236,7 @@ fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_pack(
   return FVV_RET_SUCCESS;
 }
 // }
+
 // }
 
 // }
