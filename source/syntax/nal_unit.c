@@ -91,7 +91,7 @@ fvv_ret_t fvv_nal_unit_set_rbsp_byte(fvv_nal_unit_t *self,
     self->rbsp_byte_size = 0;
   }
 
-  self->rbsp_byte = malloc(rbsp_byte_size * sizeof(uint64_t));
+  self->rbsp_byte = (uint64_t *)malloc(rbsp_byte_size * sizeof(uint64_t));
   memcpy(
       self->rbsp_byte, rbsp_byte, rbsp_byte_size * sizeof(uint64_t));
   self->rbsp_byte_size = rbsp_byte_size;
