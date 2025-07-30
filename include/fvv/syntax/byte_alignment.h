@@ -9,6 +9,7 @@
 // 8.3.3 Byte alignment syntax
 struct fvv_byte_alignment_t
 {
+  fvv_v3c_unit_t  *vu;
   fvv_bitstream_t *data;
 
   uint64_t         alignment_bit_equal_to_one;  // f(1)
@@ -26,6 +27,7 @@ struct fvv_byte_alignment_t
 };
 
 fvv_ret_t fvv_byte_alignment_init(fvv_byte_alignment_t *self,
+                                  fvv_v3c_unit_t       *vu,
                                   fvv_bitstream_t      *data);
 fvv_ret_t fvv_byte_alignment_destroy(fvv_byte_alignment_t *self);
 

@@ -3,8 +3,6 @@
 
 #include <fvv/defs.h>
 
-typedef struct fvv_bitstream_t fvv_bitstream_t;
-
 struct fvv_bitstream_t
 {
   uint8_t *byte;       // pointer to start of the buffer

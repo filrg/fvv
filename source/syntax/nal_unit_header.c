@@ -1,5 +1,5 @@
 #include <fvv/syntax/nal_unit_header.h>
-
+#include <fvv/bitstream.h>
 // 8.3.5.2 NAL unit header syntax
 // {
 fvv_ret_t fvv_nal_unit_header_init(fvv_nal_unit_header_t *self,

@@ -1,3 +1,6 @@
+#include <fvv/syntax/end_of_sequence_rbsp.h>
+
+// 8.3.6.6 End of sequence RBSP syntax
 fvv_ret_t fvv_end_of_sequence_rbsp_init(
     fvv_end_of_sequence_rbsp_t              *self,
     fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,

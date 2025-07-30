@@ -1,5 +1,6 @@
+#include <fvv/bitstream.h>
 #include <fvv/syntax/attribute_information.h>
-
+#include <fvv/syntax/v3c_parameter_set.h>
 // 8.3.4.5 Attribute information syntax
 // {
 fvv_ret_t
@@ -39,7 +40,7 @@ fvv_attribute_information_init(fvv_attribute_information_t *self,
 fvv_ret_t
 fvv_attribute_information_destroy(fvv_attribute_information_t *self)
 {
-  (!self)
+  if (!self)
   {
     return FVV_RET_UNINITIALIZED;
   }
@@ -52,7 +53,7 @@ fvv_ret_t
 fvv_attribute_information_pack(fvv_attribute_information_t *self,
                                uint64_t                     atlasID)
 {
-  (!self)
+  if (!self)
   {
     return FVV_RET_UNINITIALIZED;
   }
@@ -74,13 +75,13 @@ fvv_attribute_information_pack(fvv_attribute_information_t *self,
     buff->pad(buff,
               self->ai_attribute_codec_id[atlasID][i],
               FVV_BIT_AI_ATTRIBUTE_CODEC_ID);
-    if (self->vps_auxiliary_video_present_flag[atlasID])
+    if (self->vps->vps_auxiliary_video_present_flag[atlasID])
     {
       buff->pad(buff,
                 self->ai_auxiliary_attribute_codec_id[atlasID][i],
                 FVV_BIT_AI_AUXILIARY_ATTRIBUTE_CODEC_ID);
     }
-    if (self->vps_map_count_minus1[atlasID] > 0)
+    if (self->vps->vps_map_count_minus1[atlasID] > 0)
     {
       buff->pad(
           buff,

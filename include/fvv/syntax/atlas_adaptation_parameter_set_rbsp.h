@@ -39,8 +39,12 @@ struct fvv_atlas_adaptation_parameter_set_rbsp_t
       fvv_atlas_adaptation_parameter_set_rbsp_t *self,
       uint64_t aaps_extension_data_flag);
 
-  fvv_ret_t (*set_ave)(*self, fvv_aaps_vpcc_extension_t *ave);
-  fvv_ret_t (*set_rtb)(*self, fvv_rbsp_trailing_bits_t *rtb);
+  fvv_ret_t (*set_ave)(
+      fvv_atlas_adaptation_parameter_set_rbsp_t *self,
+      fvv_aaps_vpcc_extension_t                 *ave);
+  fvv_ret_t (*set_rtb)(
+      fvv_atlas_adaptation_parameter_set_rbsp_t *self,
+      fvv_rbsp_trailing_bits_t                  *rtb);
 };
 
 fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_init(
@@ -76,8 +80,10 @@ fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_extension_data_flag(
     fvv_atlas_adaptation_parameter_set_rbsp_t *self,
     uint64_t aaps_extension_data_flag);
 fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_set_ave(
-    *self, fvv_aaps_vpcc_extension_t *ave);
+    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
+    fvv_aaps_vpcc_extension_t                 *ave);
 fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_set_rtb(
-    *self, fvv_rbsp_trailing_bits_t *rtb);
+    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
+    fvv_rbsp_trailing_bits_t                  *rtb);
 
 #endif // FVV_SYNTAX_ATLAS_ADAPTATION_PARAMETER_SET_RBSP_H

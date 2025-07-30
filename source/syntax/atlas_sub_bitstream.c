@@ -1,5 +1,5 @@
-#include <fvv/syntax/atlas_sub_bitstream.h>
 #include <fvv/bitstream.h>
+#include <fvv/syntax/atlas_sub_bitstream.h>
 #include <fvv/syntax/sample_stream_nal_header.h>
 #include <fvv/syntax/sample_stream_nal_unit.h>
 #include <fvv/syntax/v3c_unit.h>

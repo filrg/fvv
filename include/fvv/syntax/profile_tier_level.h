@@ -4,11 +4,6 @@
 #include <fvv/defs.h>
 #include <fvv/semantic.h>
 
-// typedef struct fvv_v3c_parameter_set_t  fvv_v3c_parameter_set_t;
-// typedef struct fvv_profile_tier_level_t fvv_profile_tier_level_t;
-// typedef struct fvv_profile_toolset_constraints_information_t
-//     fvv_profile_toolset_constraints_information_t;
-
 // 8.3.4.2 Profile, tier, and level syntax
 struct fvv_profile_tier_level_t
 {

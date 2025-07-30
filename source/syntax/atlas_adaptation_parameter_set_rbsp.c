@@ -1,5 +1,6 @@
+#include <fvv/bitstream.h>
+#include <fvv/syntax/rbsp_trailing_bits.h>
 #include <syntax/atlas_adaptation_parameter_set_rbsp.h>
-
 // 8.3.6.3 Atlas adaptation parameter set RBSP syntax
 // {
 
@@ -190,7 +191,8 @@ fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_extension_data_flag(
 }
 
 fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_set_ave(
-    *self, fvv_aaps_vpcc_extension_t *ave)
+    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
+    fvv_aaps_vpcc_extension_t                 *ave)
 {
   if (!self)
   {
@@ -200,7 +202,8 @@ fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_set_ave(
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_set_rtb(
-    *self, fvv_rbsp_trailing_bits_t *rtb)
+    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
+    fvv_rbsp_trailing_bits_t                  *rtb)
 {
   if (!self)
   {

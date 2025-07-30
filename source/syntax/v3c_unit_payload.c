@@ -25,7 +25,7 @@ fvv_ret_t fvv_v3c_unit_payload_init(fvv_v3c_unit_payload_t *self,
   self->vsb = (fvv_video_sub_bitstream_t *)malloc(
       sizeof(fvv_video_sub_bitstream_t));
 
-  fvv_v3c_parameter_set_init(self->vps, data);
+  fvv_v3c_parameter_set_init(self->vps, vu, data);
   fvv_atlas_sub_bitstream_init(self->asb, vu, data);
   fvv_video_sub_bitstream_init(self->vsb, vu, data);
 

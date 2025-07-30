@@ -45,6 +45,7 @@ struct fvv_atlas_sequence_parameter_set_rbsp_t
   fvv_asps_vpcc_extension_t  *ave; /* Specified in Annex H*/
   fvv_rbsp_trailing_bits_t   *rtb;
 
+  fvv_v3c_unit_t             *vu;
   fvv_bitstream_t            *data;
 
   fvv_ret_t (*pack)(fvv_atlas_sequence_parameter_set_rbsp_t *self);
@@ -155,6 +156,7 @@ struct fvv_atlas_sequence_parameter_set_rbsp_t
 };
 fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_init(
     fvv_atlas_sequence_parameter_set_rbsp_t *self,
+    fvv_v3c_unit_t                          *vu,
     fvv_bitstream_t                         *data);
 fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_destroy(
     fvv_atlas_sequence_parameter_set_rbsp_t *self);
@@ -298,4 +300,4 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_set_ave(
 fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_set_rtb(
     fvv_atlas_sequence_parameter_set_rbsp_t *self,
     fvv_rbsp_trailing_bits_t                *rtb);
-    #endif // FVV_SYNTAX_ATLAS_SEQUENCE_PARAMETER_SET_RBSP_H
+#endif // FVV_SYNTAX_ATLAS_SEQUENCE_PARAMETER_SET_RBSP_H

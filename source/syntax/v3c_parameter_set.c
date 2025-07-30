@@ -9,9 +9,11 @@
 // 8.3.4.1 General V3C parameter set syntax
 // {
 fvv_ret_t fvv_v3c_parameter_set_init(fvv_v3c_parameter_set_t *self,
+                                     fvv_v3c_unit_t          *vu,
                                      fvv_bitstream_t         *data)
 {
   *self           = (fvv_v3c_parameter_set_t){0};
+  self->vu        = vu;
   self->data      = data;
   self->pack      = fvv_v3c_parameter_set_pack;
   self->copy_from = fvv_v3c_parameter_set_copy_from;
@@ -71,7 +73,7 @@ fvv_ret_t fvv_v3c_parameter_set_init(fvv_v3c_parameter_set_t *self,
   fvv_occupancy_information_init(self->oi, self, data);
   fvv_geometry_information_init(self->gi, self, data);
   fvv_attribute_information_init(self->ai, self, data);
-  fvv_byte_alignment_init(self->ba, data);
+  fvv_byte_alignment_init(self->ba, self->vu, data);
 
   return FVV_RET_SUCCESS;
 }

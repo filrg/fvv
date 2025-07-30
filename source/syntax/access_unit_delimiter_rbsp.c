@@ -1,4 +1,6 @@
+#include <fvv/bitstream.h>
 #include <fvv/syntax/access_unit_delimiter_rbsp.h>
+#include <fvv/syntax/rbsp_trailing_bits.h>
 // 8.3.6.5 Access unit delimiter RBSP syntax
 // {
 fvv_ret_t fvv_access_unit_delimiter_rbsp_init(
@@ -13,7 +15,7 @@ fvv_ret_t fvv_access_unit_delimiter_rbsp_init(
   self->copy_from = fvv_access_unit_delimiter_rbsp_copy_from;
   self->set_aframe_type =
       fvv_access_unit_delimiter_rbsp_set_aframe_type;
-  self->set_rtb = fvv_access_unit_delimiter_rbsp_sert_rtb;
+  self->set_rtb = fvv_access_unit_delimiter_rbsp_set_rtb;
 
   self->rtb     = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
@@ -47,7 +49,7 @@ fvv_ret_t fvv_access_unit_delimiter_rbsp_pack(
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
 
-  buff->pad(buff, self->aframe_type, fvv_bit_aframe_type);
+  buff->pad(buff, self->aframe_type, FVV_BIT_AFRAME_TYPE);
 
   self->rtb->pack(self->rtb);
 

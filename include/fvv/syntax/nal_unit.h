@@ -10,6 +10,7 @@ struct fvv_nal_unit_t
   uint64_t              *rbsp_byte;
   fvv_nal_unit_header_t *nuh;
 
+  fvv_v3c_unit_t        *vu;
   fvv_bitstream_t       *data;
 
   uint64_t               rbsp_byte_size;
@@ -26,6 +27,7 @@ struct fvv_nal_unit_t
 };
 
 fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
+                            fvv_v3c_unit_t  *vu,
                             fvv_bitstream_t *data);
 
 fvv_ret_t fvv_nal_unit_destroy(fvv_nal_unit_t *self);

@@ -1,4 +1,6 @@
+#include <fvv/bitstream.h>
 #include <fvv/syntax/filler_data_rbsp.h>
+#include <fvv/syntax/rbsp_trailing_bits.h>
 // 8.3.6.8 Filler data RBSP syntax
 // {
 fvv_ret_t fvv_filler_data_rbsp_init(
@@ -15,7 +17,7 @@ fvv_ret_t fvv_filler_data_rbsp_init(
   self->copy_from   = fvv_filler_data_rbsp_copy_from;
 
   self->set_ff_byte = fvv_filler_data_rbsp_set_ff_byte;
-  self->set_rtb     = fvv_rbsp_trailing_bits_set_rtb;
+  self->set_rtb     = fvv_filler_data_rbsp_set_rtb;
 
   self->rtb         = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));

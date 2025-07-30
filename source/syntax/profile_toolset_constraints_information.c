@@ -1,5 +1,5 @@
+#include <fvv/bitstream.h>
 #include <fvv/syntax/profile_toolset_constraints_information.h>
-
 // 8.3.4.6 Profile toolset constraints information syntax
 // {
 fvv_ret_t fvv_profile_toolset_constraints_information_init(
@@ -59,6 +59,9 @@ fvv_ret_t fvv_profile_toolset_constraints_information_pack(
   {
     return FVV_RET_UNINITIALIZED;
   }
+  fvv_bitstream_t *buff = FVV_NULL;
+  uint64_t         i    = 0;
+  buff                  = self->data;
 
   buff->pad(buff,
             self->ptc_one_v3c_frame_only_flag,
@@ -102,7 +105,7 @@ fvv_ret_t fvv_profile_toolset_constraints_information_pack(
   {
     buff->pad(buff,
               self->ptc_reserved_constraint_byte[i],
-              fvv_bit_ptc_reserved_constraint_byte);
+              FVV_BIT_PTC_RESERVED_CONSTRAINT_BYTE);
   }
   return FVV_RET_SUCCESS;
 }

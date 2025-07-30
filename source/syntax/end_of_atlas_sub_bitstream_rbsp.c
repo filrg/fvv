@@ -21,7 +21,7 @@ fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_destroy(
 {
   if (!self)
   {
-    return FVV_RET_UNINTIIALIZED;
+    return FVV_RET_UNINITIALIZED;
   }
   *self = (fvv_end_of_atlas_sub_bitstream_rbsp_t){0};
   return FVV_RET_SUCCESS;
@@ -31,7 +31,7 @@ fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_pack(
 {
   if (!self)
   {
-    return FVV_RET_UNINTIIALIZED;
+    return FVV_RET_UNINITIALIZED;
   }
   return FVV_RET_SUCCESS;
 }
@@ -41,7 +41,7 @@ fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_copy_from(
 {
   if (!self)
   {
-    return FVV_RET_UNINTIIALIZED;
+    return FVV_RET_UNINITIALIZED;
   }
   return FVV_RET_SUCCESS;
 }

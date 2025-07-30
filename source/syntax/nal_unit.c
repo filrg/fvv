@@ -1,11 +1,15 @@
+#include <fvv/bitstream.h>
 #include <fvv/syntax/nal_unit.h>
+#include <fvv/syntax/nal_unit_header.h>
 // 8.3.5.1 General NAL unit syntax
 // {
 fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
+                            fvv_v3c_unit_t  *vu,
                             fvv_bitstream_t *data)
 {
   *self                     = (fvv_nal_unit_t){0};
 
+  self->vu                  = vu;
   self->data                = data;
 
   self->pack                = fvv_nal_unit_pack;
@@ -53,12 +57,12 @@ fvv_ret_t fvv_nal_unit_pack(fvv_nal_unit_t *self,
   buff                  = self->data;
 
   buff->pad(buff,
-            self->nal_forbidden_zero_bit,
+            self->nuh->nal_forbidden_zero_bit,
             FVV_BIT_NAL_FORBIDDEN_ZERO_BIT);
-  buff->pad(buff, self->nal_unit_type, FVV_BIT_NAL_UNIT_TYPE);
-  buff->pad(buff, self->nal_layer_id, FVV_BIT_NAL_LAYER_ID);
+  buff->pad(buff, self->nuh->nal_unit_type, FVV_BIT_NAL_UNIT_TYPE);
+  buff->pad(buff, self->nuh->nal_layer_id, FVV_BIT_NAL_LAYER_ID);
   buff->pad(buff,
-            self->nal_temporal_id_plus1,
+            self->nuh->nal_temporal_id_plus1,
             FVV_BIT_NAL_TEMPORAL_ID_PLUS1);
 
   return FVV_RET_SUCCESS;
@@ -91,7 +95,8 @@ fvv_ret_t fvv_nal_unit_set_rbsp_byte(fvv_nal_unit_t *self,
     self->rbsp_byte_size = 0;
   }
 
-  self->rbsp_byte = (uint64_t *)malloc(rbsp_byte_size * sizeof(uint64_t));
+  self->rbsp_byte =
+      (uint64_t *)malloc(rbsp_byte_size * sizeof(uint64_t));
   memcpy(
       self->rbsp_byte, rbsp_byte, rbsp_byte_size * sizeof(uint64_t));
   self->rbsp_byte_size = rbsp_byte_size;

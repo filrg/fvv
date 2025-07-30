@@ -1,13 +1,14 @@
-#include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
 #include <fvv/bitstream.h>
-#include <fvv/syntax/ref_list_struct.h>
 #include <fvv/syntax/asps_plr_information.h>
+#include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
 #include <fvv/syntax/rbsp_trailing_bits.h>
+#include <fvv/syntax/ref_list_struct.h>
 // 8.3.6.1.1 General atlas sequence parameter set RBSP syntax
 // {
 
 fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_init(
     fvv_atlas_sequence_parameter_set_rbsp_t *self,
+    fvv_v3c_unit_t                          *vu,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_atlas_sequence_parameter_set_rbsp_t){0};

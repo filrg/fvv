@@ -1,4 +1,6 @@
+#include <fvv/bitstream.h>
 #include <fvv/syntax/profile_tier_level.h>
+#include <fvv/syntax/profile_toolset_constraints_information.h>
 // 8.3.4.2 Profile, tier, and level syntax
 // {
 fvv_ret_t fvv_profile_tier_level_init(fvv_profile_tier_level_t *self,
@@ -34,8 +36,8 @@ fvv_ret_t fvv_profile_tier_level_init(fvv_profile_tier_level_t *self,
   self->ptci = fvv_profile_tier_level_set_ptci;
 
   self->ptci =
-      (fvv_profile_toolset_constraint_information_t *)malloc(
-          sizeof(fvv_profile_toolset_constraint_information_t));
+      (fvv_profile_toolset_constraints_information_t *)malloc(
+          sizeof(fvv_profile_toolset_constraints_information_t));
 
   fvv_profile_toolset_constraint_information_init(
       self->ptci, vps, data);
@@ -101,7 +103,7 @@ fvv_ret_t fvv_profile_tier_level_pack(fvv_profile_tier_level_t *self)
   buff->pad(buff,
             self->ptl_tool_constraints_present_flag,
             FVV_BIT_PTL_TOOL_CONSTRAINTS_PRESENT_FLAG);
-  if (self->ptl_toolset_constraints_present_flag)
+  if (self->ptl_tool_constraints_present_flag)
   {
     self->ptci->pack(self->ptci);
   }

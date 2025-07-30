@@ -14,8 +14,7 @@ struct fvv_atlas_tile_layer_rbsp_t
   fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
   fvv_bitstream_t                         *data;
 
-  fvv_ret_t (*pack)(fvv_atlas_tile_layer_rbsp_t *self,
-                    uint64_t                     tileID);
+  fvv_ret_t (*pack)(fvv_atlas_tile_layer_rbsp_t *self);
   fvv_ret_t (*copy_from)(fvv_atlas_tile_layer_rbsp_t *self,
                          fvv_atlas_tile_layer_rbsp_t *other);
   fvv_ret_t (*set_ath)(fvv_atlas_tile_layer_rbsp_t *self,
@@ -33,8 +32,7 @@ fvv_ret_t fvv_atlas_tile_layer_rbsp_init(
 fvv_ret_t
 fvv_atlas_tile_layer_rbsp_destroy(fvv_atlas_tile_layer_rbsp_t *self);
 fvv_ret_t
-fvv_atlas_tile_layer_rbsp_pack(fvv_atlas_tile_layer_rbsp_t *self,
-                               uint64_t                     tileID);
+fvv_atlas_tile_layer_rbsp_pack(fvv_atlas_tile_layer_rbsp_t *self);
 fvv_ret_t fvv_atlas_tile_layer_rbsp_copy_from(
     fvv_atlas_tile_layer_rbsp_t *self,
     fvv_atlas_tile_layer_rbsp_t *other);

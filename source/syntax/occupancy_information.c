@@ -1,3 +1,4 @@
+#include <fvv/bitstream.h>
 #include <fvv/syntax/occupancy_information.h>
 // 8.3.4.3 Occupancy information syntax
 // {

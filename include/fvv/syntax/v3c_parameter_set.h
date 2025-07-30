@@ -4,18 +4,10 @@
 #include <fvv/defs.h>
 #include <fvv/semantic.h>
 
-// typedef struct fvv_v3c_parameter_set_t  fvv_v3c_parameter_set_t;
-// typedef struct fvv_profile_tier_level_t fvv_profile_tier_level_t;
-// typedef struct fvv_occupancy_information_t
-//     fvv_occupancy_information_t;
-// typedef struct fvv_geometry_information_t fvv_geometry_information_t;
-// typedef struct fvv_attribute_information_t
-//                                     fvv_attribute_information_t;
-// typedef struct fvv_byte_alignment_t fvv_byte_alignment_t;
-
 // 8.3.4.1 General V3C parameter set syntax
 struct fvv_v3c_parameter_set_t
 {
+  fvv_v3c_unit_t  *vu;
   fvv_bitstream_t *data;
 
   uint64_t         vps_v3c_parameter_set_id; // u(4)
@@ -137,6 +129,7 @@ struct fvv_v3c_parameter_set_t
 };
 
 fvv_ret_t fvv_v3c_parameter_set_init(fvv_v3c_parameter_set_t *self,
+                                     fvv_v3c_unit_t          *vu,
                                      fvv_bitstream_t         *data);
 fvv_ret_t
 fvv_v3c_parameter_set_destroy(fvv_v3c_parameter_set_t *self);

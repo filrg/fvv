@@ -1,10 +1,10 @@
-#include <fvv/syntax/sample_stream_nal_unit.h>
 #include <fvv/bitstream.h>
+#include <fvv/syntax/atlas_sub_bitstream.h>
 #include <fvv/syntax/nal_unit.h>
+#include <fvv/syntax/sample_stream_nal_header.h>
+#include <fvv/syntax/sample_stream_nal_unit.h>
 #include <fvv/syntax/v3c_unit.h>
 #include <fvv/syntax/v3c_unit_payload.h>
-#include <fvv/syntax/atlas_sub_bitstream.h>
-#include <fvv/syntax/sample_stream_nal_header.h>
 
 // D.2.2 Sample stream NAL unit syntax
 // {

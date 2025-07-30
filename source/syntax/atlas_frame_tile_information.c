@@ -1,4 +1,6 @@
+#include <fvv/bitstream.h>
 #include <fvv/syntax/atlas_frame_tile_information.h>
+#include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
 
 // 8.3.6.2.2 Atlas frame tile information syntax
 // {
@@ -139,7 +141,7 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
   {
     self->afti_num_tiles_in_atlas_frame_minus1 = 0;
   }
-  if (self->asps_auxiliary_video_enabled_flag)
+  if (self->aspsr->asps_auxiliary_video_enabled_flag)
   {
     buff->pad(buff,
               self->afti_auxiliary_video_tile_row_width_minus1,
@@ -188,54 +190,54 @@ fvv_ret_t fvv_atlas_frame_tile_information_copy_from(
     return FVV_RET_UNINITIALIZED;
   }
   self->set_afti_single_tile_in_atlas_frame_flag(
-      self, afti_single_tile_in_atlas_frame_flag);
+      self, other->afti_single_tile_in_atlas_frame_flag);
   self->set_afti_uniform_partition_spacing_flag(
-      self, afti_uniform_partition_spacing_flag);
+      self, other->afti_uniform_partition_spacing_flag);
   self->set_afti_partition_cols_width_minus1(
-      self, afti_partition_cols_width_minus1);
+      self, other->afti_partition_cols_width_minus1);
   self->set_afti_partition_rows_height_minus1(
-      self, afti_partition_rows_height_minus1);
+      self, other->afti_partition_rows_height_minus1);
   self->set_afti_num_partition_columns_minus1(
-      self, afti_num_partition_columns_minus1);
+      self, other->afti_num_partition_columns_minus1);
   self->set_afti_num_partition_rows_minus1(
-      self, afti_num_partition_rows_minus1);
+      self, other->afti_num_partition_rows_minus1);
   self->set_afti_single_partition_per_tile_flag(
-      self, afti_single_partition_per_tile_flag);
+      self, other->afti_single_partition_per_tile_flag);
   self->set_afti_num_tiles_in_atlas_frame_minus1(
-      self, afti_num_tiles_in_atlas_frame_minus1);
+      self, other->afti_num_tiles_in_atlas_frame_minus1);
   self->set_afti_auxiliary_video_tile_row_width_minus1(
-      self, afti_auxiliary_video_tile_row_width_minus1);
-  self->set_afti_signalled_tile_id_flag(self,
-                                        afti_signalled_tile_id_flag);
+      self, other->afti_auxiliary_video_tile_row_width_minus1);
+  self->set_afti_signalled_tile_id_flag(
+      self, other->afti_signalled_tile_id_flag);
   self->set_afti_signalled_tile_id_length_minus1(
-      self, afti_signalled_tile_id_length_minus1);
+      self, other->afti_signalled_tile_id_length_minus1);
 
   self->set_afti_partition_column_width_minus1(
       self,
-      afti_partition_column_width_minus1,
+      other->afti_partition_column_width_minus1,
       other->afti_partition_column_width_minus1_size);
   self->set_afti_partition_row_height_minus1(
       self,
-      afti_partition_row_height_minus1,
+      other->afti_partition_row_height_minus1,
       other->afti_partition_column_height_minus1_size);
   self->set_afti_top_left_partition_idx(
       self,
-      afti_top_left_partition_idx,
+      other->afti_top_left_partition_idx,
       other->afti_top_left_partition_idx_size);
   self->set_afti_bottom_right_partition_column_offset(
       self,
-      afti_bottom_right_partition_column_offset,
+      other->afti_bottom_right_partition_column_offset,
       other->afti_bottom_right_partition_column_offset_size);
   self->set_afti_bottom_right_partition_row_offset(
       self,
-      afti_bottom_right_partition_row_offset,
+      other->afti_bottom_right_partition_row_offset,
       other->afti_bottom_right_partition_row_offset_size);
   self->set_afti_auxiliary_video_tile_row_height(
       self,
-      afti_auxiliary_video_tile_row_height,
+      other->afti_auxiliary_video_tile_row_height,
       other->afti_auxiliary_video_tile_row_height_size);
   self->set_afti_tile_id(
-      self, afti_tile_id, other->afti_tile_id_size);
+      self, other->afti_tile_id, other->afti_tile_id_size);
 
   return FVV_RET_SUCCESS;
 }
