@@ -14,6 +14,12 @@ struct fvv_filler_data_rbsp_t
   fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(fvv_filler_data_rbsp_t *self);
+  fvv_ret_t (*copy_from)(fvv_filler_data_rbsp_t *self,
+                         fvv_filler_data_rbsp_t *other);
+  fvv_ret_t (*set_ff_byte)(fvv_filler_data_rbsp_t *self,
+                           uint64_t                ff_byte);
+  fvv_ret_t (*set_rtb)(fvv_filler_data_rbsp_t   *self,
+                       fvv_rbsp_trailing_bits_t *rtb);
 };
 fvv_ret_t fvv_filler_data_rbsp_init(
     fvv_filler_data_rbsp_t                  *self,
@@ -21,5 +27,14 @@ fvv_ret_t fvv_filler_data_rbsp_init(
     fvv_bitstream_t                         *data);
 fvv_ret_t fvv_filler_data_rbsp_destroy(fvv_filler_data_rbsp_t *self);
 fvv_ret_t fvv_filler_data_rbsp_pack(fvv_filler_data_rbsp_t *self);
+fvv_ret_t
+fvv_filler_data_rbsp_copy_from(fvv_filler_data_rbsp_t *self,
+                               fvv_filler_data_rbsp_t *other);
+fvv_ret_t
+fvv_filler_data_rbsp_set_ff_byte(fvv_filler_data_rbsp_t *self,
+                                 uint64_t                ff_byte);
+fvv_ret_t
+fvv_filler_data_rbsp_set_rtb(fvv_filler_data_rbsp_t   *self,
+                             fvv_rbsp_trailing_bits_t *rtb);
 
 #endif // FVV_SYNTAX_FILLER_DATA_RBSP_H

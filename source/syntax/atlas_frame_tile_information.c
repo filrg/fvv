@@ -1,5 +1,7 @@
 #include <fvv/syntax/atlas_frame_tile_information.h>
 
+// 8.3.6.2.2 Atlas frame tile information syntax
+// {
 fvv_ret_t fvv_atlas_frame_tile_information_init(
     fvv_atlas_frame_tile_information_t      *self,
     fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
@@ -134,7 +136,9 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
           NumPartitionsInAtlasFrame - 1;
   }
   else
+  {
     self->afti_num_tiles_in_atlas_frame_minus1 = 0;
+  }
   if (self->asps_auxiliary_video_enabled_flag)
   {
     buff->pad(buff,
@@ -142,9 +146,11 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
               FVV_BIT_AFTI_AUXILIARY_VIDEO_TILE_ROW_WIDTH_MINUS1);
     for (i = 0; i < self->afti_num_tiles_in_atlas_frame_minus1 + 1;
          i++)
+    {
       buff->pad(buff,
                 self->afti_auxiliary_video_tile_row_height[i],
                 FVV_BIT_AFTI_AUXILIARY_VIDEO_TILE_ROW_HEIGHT);
+    }
   }
   buff->pad(buff,
             self->afti_signalled_tile_id_flag,
@@ -557,3 +563,4 @@ fvv_ret_t fvv_atlas_frame_tile_information_set_afti_tile_id(
   self->afti_tile_id_size = afti_tile_id_size;
   return FVV_RET_SUCCESS;
 }
+// }

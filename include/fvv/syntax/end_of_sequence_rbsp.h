@@ -11,6 +11,8 @@ struct fvv_end_of_sequence_rbsp_t
   fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(fvv_end_of_sequence_rbsp_t *self);
+  fvv_ret_t (*copy_from)(fvv_end_of_sequence_rbsp_t *self,
+                         fvv_end_of_sequence_rbsp_t *other);
 };
 
 fvv_ret_t fvv_end_of_sequence_rbsp_init(
@@ -21,4 +23,7 @@ fvv_ret_t
 fvv_end_of_sequence_rbsp_destroy(fvv_end_of_sequence_rbsp_t *self);
 fvv_ret_t
 fvv_end_of_sequence_rbsp_pack(fvv_end_of_sequence_rbsp_t *self);
+fvv_ret_t fvv_end_of_sequence_rbsp_copy_from(
+    fvv_end_of_sequence_rbsp_t *self,
+    fvv_end_of_sequence_rbsp_t *other);
 #endif // FVV_SYNTAX_END_OF_SEQUENCE_RBSP_H

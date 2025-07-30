@@ -4,10 +4,6 @@
 #include <fvv/defs.h>
 #include <fvv/semantic.h>
 
-// typedef struct fvv_v3c_unit_t         fvv_v3c_unit_t;
-// typedef struct fvv_v3c_unit_header_t  fvv_v3c_unit_header_t;
-// typedef struct fvv_v3c_unit_payload_t fvv_v3c_unit_payload_t;
-
 // 8.3.2 V3C unit syntax
 // 8.3.2.1 General V3C unit syntax
 struct fvv_v3c_unit_t

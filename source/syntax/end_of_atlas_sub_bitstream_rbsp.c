@@ -1,0 +1,48 @@
+#include <fvv/syntax/end_of_atlas_sub_bitstream_rbsp.h>
+
+// 8.3.6.7 End of bitstream RBSP syntax
+// {
+fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_init(
+    fvv_end_of_atlas_sub_bitstream_rbsp_t   *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_bitstream_t                         *data)
+{
+  *self           = (fvv_end_of_atlas_sub_bitstream_rbsp_t){0};
+
+  self->aspsr     = aspsr;
+  self->data      = data;
+  self->pack      = fvv_end_of_atlas_sub_bitstream_rbsp_pack;
+  self->copy_from = fvv_end_of_atlas_sub_bitstream_rbsp_copy_from;
+
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_destroy(
+    fvv_end_of_atlas_sub_bitstream_rbsp_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINTIIALIZED;
+  }
+  *self = (fvv_end_of_atlas_sub_bitstream_rbsp_t){0};
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_pack(
+    fvv_end_of_atlas_sub_bitstream_rbsp_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINTIIALIZED;
+  }
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_copy_from(
+    fvv_end_of_atlas_sub_bitstream_rbsp_t *self,
+    fvv_end_of_atlas_sub_bitstream_rbsp_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINTIIALIZED;
+  }
+  return FVV_RET_SUCCESS;
+}
+// }

@@ -1,0 +1,99 @@
+#include <syntax/sei_rbsp.h>
+// 8.3.6.4 Supplemental enhancement information RBSP syntax
+// {
+fvv_ret_t
+fvv_sei_rbsp_init(fvv_sei_rbsp_t                          *self,
+                  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+                  fvv_bitstream_t                         *data)
+{
+  *self           = (fvv_sei_rbsp_t){0};
+
+  self->data      = data;
+  self->aspsr     = self->aspsr;
+
+  self->pack      = fvv_sei_rbsp_pack;
+  self->copy_from = fvv_sei_rbsp_copy_from;
+
+  self->set_sm    = fvv_sei_rbsp_set_sm;
+  self->set_rtb   = fvv_sei_rbsp_set_rtb;
+
+  self->sm  = (fvv_sei_message_t *)malloc(sizeof(fvv_sei_message_t));
+  self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
+      sizeof(fvv_rbsp_trailing_bits_t));
+
+  fvv_sei_message_init(self->sm, data);
+  fvv_rbsp_trailing_bits_init(self->rtb, aspsr, data);
+
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_sei_rbsp_destroy(fvv_sei_rbsp_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->sm)
+  {
+    fvv_sei_message_destroy(self->sm);
+    free(self->sm);
+  }
+  if (self->rtb)
+  {
+    fvv_rbsp_trailing_bits_destroy(self->rtb);
+    free(self->rtb);
+  }
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_sei_rbsp_pack(fvv_sei_rbsp_t *self)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  fvv_bool_t       more_rbsp_data = 0;
+  fvv_bitstream_t *buff           = FVV_NULL;
+  buff                            = self->data;
+
+  do
+  {
+    self->sm->pack(self->sm);
+    buff->more_rbsp_data(buff, &more_rbsp_data);
+  } while (more_rbsp_data);
+  self->rtb->pack(self->rtb);
+
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_sei_rbsp_copy_from(fvv_sei_rbsp_t *self,
+                                 fvv_sei_rbsp_t *other)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->sm->copy_from(self->sm, other->sm);
+  self->rtb->copy_from(self->rtb, other->rtb);
+  return FVV_RET_SUCCESS;
+}
+
+fvv_ret_t fvv_sei_rbsp_set_sm(fvv_sei_rbsp_t    *self,
+                              fvv_sei_message_t *sm)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->sm->copy_from(self->sm, sm);
+  return FVV_RET_SUCCESS;
+}
+fvv_ret_t fvv_sei_rbsp_set_rtb(fvv_sei_rbsp_t           *self,
+                               fvv_rbsp_trailing_bits_t *rtb)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  self->rtb->copy_from(self->rtb, rtb);
+  return FVV_RET_SUCCESS;
+}
+
+// }
