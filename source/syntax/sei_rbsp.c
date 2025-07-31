@@ -4,15 +4,14 @@
 
 // 8.3.6.4 Supplemental enhancement information RBSP syntax
 // {
-fvv_ret_t
-fvv_sei_rbsp_init(fvv_sei_rbsp_t                          *self,
-                  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
-                  fvv_bitstream_t                         *data)
+fvv_ret_t fvv_sei_rbsp_init(fvv_sei_rbsp_t            *self,
+                            fvv_atlas_sub_bitstream_t *asb,
+                            fvv_bitstream_t           *data)
 {
   *self           = (fvv_sei_rbsp_t){0};
 
   self->data      = data;
-  self->aspsr     = self->aspsr;
+  self->asb       = asb;
 
   self->pack      = fvv_sei_rbsp_pack;
   self->copy_from = fvv_sei_rbsp_copy_from;
@@ -24,8 +23,8 @@ fvv_sei_rbsp_init(fvv_sei_rbsp_t                          *self,
   self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
 
-  fvv_sei_message_init(self->sm, data);
-  fvv_rbsp_trailing_bits_init(self->rtb, aspsr, data);
+  fvv_sei_message_init(self->sm, asb, data);
+  fvv_rbsp_trailing_bits_init(self->rtb, data);
 
   return FVV_RET_SUCCESS;
 }

@@ -4,9 +4,6 @@
 #include <fvv/defs.h>
 #include <fvv/semantic.h>
 
-// typedef struct fvv_v3c_parameter_set_t   fvv_v3c_parameter_set_t;
-// typedef struct fvv_geometry_information_t fvv_geometry_information_t;
-
 // 8.3.4.4 Geometry information syntax
 struct fvv_geometry_information_t
 {

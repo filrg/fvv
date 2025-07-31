@@ -3,7 +3,7 @@
 
 #include <fvv/defs.h>
 #include <fvv/semantic.h>
-    
+
 // 8.3.2.4 Atlas sub-bitstream syntax
 struct fvv_atlas_sub_bitstream_t
 {
@@ -11,7 +11,8 @@ struct fvv_atlas_sub_bitstream_t
   fvv_bitstream_t                *data;
 
   fvv_sample_stream_nal_header_t *ssnh;
-  fvv_sample_stream_nal_unit_t   *ssnu;
+  fvv_sample_stream_nal_unit_t  **ssnu;
+  uint64_t                        ssnu_size;
 
   fvv_ret_t (*pack)(fvv_atlas_sub_bitstream_t *self,
                     uint64_t                   numBytes);
@@ -19,8 +20,9 @@ struct fvv_atlas_sub_bitstream_t
                          fvv_atlas_sub_bitstream_t *other);
   fvv_ret_t (*set_ssnh)(fvv_atlas_sub_bitstream_t      *self,
                         fvv_sample_stream_nal_header_t *ssnh);
-  fvv_ret_t (*set_ssnu)(fvv_atlas_sub_bitstream_t    *self,
-                        fvv_sample_stream_nal_unit_t *ssnu);
+  fvv_ret_t (*set_ssnu)(fvv_atlas_sub_bitstream_t     *self,
+                        fvv_sample_stream_nal_unit_t **ssnu,
+                        uint64_t                       ssnu_size);
 };
 
 fvv_ret_t
@@ -41,7 +43,8 @@ fvv_ret_t fvv_atlas_sub_bitstream_set_ssnh(
     fvv_atlas_sub_bitstream_t      *self,
     fvv_sample_stream_nal_header_t *ssnh);
 fvv_ret_t
-fvv_atlas_sub_bitstream_set_ssnu(fvv_atlas_sub_bitstream_t    *self,
-                                 fvv_sample_stream_nal_unit_t *ssnu);
+fvv_atlas_sub_bitstream_set_ssnu(fvv_atlas_sub_bitstream_t     *self,
+                                 fvv_sample_stream_nal_unit_t **ssnu,
+                                 uint64_t ssnu_size);
 
 #endif // FVV_SYNTAX_ATLAS_SUB_BITSTREAM_H

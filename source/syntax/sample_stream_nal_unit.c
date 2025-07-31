@@ -19,7 +19,7 @@ fvv_sample_stream_nal_unit_init(fvv_sample_stream_nal_unit_t *self,
 
   self->nu   = (fvv_nal_unit_t *)malloc(sizeof(fvv_nal_unit_t));
 
-  fvv_nal_unit_init(self->nu, asb, data);
+  fvv_nal_unit_init(self->nu, data);
 
   return FVV_RET_SUCCESS;
 }

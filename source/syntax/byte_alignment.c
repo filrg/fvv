@@ -1,15 +1,13 @@
-#include <fvv/syntax/byte_alignment.h>
 #include <fvv/bitstream.h>
+#include <fvv/syntax/byte_alignment.h>
 
 // 8.3.3 Byte alignment syntax
 // {
 fvv_ret_t fvv_byte_alignment_init(fvv_byte_alignment_t *self,
-                                  fvv_v3c_unit_t       *vu,
                                   fvv_bitstream_t      *data)
 {
   *self                             = (fvv_byte_alignment_t){0};
 
-  self->vu = vu;
   self->alignment_bit_equal_to_one  = 0x1;
   self->alignment_bit_equal_to_zero = 0x0;
 

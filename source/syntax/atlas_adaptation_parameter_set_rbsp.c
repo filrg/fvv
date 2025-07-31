@@ -6,15 +6,15 @@
 
 fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_init(
     fvv_atlas_adaptation_parameter_set_rbsp_t *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t   *aspsr,
+    fvv_atlas_sub_bitstream_t                 *asb,
     fvv_bitstream_t                           *data)
 {
-  *self       = (fvv_atlas_adaptation_parameter_set_rbsp_t){0};
+  *self      = (fvv_atlas_adaptation_parameter_set_rbsp_t){0};
 
-  self->aspsr = aspsr;
-  self->data  = data;
+  self->asb  = asb;
+  self->data = data;
 
-  self->pack  = fvv_atlas_adaptation_parameter_set_rbsp_pack;
+  self->pack = fvv_atlas_adaptation_parameter_set_rbsp_pack;
   self->copy_from =
       fvv_atlas_adaptation_parameter_set_rbsp_copy_from;
   self->set_aaps_atlas_adaptation_parameter_set_id =
@@ -36,7 +36,7 @@ fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_init(
       sizeof(fvv_rbsp_trailing_bits_t));
 
   fvv_aaps_vpcc_extension_init(self->ave, data);
-  fvv_rbsp_trailing_bits_init(self->rtb, aspsr, data);
+  fvv_rbsp_trailing_bits_init(self->rtb, data);
 
   return FVV_RET_SUCCESS;
 }

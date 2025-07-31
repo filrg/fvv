@@ -6,14 +6,14 @@
 // 8.3.6.2.1 General atlas frame parameter set RBSP syntax
 // {
 fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_init(
-    fvv_atlas_frame_parameter_set_rbsp_t    *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
-    fvv_bitstream_t                         *data)
+    fvv_atlas_frame_parameter_set_rbsp_t *self,
+    fvv_atlas_sub_bitstream_t            *asb,
+    fvv_bitstream_t                      *data)
 {
   *self           = (fvv_atlas_frame_parameter_set_rbsp_t){0};
 
   self->data      = data;
-  self->aspsr     = aspsr;
+  self->asb       = asb;
   self->pack      = fvv_atlas_frame_parameter_set_rbsp_pack;
   self->copy_from = fvv_atlas_frame_parameter_set_rbsp_copy_from;
   self->set_afps_atlas_frame_parameter_set_id =
@@ -42,8 +42,8 @@ fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_init(
   self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
 
-  fvv_atlas_frame_tile_information_init(self->afti, aspsr, data);
-  fvv_rbsp_trailing_bits_init(self->rtb, aspsr, data);
+  fvv_atlas_frame_tile_information_init(self->afti, asb, data);
+  fvv_rbsp_trailing_bits_init(self->rtb, data);
 
   return FVV_RET_SUCCESS;
 }

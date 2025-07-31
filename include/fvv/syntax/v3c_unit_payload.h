@@ -4,12 +4,6 @@
 #include <fvv/defs.h>
 #include <fvv/semantic.h>
 
-// typedef struct fvv_v3c_unit_t            fvv_v3c_unit_t;
-// typedef struct fvv_v3c_unit_payload_t    fvv_v3c_unit_payload_t;
-// typedef struct fvv_v3c_parameter_set_t   fvv_v3c_parameter_set_t;
-// typedef struct fvv_atlas_sub_bitstream_t fvv_atlas_sub_bitstream_t;
-// typedef struct fvv_video_sub_bitstream_t fvv_video_sub_bitstream_t;
-
 // 8.3.2.3 V3C unit payload syntax
 struct fvv_v3c_unit_payload_t
 {

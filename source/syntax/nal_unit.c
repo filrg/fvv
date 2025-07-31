@@ -3,13 +3,11 @@
 #include <fvv/syntax/nal_unit_header.h>
 // 8.3.5.1 General NAL unit syntax
 // {
-fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t            *self,
-                            fvv_atlas_sub_bitstream_t *asb,
-                            fvv_bitstream_t           *data)
+fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
+                            fvv_bitstream_t *data)
 {
   *self                     = (fvv_nal_unit_t){0};
 
-  self->asb                 = asb;
   self->data                = data;
 
   self->pack                = fvv_nal_unit_pack;
@@ -53,17 +51,19 @@ fvv_ret_t fvv_nal_unit_pack(fvv_nal_unit_t *self,
   {
     return FVV_RET_FAIL;
   }
-  fvv_bitstream_t *buff = FVV_NULL;
-  buff                  = self->data;
+  fvv_bitstream_t *buff           = FVV_NULL;
+  uint64_t         NumBytesInRbsp = 0;
+  uint64_t         i              = 0;
+  buff                            = self->data;
 
-  buff->pad(buff,
-            self->nuh->nal_forbidden_zero_bit,
-            FVV_BIT_NAL_FORBIDDEN_ZERO_BIT);
-  buff->pad(buff, self->nuh->nal_unit_type, FVV_BIT_NAL_UNIT_TYPE);
-  buff->pad(buff, self->nuh->nal_layer_id, FVV_BIT_NAL_LAYER_ID);
-  buff->pad(buff,
-            self->nuh->nal_temporal_id_plus1,
-            FVV_BIT_NAL_TEMPORAL_ID_PLUS1);
+  self->nuh->pack(self->nuh);
+
+  NumBytesInRbsp = 0;
+  for (i = 2; i < NumBytesInNalUnit; i++)
+  {
+    buff->pad(buff, self->rbsp_byte[i], FVV_BIT_RBSP_BYTE);
+    NumBytesInRbsp++;
+  }
 
   return FVV_RET_SUCCESS;
 }

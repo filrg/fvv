@@ -7,13 +7,12 @@
 // 8.3.5.1 General NAL unit syntax
 struct fvv_nal_unit_t
 {
-  uint64_t                  *rbsp_byte;
-  fvv_nal_unit_header_t     *nuh;
+  uint64_t              *rbsp_byte;
+  fvv_nal_unit_header_t *nuh;
 
-  fvv_atlas_sub_bitstream_t *asb;
-  fvv_bitstream_t           *data;
+  fvv_bitstream_t       *data;
 
-  uint64_t                   rbsp_byte_size;
+  uint64_t               rbsp_byte_size;
 
   fvv_ret_t (*pack)(fvv_nal_unit_t *self,
                     uint64_t        NumBytesInNalUnit);
@@ -26,9 +25,8 @@ struct fvv_nal_unit_t
                                    fvv_nal_unit_header_t *nuh);
 };
 
-fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t            *self,
-                            fvv_atlas_sub_bitstream_t *asb,
-                            fvv_bitstream_t           *data);
+fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
+                            fvv_bitstream_t *data);
 
 fvv_ret_t fvv_nal_unit_destroy(fvv_nal_unit_t *self);
 

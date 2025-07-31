@@ -1,14 +1,16 @@
+#include <fvv/bitstream.h>
+#include <fvv/syntax/atlas_sub_bitstream.h>
 #include <fvv/syntax/atlas_tile_header.h>
-#include <fvv/syntax/bitstream.h>
+#include <fvv/syntax/byte_alignment.h>
+
 // 8.3.6.11 Atlas tile header syntax
 // {
-fvv_ret_t fvv_atlas_tile_header_init(
-    fvv_atlas_tile_header_t                 *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
-    fvv_bitstream_t                         *data)
+fvv_ret_t fvv_atlas_tile_header_init(fvv_atlas_tile_header_t   *self,
+                                     fvv_atlas_sub_bitstream_t *asb,
+                                     fvv_bitstream_t           *data)
 {
   *self           = (fvv_atlas_tile_header_t){0};
-  self->aspsr     = aspsr;
+  self->asb       = asb;
   self->data      = data;
 
   self->pack      = fvv_atlas_tile_header_pack;
@@ -17,35 +19,35 @@ fvv_ret_t fvv_atlas_tile_header_init(
   self->set_rls   = fvv_atlas_tile_header_set_rls;
   self->set_ba    = fvv_atlas_tile_header_set_ba;
   self->set_ath_no_output_of_prior_atlas_frames_flag =
-      fvv_atlas_tile_header__set_ath_no_output_of_prior_atlas_frames_flag;
+      fvv_atlas_tile_header_set_ath_no_output_of_prior_atlas_frames_flag;
   self->set_ath_atlas_frame_parameter_set_id =
-      fvv_atlas_tile_header__set_ath_atlas_frame_parameter_set_id;
+      fvv_atlas_tile_header_set_ath_atlas_frame_parameter_set_id;
   self->set_ath_atlas_adaptation_parameter_set_id =
-      fvv_atlas_tile_header__set_ath_atlas_adaptation_parameter_set_id;
-  self->set_ath_id   = fvv_atlas_tile_header__set_ath_id;
-  self->set_ath_type = fvv_atlas_tile_header__set_ath_type;
+      fvv_atlas_tile_header_set_ath_atlas_adaptation_parameter_set_id;
+  self->set_ath_id   = fvv_atlas_tile_header_set_ath_id;
+  self->set_ath_type = fvv_atlas_tile_header_set_ath_type;
   self->set_ath_atlas_output_flag =
-      fvv_atlas_tile_header__set_ath_atlas_output_flag;
+      fvv_atlas_tile_header_set_ath_atlas_output_flag;
   self->set_ath_atlas_frm_order_cnt_lsb =
-      fvv_atlas_tile_header__set_ath_atlas_frm_order_cnt_lsb;
+      fvv_atlas_tile_header_set_ath_atlas_frm_order_cnt_lsb;
   self->set_ath_ref_atlas_frame_list_asps_flag =
-      fvv_atlas_tile_header__set_ath_ref_atlas_frame_list_asps_flag;
+      fvv_atlas_tile_header_set_ath_ref_atlas_frame_list_asps_flag;
   self->set_ath_ref_atlas_frame_list_idx =
-      fvv_atlas_tile_header__set_ath_ref_atlas_frame_list_idx;
+      fvv_atlas_tile_header_set_ath_ref_atlas_frame_list_idx;
   self->set_ath_pos_min_d_quantizer =
-      fvv_atlas_tile_header__set_ath_pos_min_d_quantizer;
+      fvv_atlas_tile_header_set_ath_pos_min_d_quantizer;
   self->set_ath_pos_delta_max_d_quantizer =
-      fvv_atlas_tile_header__set_ath_pos_delta_max_d_quantizer;
+      fvv_atlas_tile_header_set_ath_pos_delta_max_d_quantizer;
   self->set_ath_patch_size_x_info_quantizer =
-      fvv_atlas_tile_header__set_ath_patch_size_x_info_quantizer;
+      fvv_atlas_tile_header_set_ath_patch_size_x_info_quantizer;
   self->set_ath_patch_size_y_info_quantizer =
-      fvv_atlas_tile_header__set_ath_patch_size_y_info_quantizer;
+      fvv_atlas_tile_header_set_ath_patch_size_y_info_quantizer;
   self->set_ath_raw_3d_offset_axis_bit_count_minus1 =
-      fvv_atlas_tile_header__set_ath_raw_3d_offset_axis_bit_count_minus1;
+      fvv_atlas_tile_header_set_ath_raw_3d_offset_axis_bit_count_minus1;
   self->set_ath_num_ref_idx_active_override_flag =
-      fvv_atlas_tile_header__set_ath_num_ref_idx_active_override_flag;
+      fvv_atlas_tile_header_set_ath_num_ref_idx_active_override_flag;
   self->set_ath_num_ref_idx_active_minus1 =
-      fvv_atlas_tile_header__set_ath_num_ref_idx_active_minus1;
+      fvv_atlas_tile_header_set_ath_num_ref_idx_active_minus1;
   self->set_ath_additional_afoc_lsb_present_flag =
       fvv_atlas_tile_header_set_ath_additional_afoc_lsb_present_flag;
   self->set_ath_additional_afoc_lsb_val =
@@ -56,8 +58,8 @@ fvv_ret_t fvv_atlas_tile_header_init(
   self->ba =
       (fvv_byte_alignment_t *)malloc(sizeof(fvv_byte_alignment_t));
 
-  fvv_ref_list_struct_init(self->rls, aspsr, data);
-  fvv_byte_alignment_init(self->ba, aspsr->vu, data);
+  fvv_ref_list_struct_init(self->rls, asb, data);
+  fvv_byte_alignment_init(self->ba, data);
 
   return FVV_RET_SUCCESS;
 }
@@ -89,12 +91,10 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
   }
 
   fvv_bitstream_t *buff          = FVV_NULL;
-  fvv_v3c_unit_t  *vu            = FVV_NULL;
   uint64_t         nal_unit_type = 0;
 
   buff                           = self->data;
-  vu                             = self->aspsr->vu;
-  nal_unit_type = vu->vup->asb->ssnu->nu->nuh->nal_unit_type;
+  nal_unit_type = self->asb->ssnu->nu->nuh->nal_unit_type;
 
   if (nal_unit_type >= NAL_BLA_W_LP &&
       nal_unit_type <= NAL_RSV_IRAP_ACL_29)
@@ -110,7 +110,8 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
   buff->pad(buff, self->ath_id, fvv_bit_ath_id);
   tileID = ath_id;
   buff->pad(buff, self->ath_type, FVV_BIT_ATH_TYPE);
-  if (afps_output_flag_present_flag){
+  if (afps_output_flag_present_flag)
+  {
     buff->pad(buff,
               self->ath_atlas_output_flag,
               FVV_BIT_ATH_ATLAS_OUTPUT_FLAG);
