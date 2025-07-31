@@ -3,13 +3,13 @@
 #include <fvv/syntax/nal_unit_header.h>
 // 8.3.5.1 General NAL unit syntax
 // {
-fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
-                            fvv_v3c_unit_t  *vu,
-                            fvv_bitstream_t *data)
+fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t            *self,
+                            fvv_atlas_sub_bitstream_t *asb,
+                            fvv_bitstream_t           *data)
 {
   *self                     = (fvv_nal_unit_t){0};
 
-  self->vu                  = vu;
+  self->asb                 = asb;
   self->data                = data;
 
   self->pack                = fvv_nal_unit_pack;

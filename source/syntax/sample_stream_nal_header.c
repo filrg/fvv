@@ -1,15 +1,15 @@
-#include <fvv/syntax/sample_stream_nal_header.h>
 #include <fvv/bitstream.h>
+#include <fvv/syntax/sample_stream_nal_header.h>
 
 // D.2.1 Sample stream NAL header syntax
 // {
 fvv_ret_t fvv_sample_stream_nal_header_init(
     fvv_sample_stream_nal_header_t *self,
-    fvv_v3c_unit_t                 *vu,
+    fvv_atlas_sub_bitstream_t      *asb,
     fvv_bitstream_t                *data)
 {
   *self      = (fvv_sample_stream_nal_header_t){0};
-  self->vu   = vu;
+  self->asb  = asb;
   self->data = data;
   self->pack = fvv_sample_stream_nal_header_pack;
   return FVV_RET_SUCCESS;

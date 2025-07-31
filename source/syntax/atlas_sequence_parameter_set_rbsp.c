@@ -8,12 +8,13 @@
 
 fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_init(
     fvv_atlas_sequence_parameter_set_rbsp_t *self,
-    fvv_v3c_unit_t                          *vu,
+    fvv_atlas_sub_bitstream_t               *asb,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_atlas_sequence_parameter_set_rbsp_t){0};
 
   self->data      = data;
+  self->asb       = asb;
   self->pack      = fvv_atlas_sequence_parameter_set_rbsp_pack;
   self->copy_from = fvv_atlas_sequence_parameter_set_rbsp_copy_from;
   self->set_asps_atlas_sequence_parameter_set_id =

@@ -37,6 +37,10 @@ struct fvv_atlas_tile_header_t
   fvv_ret_t (*pack)(fvv_atlas_tile_header_t *self);
   fvv_ret_t (*copy_from)(fvv_atlas_tile_header_t *self,
                          fvv_atlas_tile_header_t *other);
+  fvv_ret_t (*set_rls)(fvv_atlas_tile_header_t *self,
+                       fvv_ref_list_struct_t   *rls);
+  fvv_ret_t (*set_ba)(fvv_atlas_tile_header_t *self,
+                      fvv_byte_alignment_t    *ba);
   fvv_ret_t (*set_ath_no_output_of_prior_atlas_frames_flag)(
       fvv_atlas_tile_header_t *self,
       uint64_t ath_no_output_of_prior_atlas_frames_flag);
@@ -102,6 +106,11 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self);
 fvv_ret_t
 fvv_atlas_tile_header_copy_from(fvv_atlas_tile_header_t *self,
                                 fvv_atlas_tile_header_t *other);
+fvv_ret_t
+fvv_atlas_tile_header_set_rls(fvv_atlas_tile_header_t *self,
+                              fvv_ref_list_struct_t   *rls);
+fvv_ret_t fvv_atlas_tile_header_set_ba(fvv_atlas_tile_header_t *self,
+                                       fvv_byte_alignment_t    *ba);
 fvv_ret_t
 fvv_atlas_tile_header_set_ath_no_output_of_prior_atlas_frames_flag(
     fvv_atlas_tile_header_t *self,

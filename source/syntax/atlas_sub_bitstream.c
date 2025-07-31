@@ -22,8 +22,8 @@ fvv_atlas_sub_bitstream_init(fvv_atlas_sub_bitstream_t *self,
   self->ssnu = (fvv_sample_stream_nal_unit_t *)malloc(
       sizeof(fvv_sample_stream_nal_unit_t));
 
-  fvv_sample_stream_nal_header_init(self->ssnh, vu, data);
-  fvv_sample_stream_nal_unit_init(self->ssnu, vu, data);
+  fvv_sample_stream_nal_header_init(self->ssnh, self, data);
+  fvv_sample_stream_nal_unit_init(self->ssnu, self, data);
 
   return FVV_RET_SUCCESS;
 }

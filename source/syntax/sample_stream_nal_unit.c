@@ -3,25 +3,23 @@
 #include <fvv/syntax/nal_unit.h>
 #include <fvv/syntax/sample_stream_nal_header.h>
 #include <fvv/syntax/sample_stream_nal_unit.h>
-#include <fvv/syntax/v3c_unit.h>
-#include <fvv/syntax/v3c_unit_payload.h>
 
 // D.2.2 Sample stream NAL unit syntax
 // {
 fvv_ret_t
 fvv_sample_stream_nal_unit_init(fvv_sample_stream_nal_unit_t *self,
-                                fvv_v3c_unit_t               *vu,
+                                fvv_v3c_unit_t               *asb,
                                 fvv_bitstream_t              *data)
 {
   *self      = (fvv_sample_stream_nal_unit_t){0};
   self->data = data;
-  self->vu   = vu;
+  self->asb  = asb;
 
   self->pack = fvv_sample_stream_nal_unit_pack;
 
   self->nu   = (fvv_nal_unit_t *)malloc(sizeof(fvv_nal_unit_t));
 
-  fvv_nal_unit_init(self->nu, data);
+  fvv_nal_unit_init(self->nu, asb, data);
 
   return FVV_RET_SUCCESS;
 }
@@ -56,8 +54,7 @@ fvv_sample_stream_nal_unit_pack(fvv_sample_stream_nal_unit_t *self)
   nu   = self->nu;
 
   ssnh_unit_size_precision_bytes_minus1 =
-      self->vu->vup->asb->ssnh
-          ->ssnh_unit_size_precision_bytes_minus1;
+      self->asb->ssnh->ssnh_unit_size_precision_bytes_minus1;
 
   buff->pad(buff,
             self->ssnu_nal_unit_size,
