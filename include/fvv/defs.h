@@ -51,11 +51,13 @@ typedef struct fvv_ref_list_struct_t     fvv_ref_list_struct_t;
 typedef struct fvv_vui_parameters_t      fvv_vui_parameters_t;
 typedef struct fvv_asps_vpcc_extension_t fvv_asps_vpcc_extension_t;
 typedef struct fvv_aaps_vpcc_extension_t fvv_aaps_vpcc_extension_t;
-typedef struct fvv_sei_message_t fvv_sei_message_t;
-typedef struct fvv_atlas_tile_data_unit_t
-    fvv_atlas_tile_data_unit_t;
+typedef struct fvv_sei_message_t         fvv_sei_message_t;
+typedef struct fvv_atlas_tile_data_unit_t fvv_atlas_tile_data_unit_t;
+typedef struct fvv_aaps_vpcc_extension_t  fvv_aaps_vpcc_extension_t;
+typedef struct fvv_atlas_camera_parameters_t
+                 fvv_atlas_camera_parameters_t;
 
-typedef uint16_t                         fvv_ret_t;
+typedef uint16_t fvv_ret_t;
 
 #define FVV_RET_SUCCESS               0x0000
 #define FVV_RET_FAIL                  0x0001

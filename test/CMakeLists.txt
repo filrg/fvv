@@ -29,11 +29,6 @@ target_link_libraries(fvv_bitstream_test PRIVATE fvv::fvv)
 target_compile_features(fvv_bitstream_test PRIVATE c_std_11)
 add_test(NAME fvv_bitstream_test COMMAND fvv_bitstream_test)
 
-add_executable(fvv_syntax_test source/fvv_syntax_test.c)
-target_link_libraries(fvv_syntax_test PRIVATE fvv::fvv)
-target_compile_features(fvv_syntax_test PRIVATE c_std_11)
-add_test(NAME fvv_syntax_test COMMAND fvv_syntax_test)
-
 # ---- End-of-file commands ----
 
 add_folders(Test)

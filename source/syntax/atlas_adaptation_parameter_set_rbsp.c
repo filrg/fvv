@@ -1,6 +1,7 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/rbsp_trailing_bits.h>
 #include <syntax/atlas_adaptation_parameter_set_rbsp.h>
+#include <syntax/aaps_vpcc_extension.h>
 // 8.3.6.3 Atlas adaptation parameter set RBSP syntax
 // {
 

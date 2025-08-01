@@ -2,13 +2,10 @@
 #include <fvv/syntax/rbsp_trailing_bits.h>
 // 8.3.6.10 RBSP trailing bit syntax
 // {
-fvv_ret_t fvv_rbsp_trailing_bits_init(
-    fvv_rbsp_trailing_bits_t                *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
-    fvv_bitstream_t                         *data)
+fvv_ret_t fvv_rbsp_trailing_bits_init(fvv_rbsp_trailing_bits_t *self,
+                                      fvv_bitstream_t          *data)
 {
   *self           = (fvv_rbsp_trailing_bits_t){0};
-  self->aspsr     = aspsr;
   self->data      = data;
 
   self->pack      = fvv_rbsp_trailing_bits_pack;

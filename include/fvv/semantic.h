@@ -2,7 +2,18 @@
 #define FVV_SEMANTIC_H
 
 // Bit size type
-#define FVV_BIT_VARIABLE                                          0
+#define FVV_BIT_VARIABLE 0
+
+// Descriptors type
+#define FVV_DESCRIPTOR_B
+#define FVV_DESCRIPTOR_F
+#define FVV_DESCRIPTOR_FL
+#define FVV_DESCRIPTOR_I
+#define FVV_DESCRIPTOR_SE
+#define FVV_DESCRIPTOR_ST
+#define FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_UE
+
 // Bit size
 #define FVV_BIT_TRAILING_ZERO_8BITS                               8
 #define FVV_BIT_VUH_UNIT_TYPE                                     5
@@ -187,44 +198,46 @@
 #define FVV_BIT_ATH_PATCH_SIZE_Y_INFO_QUANTIZER      3
 #define FVV_BIT_ATH_RAW_3D_OFFSET_AXIS_BIT_COUNT_MINUS1 \
   FVV_BIT_VARIABLE
-#define FVV_BIT_ATH_NUM_REF_IDX_ACTIVE_OVERRIDE_FLAG 1
-#define FVV_BIT_ATH_NUM_REF_IDX_ACTIVE_MINUS1        FVV_BIT_VARIABLE
-#define FVV_BIT_NUM_REF_ENTRIES                      FVV_BIT_VARIABLE
-#define FVV_BIT_ST_REF_ATLAS_FRAME_FLAG              1
-#define FVV_BIT_ABS_DELTA_AFOC_ST                    FVV_BIT_VARIABLE
-#define FVV_BIT_STRAF_ENTRY_SIGN_FLAG                1
-#define FVV_BIT_AFOC_LSB_LT                          FVV_BIT_VARIABLE
-
-// Descriptors type
-#define FVV_DESCRIPTOR_B
-#define FVV_DESCRIPTOR_F
-#define FVV_DESCRIPTOR_FL
-#define FVV_DESCRIPTOR_I
-#define FVV_DESCRIPTOR_SE
-#define FVV_DESCRIPTOR_ST
-#define FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_UE
+#define FVV_BIT_ATH_NUM_REF_IDX_ACTIVE_OVERRIDE_FLAG          1
+#define FVV_BIT_ATH_NUM_REF_IDX_ACTIVE_MINUS1                 FVV_BIT_VARIABLE
+#define FVV_BIT_NUM_REF_ENTRIES                               FVV_BIT_VARIABLE
+#define FVV_BIT_ST_REF_ATLAS_FRAME_FLAG                       1
+#define FVV_BIT_ABS_DELTA_AFOC_ST                             FVV_BIT_VARIABLE
+#define FVV_BIT_STRAF_ENTRY_SIGN_FLAG                         1
+#define FVV_BIT_AFOC_LSB_LT                                   FVV_BIT_VARIABLE
+#define FVV_BIT_AAPS_VPCC_CAMERA_PARAMETERS_PRESENT_FLAG      1
+#define FVV_BIT_ACP_CAMERA_MODEL                              8
+#define FVV_BIT_ACP_SCALE_ENABLED_FLAG                        1
+#define FVV_BIT_ACP_OFFSET_ENABLED_FLAG                       1
+#define FVV_BIT_ACP_ROTATION_ENABLED_FLAG                     1
+#define FVV_BIT_ACP_SCALE_ON_AXIS                             32
+#define FVV_BIT_ACP_OFFSET_ON_AXIS                            32
+#define FVV_BIT_ACP_ROTATION_QX                               16
+#define FVV_BIT_ACP_ROTATION_QY                               16
+#define FVV_BIT_ACP_ROTATION_QZ                               16
+#define FVV_BIT_ASPS_VPCC_REMOVE_DUPLICATE_POINT_ENABLED_FLAG 1
+#define FVV_BIT_ASPS_VPCC_SURFACE_THICKNESS_MINUS1            FVV_BIT_VARIABLE
 // Descriptors
 
-#define FVV_DESCRIPTOR_VUH_UNIT_TYPE                 FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VUH_V3C_PARAMETER_SET_ID      FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VUH_ATLAS_ID                  FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VUH_ATTRIBUTE_INDEX           FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VUH_ATTRIBUTE_PARTITION_INDEX FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VUH_MAP_INDEX                 FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VUH_AUXILIARY_VIDEO_FLAG      FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VUH_RESERVED_ZERO_12BITS      FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VUH_RESERVED_ZERO_17BITS      FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VUH_RESERVED_ZERO_27BITS      FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_ALIGNMENT_BIT_EQUAL_TO_ONE    FVV_DESCRIPTOR_F
-#define FVV_DESCRIPTOR_ALIGNMENT_BIT_EQUAL_TO_ZERO   FVV_DESCRIPTOR_F
-#define FVV_DESCRIPTOR_VPS_V3C_PARAMETER_SET_ID      FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VPS_RESERVED_ZERO_8BITS       FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VPS_ATLAS_COUNT_MINUS1        FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VPS_ATLAS_ID                  FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_VPS_FRAME_WIDTH               FVV_DESCRIPTOR_UE
-#define FVV_DESCRIPTOR_VPS_FRAME_HEIGHT              FVV_DESCRIPTOR_UE
-#define FVV_DESCRIPTOR_VPS_MAP_COUNT_MINUS1          FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VUH_UNIT_TYPE                          FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VUH_V3C_PARAMETER_SET_ID               FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VUH_ATLAS_ID                           FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VUH_ATTRIBUTE_INDEX                    FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VUH_ATTRIBUTE_PARTITION_INDEX          FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VUH_MAP_INDEX                          FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VUH_AUXILIARY_VIDEO_FLAG               FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VUH_RESERVED_ZERO_12BITS               FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VUH_RESERVED_ZERO_17BITS               FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VUH_RESERVED_ZERO_27BITS               FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ALIGNMENT_BIT_EQUAL_TO_ONE             FVV_DESCRIPTOR_F
+#define FVV_DESCRIPTOR_ALIGNMENT_BIT_EQUAL_TO_ZERO            FVV_DESCRIPTOR_F
+#define FVV_DESCRIPTOR_VPS_V3C_PARAMETER_SET_ID               FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VPS_RESERVED_ZERO_8BITS                FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VPS_ATLAS_COUNT_MINUS1                 FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VPS_ATLAS_ID                           FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_VPS_FRAME_WIDTH                        FVV_DESCRIPTOR_UE
+#define FVV_DESCRIPTOR_VPS_FRAME_HEIGHT                       FVV_DESCRIPTOR_UE
+#define FVV_DESCRIPTOR_VPS_MAP_COUNT_MINUS1                   FVV_DESCRIPTOR_U
 #define FVV_DESCRIPTOR_VPS_MULTIPLE_MAP_STREAMS_PRESENT_FLAG \
   FVV_DESCRIPTOR_U
 #define FVV_DESCRIPTOR_VPS_MAP_ABSOLUTE_CODING_ENABLED_FLAG \
@@ -462,7 +475,21 @@
 #define FVV_DESCRIPTOR_ABS_DELTA_AFOC_ST       FVV_DESCRIPTOR_UE
 #define FVV_DESCRIPTOR_STRAF_ENTRY_SIGN_FLAG   FVV_DESCRIPTOR_U
 #define FVV_DESCRIPTOR_AFOC_LSB_LT             FVV_DESCRIPTOR_U
-
+#define FVV_DESCRIPTOR_AAPS_VPCC_CAMERA_PARAMETERS_PRESENT_FLAG \
+  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ACP_CAMERA_MODEL          FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ACP_SCALE_ENABLED_FLAG    FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ACP_OFFSET_ENABLED_FLAG   FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ACP_ROTATION_ENABLED_FLAG FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ACP_SCALE_ON_AXIS         FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ACP_OFFSET_ON_AXIS        FVV_DESCRIPTOR_I
+#define FVV_DESCRIPTOR_ACP_ROTATION_QX           FVV_DESCRIPTOR_I
+#define FVV_DESCRIPTOR_ACP_ROTATION_QY           FVV_DESCRIPTOR_I
+#define FVV_DESCRIPTOR_ACP_ROTATION_QZ           FVV_DESCRIPTOR_I
+#define FVV_DESCRIPTOR_ASPS_VPCC_REMOVE_DUPLICATE_POINT_ENABLED_FLAG \
+  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ASPS_VPCC_SURFACE_THICKNESS_MINUS1 \
+  FVV_DESCRIPTOR_UE
 typedef enum
 {
   FVV_V3C_VPS  = 0, // V3C parameter set
@@ -472,5 +499,115 @@ typedef enum
   FVV_V3C_AVD  = 4, // Attribute video data
   FVV_V3C_RSVD = 5  // Reserved, values 5..31
 } fvv_vuh_unit_type_e;
+
+typedef enum
+{
+  FVV_ATTR_TEXTURE      = 0, // Texture
+  FVV_ATTR_MATERIAL_ID  = 1, // Material ID
+  FVV_ATTR_TRANSPARENCY = 2, // Transparency
+  FVV_ATTR_REFLECTANCE  = 3, // Reflectance
+  FVV_ATTR_NORMAL       = 4, // Normals
+  ATTR_RESERVED         = 5, // Reserved, value 5..14
+  ATTR_UNSPECIFIED      = 15 // Unspecified
+} fvv_ai_attribute_type_id_e;
+
+typedef enum
+{
+  // Trailing atlas frame tiles
+  FVV_NAL_TRAIL_N         = 0,
+  FVV_NAL_TRAIL_R         = 1,
+  FVV_NAL_TSA_N           = 2,
+  FVV_NAL_TSA_R           = 3,
+  FVV_NAL_STSA_N          = 4,
+  FVV_NAL_STSA_R          = 5,
+  FVV_NAL_RADL_N          = 6,
+  FVV_NAL_RADL_R          = 7,
+  FVV_NAL_RASL_N          = 8,
+  FVV_NAL_RASL_R          = 9,
+
+  // Skipped frames
+  FVV_NAL_SKIP_N          = 10,
+  FVV_NAL_SKIP_R          = 11,
+
+  // Reserved ACL (non-IRAP)
+  FVV_NAL_RSV_ACL_N12     = 12,
+  FVV_NAL_RSV_ACL_R13     = 13,
+  FVV_NAL_RSV_ACL_N14     = 14,
+  FVV_NAL_RSV_ACL_R15     = 15,
+
+  // BLA frames
+  FVV_NAL_BLA_W_LP        = 16,
+  FVV_NAL_BLA_W_RADL      = 17,
+  FVV_NAL_BLA_N_LP        = 18,
+
+  // GBLA frames
+  FVV_NAL_GBLA_W_LP       = 19,
+  FVV_NAL_GBLA_W_RADL     = 20,
+  FVV_NAL_GBLA_N_LP       = 21,
+
+  // IDR & GIDR frames
+  FVV_NAL_IDR_W_RADL      = 22,
+  FVV_NAL_IDR_N_LP        = 23,
+  FVV_NAL_GIDR_W_RADL     = 24,
+  FVV_NAL_GIDR_N_LP       = 25,
+
+  // CRA & GCRA frames
+  FVV_NAL_CRA             = 26,
+  FVV_NAL_GCRA            = 27,
+
+  // Reserved IRAP ACL
+  FVV_NAL_RSV_IRAP_ACL_28 = 28,
+  FVV_NAL_RSV_IRAP_ACL_29 = 29,
+
+  // Reserved non-IRAP ACL
+  FVV_NAL_RSV_ACL_30      = 30,
+  FVV_NAL_RSV_ACL_31      = 31,
+  FVV_NAL_RSV_ACL_32      = 32,
+  FVV_NAL_RSV_ACL_33      = 33,
+  FVV_NAL_RSV_ACL_34      = 34,
+  FVV_NAL_RSV_ACL_35      = 35,
+
+  // Non-ACL NAL unit types
+  FVV_NAL_ASPS            = 36,
+  FVV_NAL_AFPS            = 37,
+  FVV_NAL_AUD             = 38,
+  FVV_NAL_V3C_AUD         = 39,
+  FVV_NAL_EOS             = 40,
+  FVV_NAL_EOB             = 41,
+  FVV_NAL_FD              = 42,
+  FVV_NAL_PREFIX_NSEI     = 43,
+  FVV_NAL_SUFFIX_NSEI     = 44,
+  FVV_NAL_PREFIX_ESEI     = 45,
+  FVV_NAL_SUFFIX_ESEI     = 46,
+  FVV_NAL_AAPS            = 47,
+
+  // Reserved non-ACL
+  FVV_NAL_RSV_NACL_48     = 48,
+  FVV_NAL_RSV_NACL_49     = 49,
+  FVV_NAL_RSV_NACL_50     = 50,
+  FVV_NAL_RSV_NACL_51     = 51,
+  FVV_NAL_RSV_NACL_52     = 52,
+
+  // Unspecified
+  FVV_NAL_UNSPEC_53       = 53,
+  FVV_NAL_UNSPEC_54       = 54,
+  FVV_NAL_UNSPEC_55       = 55,
+  FVV_NAL_UNSPEC_56       = 56,
+  FVV_NAL_UNSPEC_57       = 57,
+  FVV_NAL_UNSPEC_58       = 58,
+  FVV_NAL_UNSPEC_59       = 59,
+  FVV_NAL_UNSPEC_60       = 60,
+  FVV_NAL_UNSPEC_61       = 61,
+  FVV_NAL_UNSPEC_62       = 62,
+  FVV_NAL_UNSPEC_63       = 63
+} fvv_nal_unit_type_e;
+
+typedef enum
+{
+  FVV_P_TILE    = 0,
+  FVV_I_TILE    = 1,
+  FVV_SKIP_TILE = 2,
+  FVV_RESERVED  = 3, // Reserved, values 3..7
+} fvv_ath_type_e;
 
 #endif

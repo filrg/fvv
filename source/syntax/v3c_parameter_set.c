@@ -73,7 +73,7 @@ fvv_ret_t fvv_v3c_parameter_set_init(fvv_v3c_parameter_set_t *self,
   fvv_occupancy_information_init(self->oi, self, data);
   fvv_geometry_information_init(self->gi, self, data);
   fvv_attribute_information_init(self->ai, self, data);
-  fvv_byte_alignment_init(self->ba, self->vu, data);
+  fvv_byte_alignment_init(self->ba, data);
 
   return FVV_RET_SUCCESS;
 }
@@ -154,7 +154,7 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
     }
     self->vps_map_absolute_coding_enabled_flag[j][0] = 1;
     self->vps_map_predictor_index_diff[j][0]         = 0;
-    for (i = 1, i <= self->vps_map_count_minus1[j]; i++)
+    for (i = 1; i <= self->vps_map_count_minus1[j]; i++)
     {
       if (self->vps_multiple_map_streams_present_flag[j])
       {
