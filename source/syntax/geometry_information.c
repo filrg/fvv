@@ -1,5 +1,6 @@
-#include <fvv/syntax/geometry_information.h>
+#include <fvv/syntax/v3c_parameter_set.h>
 #include <fvv/bitstream.h>
+#include <fvv/syntax/geometry_information.h>
 // 8.3.4.4 Geometry information syntax
 // {
 fvv_ret_t
@@ -61,7 +62,7 @@ fvv_geometry_information_pack(fvv_geometry_information_t *self,
       buff,
       self->gi_geometry_3d_coordinates_bit_depth_minus1[atlasID],
       FVV_BIT_GI_GEOMETRY_3D_COORDINATES_BIT_DEPTH_MINUS1);
-  if (self->vps_auxiliary_video_present_flag[atlasID])
+  if (self->vps->vps_auxiliary_video_present_flag[atlasID])
   {
     buff->pad(buff,
               self->gi_auxiliary_geometry_codec_id[atlasID],

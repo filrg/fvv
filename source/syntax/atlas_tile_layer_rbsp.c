@@ -3,13 +3,18 @@
 #include <fvv/syntax/atlas_tile_layer_rbsp.h>
 #include <fvv/syntax/rbsp_trailing_bits.h>
 // 8.3.6.9 Atlas tile layer RBSP syntax
-fvv_ret_t
-fvv_atlas_tile_layer_rbsp_init(fvv_atlas_tile_layer_rbsp_t *self,
-                               fvv_atlas_sub_bitstream_t   *asb,
-                               fvv_bitstream_t             *data)
+fvv_ret_t fvv_atlas_tile_layer_rbsp_init(
+    fvv_atlas_tile_layer_rbsp_t             *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_frame_tile_information_t      *afpsr,
+    fvv_nal_unit_header_t                   *nuh,
+    fvv_bitstream_t                         *data)
 {
   *self           = (fvv_atlas_tile_layer_rbsp_t){0};
-  self->asb       = asb;
+
+  self->aspsr     = aspsr;
+  self->afpsr     = afpsr;
+  self->nuh       = nuh;
   self->data      = data;
 
   self->pack      = fvv_atlas_tile_layer_rbsp_pack;
@@ -25,8 +30,9 @@ fvv_atlas_tile_layer_rbsp_init(fvv_atlas_tile_layer_rbsp_t *self,
   self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
 
-  fvv_atlas_tile_header_init(self->ath, asb, data);
-  fvv_atlas_tile_data_unit_init(self->ath, asb, data);
+  fvv_atlas_tile_header_init(
+      self->ath, self->aspsr, self->afpsr, self->nuh, data);
+  fvv_atlas_tile_data_unit_init(self->ath, data);
   fvv_rbsp_trailing_bits_init(self->rtb, data);
 
   return FVV_RET_SUCCESS;

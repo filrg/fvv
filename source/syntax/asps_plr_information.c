@@ -1,5 +1,5 @@
-#include <fvv/syntax/asps_plr_information.h>
 #include <fvv/bitstream.h>
+#include <fvv/syntax/asps_plr_information.h>
 // 8.3.6.1.2 Point local reconstruction information syntax
 // {
 

@@ -6,12 +6,10 @@
 
 fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_init(
     fvv_atlas_adaptation_parameter_set_rbsp_t *self,
-    fvv_atlas_sub_bitstream_t                 *asb,
     fvv_bitstream_t                           *data)
 {
   *self      = (fvv_atlas_adaptation_parameter_set_rbsp_t){0};
 
-  self->asb  = asb;
   self->data = data;
 
   self->pack = fvv_atlas_adaptation_parameter_set_rbsp_pack;

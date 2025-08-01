@@ -68,12 +68,12 @@ struct fvv_asps_plr_information_t
           [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]);
 };
 
-fvv_ret_t fvv_fvv_asps_plr_information_init(
+fvv_ret_t fvv_asps_plr_information_init(
     fvv_asps_plr_information_t              *self,
     fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
     fvv_bitstream_t                         *data);
-fvv_ret_t fvv_fvv_asps_plr_information_destroy(
-    fvv_asps_plr_information_t *self);
+fvv_ret_t
+fvv_asps_plr_information_destroy(fvv_asps_plr_information_t *self);
 fvv_ret_t
 fvv_asps_plr_information_pack(fvv_asps_plr_information_t *self,
                               uint64_t mapCountMinus1);

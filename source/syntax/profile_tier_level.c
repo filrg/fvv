@@ -7,33 +7,33 @@ fvv_ret_t fvv_profile_tier_level_init(fvv_profile_tier_level_t *self,
                                       fvv_v3c_parameter_set_t  *vps,
                                       fvv_bitstream_t          *data)
 {
-  *self               = (fvv_profile_tier_level_t){0};
+  *self                   = (fvv_profile_tier_level_t){0};
 
-  self->vps           = vps;
-  self->data          = data;
-  self->pack          = fvv_profile_tier_level_pack;
-  self->copy_from     = fvv_profile_tier_level_copy_from;
-  self->ptl_tier_flag = fvv_profile_tier_level_set_ptl_tier_flag;
-  self->ptl_profile_codec_group_idc =
+  self->vps               = vps;
+  self->data              = data;
+  self->pack              = fvv_profile_tier_level_pack;
+  self->copy_from         = fvv_profile_tier_level_copy_from;
+  self->set_ptl_tier_flag = fvv_profile_tier_level_set_ptl_tier_flag;
+  self->set_ptl_profile_codec_group_idc =
       fvv_profile_tier_level_set_ptl_profile_codec_group_idc;
-  self->ptl_profile_toolset_idc =
+  self->set_ptl_profile_toolset_idc =
       fvv_profile_tier_level_set_ptl_profile_toolset_idc;
-  self->ptl_profile_reconstruction_idc =
+  self->set_ptl_profile_reconstruction_idc =
       fvv_profile_tier_level_set_ptl_profile_reconstruction_idc;
-  self->ptl_reserved_zero_16bits =
+  self->set_ptl_reserved_zero_16bits =
       fvv_profile_tier_level_set_ptl_reserved_zero_16bits;
-  self->ptl_reserved_0xffff_16bits =
+  self->set_ptl_reserved_0xffff_16bits =
       fvv_profile_tier_level_set_ptl_reserved_0xffff_16bits;
-  self->ptl_level_idc = fvv_profile_tier_level_set_ptl_level_idc;
-  self->ptl_num_sub_profiles =
+  self->set_ptl_level_idc = fvv_profile_tier_level_set_ptl_level_idc;
+  self->set_ptl_num_sub_profiles =
       fvv_profile_tier_level_set_ptl_num_sub_profiles;
-  self->ptl_extended_sub_profile_flag =
+  self->set_ptl_extended_sub_profile_flag =
       fvv_profile_tier_level_set_ptl_extended_sub_profile_flag;
-  self->ptl_sub_profile_idc =
+  self->set_ptl_sub_profile_idc =
       fvv_profile_tier_level_set_ptl_sub_profile_idc;
-  self->ptl_tool_constraints_present_flag =
+  self->set_ptl_tool_constraints_present_flag =
       fvv_profile_tier_level_set_ptl_tool_constraints_present_flag;
-  self->ptci = fvv_profile_tier_level_set_ptci;
+  self->set_ptci = fvv_profile_tier_level_set_ptci;
 
   self->ptci =
       (fvv_profile_toolset_constraints_information_t *)malloc(

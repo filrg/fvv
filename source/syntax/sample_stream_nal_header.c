@@ -40,7 +40,7 @@ fvv_ret_t fvv_sample_stream_nal_header_pack(
             FVV_BIT_SSNH_UNIT_SIZE_PRECISION_BYTES_MINUS1);
   buff->pad(buff,
             self->ssnh_reserved_zero_5bits,
-            FVV_BIT_SSNH_RESERVED_ZEREO_5BITS);
+            FVV_BIT_SSNH_RESERVED_ZERO_5BITS);
 
   return FVV_RET_SUCCESS;
 }

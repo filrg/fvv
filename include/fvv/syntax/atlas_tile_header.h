@@ -31,8 +31,10 @@ struct fvv_atlas_tile_header_t
   uint64_t               ath_additional_afoc_lsb_present_flag_size;
   uint64_t               ath_additional_afoc_lsb_val_size;
 
-  fvv_atlas_sub_bitstream_t *asb;
-  fvv_bitstream_t           *data;
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_atlas_frame_parameter_set_rbsp_t    *afpsr;
+  fvv_nal_unit_header_t                   *nuh;
+  fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(fvv_atlas_tile_header_t *self);
   fvv_ret_t (*copy_from)(fvv_atlas_tile_header_t *self,
@@ -88,17 +90,20 @@ struct fvv_atlas_tile_header_t
       uint64_t                 ath_num_ref_idx_active_minus1);
   fvv_ret_t (*set_ath_additional_afoc_lsb_present_flag)(
       fvv_atlas_tile_header_t *self,
-      uint64_t *ath_additional_afoc_lsb_present_flag,
-      uint64_t  ath_additional_afoc_lsb_present_flag_size);
+      uint64_t                *ath_additional_afoc_lsb_present_flag,
+      uint64_t ath_additional_afoc_lsb_present_flag_size);
   fvv_ret_t (*set_ath_additional_afoc_lsb_val)(
       fvv_atlas_tile_header_t *self,
-      uint64_t *ath_additional_afoc_lsb_val,
-      uint64_t  ath_additional_afoc_lsb_val_size);
+      uint64_t                *ath_additional_afoc_lsb_val,
+      uint64_t                 ath_additional_afoc_lsb_val_size);
 };
 
-fvv_ret_t fvv_atlas_tile_header_init(fvv_atlas_tile_header_t   *self,
-                                     fvv_atlas_sub_bitstream_t *asb,
-                                     fvv_bitstream_t *data);
+fvv_ret_t fvv_atlas_tile_header_init(
+    fvv_atlas_tile_header_t                 *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_frame_parameter_set_rbsp_t    *afpsr,
+    fvv_nal_unit_header_t                   *nuh,
+    fvv_bitstream_t                         *data);
 fvv_ret_t
 fvv_atlas_tile_header_destroy(fvv_atlas_tile_header_t *self);
 fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self);
@@ -164,11 +169,11 @@ fvv_ret_t fvv_atlas_tile_header_set_ath_num_ref_idx_active_minus1(
 fvv_ret_t
 fvv_atlas_tile_header_set_ath_additional_afoc_lsb_present_flag(
     fvv_atlas_tile_header_t *self,
-    uint64_t *ath_additional_afoc_lsb_present_flag,
-    uint64_t  ath_additional_afoc_lsb_present_flag_size);
+    uint64_t                *ath_additional_afoc_lsb_present_flag,
+    uint64_t ath_additional_afoc_lsb_present_flag_size);
 fvv_ret_t fvv_atlas_tile_header_set_ath_additional_afoc_lsb_val(
     fvv_atlas_tile_header_t *self,
-    uint64_t *ath_additional_afoc_lsb_val,
-    uint64_t  ath_additional_afoc_lsb_val_size);
+    uint64_t                *ath_additional_afoc_lsb_val,
+    uint64_t                 ath_additional_afoc_lsb_val_size);
 
 #endif // FVV_SYNTAX_ATLAS_TILE_HEADER_H

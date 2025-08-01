@@ -7,12 +7,15 @@
 // 8.3.6.9 Atlas tile layer RBSP syntax
 struct fvv_atlas_tile_layer_rbsp_t
 {
-  fvv_atlas_tile_header_t    *ath;
-  fvv_atlas_tile_data_unit_t *atdu;
-  fvv_rbsp_trailing_bits_t   *rtb;
+  fvv_atlas_tile_header_t                 *ath;
+  fvv_atlas_tile_data_unit_t              *atdu;
+  fvv_rbsp_trailing_bits_t                *rtb;
 
-  fvv_atlas_sub_bitstream_t  *asb;
-  fvv_bitstream_t            *data;
+  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_atlas_frame_tile_information_t      *afpsr;
+  fvv_nal_unit_header_t                   *nuh;
+
+  fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(fvv_atlas_tile_layer_rbsp_t *self);
   fvv_ret_t (*copy_from)(fvv_atlas_tile_layer_rbsp_t *self,
@@ -25,10 +28,12 @@ struct fvv_atlas_tile_layer_rbsp_t
                        fvv_rbsp_trailing_bits_t    *rtb);
 };
 
-fvv_ret_t
-fvv_atlas_tile_layer_rbsp_init(fvv_atlas_tile_layer_rbsp_t *self,
-                               fvv_atlas_sub_bitstream_t   *asb,
-                               fvv_bitstream_t             *data);
+fvv_ret_t fvv_atlas_tile_layer_rbsp_init(
+    fvv_atlas_tile_layer_rbsp_t             *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_frame_tile_information_t      *afpsr,
+    fvv_nal_unit_header_t                   *nuh,
+    fvv_bitstream_t                         *data);
 fvv_ret_t
 fvv_atlas_tile_layer_rbsp_destroy(fvv_atlas_tile_layer_rbsp_t *self);
 fvv_ret_t

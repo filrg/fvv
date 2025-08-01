@@ -166,10 +166,10 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
       {
         self->vps_map_absolute_coding_enabled_flag[j][i] = 1;
       }
-      if (vps_map_absolute_coding_enabled_flag[j][i] == 0)
+      if (self->vps_map_absolute_coding_enabled_flag[j][i] == 0)
       {
         buff->pad(buff,
-                  vps_map_predictor_index_diff[j][i],
+                  self->vps_map_predictor_index_diff[j][i],
                   FVV_BIT_VPS_MAP_PREDICTOR_INDEX_DIFF);
       }
     }

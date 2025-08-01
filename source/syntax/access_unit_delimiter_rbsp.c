@@ -20,7 +20,7 @@ fvv_ret_t fvv_access_unit_delimiter_rbsp_init(
   self->rtb     = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
 
-  fvv_rbsp_trailing_bits_init(self->rtb, aspsr, data);
+  fvv_rbsp_trailing_bits_init(self->rtb, data);
 
   return FVV_RET_SUCCESS;
 }

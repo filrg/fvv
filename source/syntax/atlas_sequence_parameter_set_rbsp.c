@@ -8,13 +8,12 @@
 
 fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_init(
     fvv_atlas_sequence_parameter_set_rbsp_t *self,
-    fvv_atlas_sub_bitstream_t               *asb,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_atlas_sequence_parameter_set_rbsp_t){0};
 
   self->data      = data;
-  self->asb       = asb;
+
   self->pack      = fvv_atlas_sequence_parameter_set_rbsp_pack;
   self->copy_from = fvv_atlas_sequence_parameter_set_rbsp_copy_from;
   self->set_asps_atlas_sequence_parameter_set_id =
@@ -98,7 +97,7 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_init(
   fvv_asps_plr_information_init(self->api, self, data);
   fvv_vui_parameters_init(self->vp, self, data);
   fvv_asps_vpcc_extension_init(self->ave, self, data);
-  fvv_rbsp_trailing_bits_init(self->rtb, self, data);
+  fvv_rbsp_trailing_bits_init(self->rtb, data);
 
   return FVV_RET_SUCCESS;
 }
@@ -183,15 +182,15 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
 
   buff->pad(buff,
             self->asps_use_eight_orientations_flag,
-            fvv_bit_asps_use_eight_orientations_flag);
+            FVV_BIT_ASPS_USE_EIGHT_ORIENTATIONS_FLAG);
   buff->pad(buff,
             self->asps_extended_projection_enabled_flag,
-            fvv_bit_asps_extended_projection_enabled_flag);
+            FVV_BIT_ASPS_EXTENDED_PROJECTION_ENABLED_FLAG);
   if (self->asps_extended_projection_enabled_flag)
   {
     buff->pad(buff,
               self->asps_max_number_projections_minus1,
-              fvv_bit_asps_max_number_projections_minus1);
+              FVV_BIT_ASPS_MAX_NUMBER_PROJECTIONS_MINUS1);
   }
   buff->pad(
       buff,
@@ -214,7 +213,7 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
             FVV_BIT_ASPS_MAP_COUNT_MINUS1);
   buff->pad(buff,
             self->asps_pixel_deinterleaving_enabled_flag,
-            FVV_BITASPS_PIXEL_DEINTERLEAVING_ENABLED_FLAG);
+            FVV_BIT_ASPS_PIXEL_DEINTERLEAVING_ENABLED_FLAG);
 
   if (self->asps_pixel_deinterleaving_enabled_flag)
   {
@@ -267,7 +266,7 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
   buff->pad(buff,
             self->asps_extension_present_flag,
             FVV_BIT_ASPS_EXTENSION_PRESENT_FLAG);
-  if (asps_extension_present_flag)
+  if (self->asps_extension_present_flag)
   {
     buff->pad(buff,
               self->asps_vpcc_extension_present_flag,
