@@ -1,7 +1,7 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/atlas_frame_tile_information.h>
 #include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
-
+#include <string.h>
 // 8.3.6.2.2 Atlas frame tile information syntax
 // {
 fvv_ret_t fvv_atlas_frame_tile_information_init(
@@ -388,8 +388,8 @@ fvv_atlas_frame_tile_information_set_afti_signalled_tile_id_length_minus1(
 fvv_ret_t
 fvv_atlas_frame_tile_information_set_afti_partition_column_width_minus1(
     fvv_atlas_frame_tile_information_t *self,
-    const uint64_t *afti_partition_column_width_minus1,
-    uint64_t        afti_partition_column_width_minus1_size)
+    uint64_t *afti_partition_column_width_minus1,
+    uint64_t  afti_partition_column_width_minus1_size)
 {
   if (!self)
   {
@@ -413,8 +413,8 @@ fvv_atlas_frame_tile_information_set_afti_partition_column_width_minus1(
 fvv_ret_t
 fvv_atlas_frame_tile_information_set_afti_partition_row_height_minus1(
     fvv_atlas_frame_tile_information_t *self,
-    const uint64_t *afti_partition_row_height_minus1,
-    uint64_t        afti_partition_column_height_minus1_size)
+    uint64_t *afti_partition_row_height_minus1,
+    uint64_t  afti_partition_column_height_minus1_size)
 {
   if (!self)
   {
@@ -439,7 +439,7 @@ fvv_atlas_frame_tile_information_set_afti_partition_row_height_minus1(
 fvv_ret_t
 fvv_atlas_frame_tile_information_set_afti_top_left_partition_idx(
     fvv_atlas_frame_tile_information_t *self,
-    const uint64_t                     *afti_top_left_partition_idx,
+    uint64_t                           *afti_top_left_partition_idx,
     uint64_t afti_top_left_partition_idx_size)
 {
   if (!self)
@@ -464,8 +464,8 @@ fvv_atlas_frame_tile_information_set_afti_top_left_partition_idx(
 fvv_ret_t
 fvv_atlas_frame_tile_information_set_afti_bottom_right_partition_column_offset(
     fvv_atlas_frame_tile_information_t *self,
-    const uint64_t *afti_bottom_right_partition_column_offset,
-    uint64_t        afti_bottom_right_partition_column_offset_size)
+    uint64_t *afti_bottom_right_partition_column_offset,
+    uint64_t  afti_bottom_right_partition_column_offset_size)
 {
   if (!self)
   {
@@ -492,8 +492,8 @@ fvv_atlas_frame_tile_information_set_afti_bottom_right_partition_column_offset(
 fvv_ret_t
 fvv_atlas_frame_tile_information_set_afti_bottom_right_partition_row_offset(
     fvv_atlas_frame_tile_information_t *self,
-    const uint64_t *afti_bottom_right_partition_row_offset,
-    uint64_t        afti_bottom_right_partition_row_offset_size)
+    uint64_t *afti_bottom_right_partition_row_offset,
+    uint64_t  afti_bottom_right_partition_row_offset_size)
 {
   if (!self)
   {
@@ -519,8 +519,8 @@ fvv_atlas_frame_tile_information_set_afti_bottom_right_partition_row_offset(
 fvv_ret_t
 fvv_atlas_frame_tile_information_set_afti_auxiliary_video_tile_row_height(
     fvv_atlas_frame_tile_information_t *self,
-    const uint64_t *afti_auxiliary_video_tile_row_height,
-    uint64_t        afti_auxiliary_video_tile_row_height_size)
+    uint64_t *afti_auxiliary_video_tile_row_height,
+    uint64_t  afti_auxiliary_video_tile_row_height_size)
 {
   if (!self)
   {
@@ -544,7 +544,7 @@ fvv_atlas_frame_tile_information_set_afti_auxiliary_video_tile_row_height(
 }
 fvv_ret_t fvv_atlas_frame_tile_information_set_afti_tile_id(
     fvv_atlas_frame_tile_information_t *self,
-    const uint64_t                     *afti_tile_id,
+    uint64_t                           *afti_tile_id,
     uint64_t                            afti_tile_id_size)
 {
   if (!self)

@@ -4,6 +4,8 @@
 #include <fvv/syntax/rbsp_trailing_bits.h>
 #include <fvv/syntax/ref_list_struct.h>
 #include <fvv/syntax/asps_vpcc_extension.h>
+#include <string.h>
+
 // 8.3.6.1.1 General atlas sequence parameter set RBSP syntax
 // {
 

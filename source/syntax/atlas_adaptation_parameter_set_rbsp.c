@@ -1,7 +1,7 @@
 #include <fvv/bitstream.h>
+#include <fvv/syntax/aaps_vpcc_extension.h>
+#include <fvv/syntax/atlas_adaptation_parameter_set_rbsp.h>
 #include <fvv/syntax/rbsp_trailing_bits.h>
-#include <syntax/atlas_adaptation_parameter_set_rbsp.h>
-#include <syntax/aaps_vpcc_extension.h>
 // 8.3.6.3 Atlas adaptation parameter set RBSP syntax
 // {
 
@@ -67,7 +67,7 @@ fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_pack(
     return FVV_RET_UNINITIALIZED;
   }
   fvv_bitstream_t *buff           = FVV_NULL;
-  uint64_t         more_rbsp_data = 0;
+  fvv_bool_t       more_rbsp_data = 0;
   buff                            = self->data;
 
   buff->pad(buff,

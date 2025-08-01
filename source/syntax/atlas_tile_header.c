@@ -6,6 +6,7 @@
 #include <fvv/syntax/byte_alignment.h>
 #include <fvv/syntax/nal_unit_header.h>
 #include <fvv/syntax/ref_list_struct.h>
+#include <string.h>
 
 // 8.3.6.11 Atlas tile header syntax
 // {

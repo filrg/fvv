@@ -1,5 +1,6 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/atlas_camera_parameters.h>
+#include <string.h>
 
 // H.8.3.6.3.3 Atlas camera parameters syntax
 // {

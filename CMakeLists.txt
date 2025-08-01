@@ -15,7 +15,9 @@ include(cmake/variables.cmake)
 
 # ---- Declare library ----
 
-file(GLOB FVV_SHARED_SOURCE ${CMAKE_CURRENT_SOURCE_DIR}/source/*)
+file(GLOB FVV_SHARED_SOURCE
+     ${CMAKE_CURRENT_SOURCE_DIR}/source/*.c
+     ${CMAKE_CURRENT_SOURCE_DIR}/source/syntax/*.c)
 
 add_library(fvv_fvv ${FVV_SHARED_SOURCE})
 add_library(fvv::fvv ALIAS fvv_fvv)

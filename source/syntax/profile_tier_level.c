@@ -1,6 +1,8 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/profile_tier_level.h>
 #include <fvv/syntax/profile_toolset_constraints_information.h>
+#include <string.h>
+
 // 8.3.4.2 Profile, tier, and level syntax
 // {
 fvv_ret_t fvv_profile_tier_level_init(fvv_profile_tier_level_t *self,

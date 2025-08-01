@@ -1,6 +1,8 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/attribute_information.h>
 #include <fvv/syntax/v3c_parameter_set.h>
+#include <string.h>
+
 // 8.3.4.5 Attribute information syntax
 // {
 fvv_ret_t

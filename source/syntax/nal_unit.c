@@ -1,6 +1,8 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/nal_unit.h>
 #include <fvv/syntax/nal_unit_header.h>
+#include <string.h>
+
 // 8.3.5.1 General NAL unit syntax
 // {
 fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
@@ -81,7 +83,7 @@ fvv_ret_t fvv_nal_unit_copy_from(fvv_nal_unit_t *self,
 }
 
 fvv_ret_t fvv_nal_unit_set_rbsp_byte(fvv_nal_unit_t *self,
-                                     const uint64_t *rbsp_byte,
+                                     uint64_t       *rbsp_byte,
                                      uint64_t        rbsp_byte_size)
 {
   if (!self)

@@ -5,6 +5,7 @@
 #include <fvv/syntax/occupancy_information.h>
 #include <fvv/syntax/profile_tier_level.h>
 #include <fvv/syntax/v3c_parameter_set.h>
+#include <string.h>
 
 // 8.3.4.1 General V3C parameter set syntax
 // {
