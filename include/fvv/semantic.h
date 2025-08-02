@@ -217,6 +217,7 @@
 #define FVV_BIT_ACP_ROTATION_QZ                               16
 #define FVV_BIT_ASPS_VPCC_REMOVE_DUPLICATE_POINT_ENABLED_FLAG 1
 #define FVV_BIT_ASPS_VPCC_SURFACE_THICKNESS_MINUS1            FVV_BIT_VARIABLE
+#define FVV_BIT_ATDU_PATCH_MODE                               FVV_BIT_VARIABLE
 // Descriptors
 
 #define FVV_DESCRIPTOR_VUH_UNIT_TYPE                          FVV_DESCRIPTOR_U
@@ -490,6 +491,7 @@
   FVV_DESCRIPTOR_U
 #define FVV_DESCRIPTOR_ASPS_VPCC_SURFACE_THICKNESS_MINUS1 \
   FVV_DESCRIPTOR_UE
+#define FVV_DESCRIPTOR_ATDU_PATCH_MODE FVV_DESCRIPTOR_UE
 typedef enum
 {
   FVV_V3C_VPS  = 0, // V3C parameter set
@@ -609,5 +611,31 @@ typedef enum
   FVV_SKIP_TILE = 2,
   FVV_RESERVED  = 3, // Reserved, values 3..7
 } fvv_ath_type_e;
+
+typedef enum
+{
+  FVV_I_INTRA    = 0, // Non-predicted patch mode
+  FVV_I_RAW      = 1, // RAW Point Patch mode
+  FVV_I_EOM      = 2, // EOM Point Patch mode
+  FVV_I_RESERVED = 3, // Reserved modes for future use by ISO/IEC
+  FVV_I_END      = 14 // Patch termination mode
+} fvv_atdu_patch_mode_i_tile_e;
+
+typedef enum
+{
+  FVV_P_SKIP     = 0, // Patch Skip mode
+  FVV_P_MERGE    = 1, // Patch Merge mode
+  FVV_P_INTER    = 2, // Inter predicted Patch mode
+  FVV_P_INTRA    = 3, // Non-predicted Patch mode
+  FVV_P_RAW      = 4, // RAW Point Patch mode
+  FVV_P_EOM      = 5, // EOM Point Patch mode
+  FVV_P_RESERVED = 6, // Reserved modes for future use by ISO/IEC
+  FVV_P_END      = 14 // Patch termination mode
+} fvv_atdu_patch_mode_p_tile_e;
+
+typedef enum
+{
+  FVV_P_SKIP = 0, // Patch Skip mode
+} fvv_atdu_patch_mode_skip_tile_e;
 
 #endif

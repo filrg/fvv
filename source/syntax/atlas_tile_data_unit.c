@@ -1,4 +1,6 @@
+#include <fvv/bitstream.h>
 #include <fvv/syntax/atlas_tile_data_unit.h>
+#include <fvv/syntax/atlas_tile_header.h>
 
 // 8.3.7.1 General atlas tile data unit syntax
 // {
@@ -84,11 +86,11 @@ fvv_atlas_tile_data_unit_pack(fvv_atlas_tile_data_unit_t *self,
       buff->pad(buff,
                 self->atdu_patch_mode[tileID][p],
                 FVV_BIT_ATDU_PATCH_MODE);
-      isEnd =
-          (self->ath->ath_type == FVV_P_TILE &&
-           self->atdu_patch_mode[tileID][p] == FVV_P_END) ||
-          (self->ath->ath_type == FVV_I_TILE &&
-           self->atdu_patch_mode[tileID][p] == FVV_I_END) if (!isEnd)
+      isEnd = (self->ath->ath_type == FVV_P_TILE &&
+               self->atdu_patch_mode[tileID][p] == FVV_P_END) ||
+              (self->ath->ath_type == FVV_I_TILE &&
+               self->atdu_patch_mode[tileID][p] == FVV_I_END);
+      if (!isEnd)
       {
         self->pid->pack(
             self->pid, tileID, p, self->atdu_patch_mode[tileID][p]);
@@ -138,11 +140,11 @@ fvv_ret_t fvv_atlas_tile_data_unit_set_atdu_patch_mode(
 
   for (uint64_t i = 0; i < atdu_patch_mode_size[0]; i++)
   {
-    self->atdu_patch_mode[i] =
-        (uint64_t *)malloc(sizeof(uint64_t) * atdu_patch_mode[1]);
+    self->atdu_patch_mode[i] = (uint64_t *)malloc(
+        sizeof(uint64_t) * atdu_patch_mode_size[1]);
     memcpy(self->atdu_patch_mode[i],
            atdu_patch_mode[i],
-           sizeof(uint64_t) * atdu_patch_mode[1]);
+           sizeof(uint64_t) * atdu_patch_mode_size[1]);
   }
   self->atdu_patch_mode_size[0] = atdu_patch_mode_size[0];
   self->atdu_patch_mode_size[1] = atdu_patch_mode_size[1];
