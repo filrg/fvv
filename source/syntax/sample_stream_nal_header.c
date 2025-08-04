@@ -12,6 +12,9 @@ fvv_ret_t fvv_sample_stream_nal_header_init(
   self->asb  = asb;
   self->data = data;
   self->pack = fvv_sample_stream_nal_header_pack;
+
+  FVV_SET_SETTER_PTR(fvv_sample_stream_nal_header_t, ssnh_unit_size_precision_bytes_minus1);
+  FVV_SET_SETTER_PTR(fvv_sample_stream_nal_header_t, ssnh_reserved_zero_5bits);
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t fvv_sample_stream_nal_header_destroy(
@@ -58,28 +61,6 @@ fvv_ret_t fvv_sample_stream_nal_header_copy_from(
       self, other->ssnh_reserved_zero_5bits);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t
-fvv_sample_stream_nal_header_set_ssnh_unit_size_precision_bytes_minus1(
-    fvv_sample_stream_nal_header_t *self,
-    uint64_t ssnh_unit_size_precision_bytes_minus1)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ssnh_unit_size_precision_bytes_minus1 =
-      ssnh_unit_size_precision_bytes_minus1;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_sample_stream_nal_header_set_ssnh_reserved_zero_5bits(
-    fvv_sample_stream_nal_header_t *self,
-    uint64_t                        ssnh_reserved_zero_5bits)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ssnh_reserved_zero_5bits = ssnh_reserved_zero_5bits;
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_SCALAR_SETTER(fvv_sample_stream_nal_header_t, ssnh_unit_size_precision_bytes_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_sample_stream_nal_header_t, ssnh_reserved_zero_5bits);
 // }

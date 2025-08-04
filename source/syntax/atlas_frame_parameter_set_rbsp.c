@@ -48,16 +48,8 @@ fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_destroy(
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->afti)
-  {
-    fvv_atlas_frame_tile_information_destroy(self->afti);
-    free(self->afti);
-  }
-  if (self->rtb)
-  {
-    fvv_rbsp_trailing_bits_destroy(self->rtb);
-    free(self->rtb);
-  }
+  FVV_DESTROY_OBJ(fvv_atlas_frame_parameter_set_rbsp_t, afti, fvv_atlas_frame_tile_information_t);
+  FVV_DESTROY_OBJ(fvv_atlas_frame_parameter_set_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 
   *self = (fvv_atlas_frame_parameter_set_rbsp_t){0};
   return FVV_RET_SUCCESS;

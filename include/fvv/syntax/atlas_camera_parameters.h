@@ -8,16 +8,6 @@
 
 struct fvv_atlas_camera_parameters_t
 {
-  uint64_t         acp_camera_model;
-  uint64_t         acp_scale_enabled_flag;
-  uint64_t         acp_offset_enabled_flag;
-  uint64_t         acp_rotation_enabled_flag;
-  uint64_t         acp_scale_on_axis[3];
-  uint64_t         acp_offset_on_axis[3];
-  uint64_t         acp_rotation_qx;
-  uint64_t         acp_rotation_qy;
-  uint64_t         acp_rotation_qz;
-
   fvv_bitstream_t *data;
 
   fvv_ret_t (*pack)(struct fvv_atlas_camera_parameters_t *self);

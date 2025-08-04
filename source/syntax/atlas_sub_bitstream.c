@@ -34,11 +34,7 @@ fvv_atlas_sub_bitstream_destroy(fvv_atlas_sub_bitstream_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->ssnh)
-  {
-    fvv_sample_stream_nal_header_destroy(self->ssnh);
-    free(self->ssnh);
-  }
+  FVV_DESTROY_OBJ(fvv_atlas_sub_bitstream_t, ssnh, fvv_sample_stream_nal_header_t);
   if (self->ssnu)
   {
     for (uint64_t i = 0; i < self->ssnu_size; i++)

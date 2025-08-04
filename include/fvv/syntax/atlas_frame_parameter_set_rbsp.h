@@ -6,19 +6,6 @@
 // 8.3.6.2.1 General atlas frame parameter set RBSP syntax
 struct fvv_atlas_frame_parameter_set_rbsp_t
 {
-  uint64_t                                 afps_atlas_frame_parameter_set_id;               // ue(v)
-  uint64_t                                 afps_atlas_sequence_parameter_set_id;            // ue(v)
-  uint64_t                                 afps_output_flag_present_flag;                   // u(1)
-  uint64_t                                 afps_num_ref_idx_default_active_minus1;          // ue(v)
-  uint64_t                                 afps_additional_lt_afoc_lsb_len;                 // ue(v)
-  uint64_t                                 afps_lod_mode_enabled_flag;                      // u(1)
-  uint64_t                                 afps_raw_3d_offset_bit_count_explicit_mode_flag; // u(1)
-  uint64_t                                 afps_extension_present_flag;                     // u(1)
-  uint64_t                                 afps_extension_8bits;                            // u(8)
-  uint64_t                                 afps_extension_data_flag;                        // u(1)
-  fvv_atlas_frame_tile_information_t      *afti;
-  fvv_rbsp_trailing_bits_t                *rtb;
-
   fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
   fvv_bitstream_t                         *data;
 

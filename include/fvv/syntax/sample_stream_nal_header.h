@@ -10,18 +10,11 @@ struct fvv_sample_stream_nal_header_t
   fvv_bitstream_t           *data;
   fvv_atlas_sub_bitstream_t *asb;
 
-  uint64_t ssnh_unit_size_precision_bytes_minus1; // u(3)
-  uint64_t ssnh_reserved_zero_5bits;              // u(5)
-
   fvv_ret_t (*pack)(fvv_sample_stream_nal_header_t *self);
   fvv_ret_t (*copy_from)(fvv_sample_stream_nal_header_t *self,
                          fvv_sample_stream_nal_header_t *other);
-  fvv_ret_t (*set_ssnh_unit_size_precision_bytes_minus1)(
-      fvv_sample_stream_nal_header_t *self,
-      uint64_t ssnh_unit_size_precision_bytes_minus1);
-  fvv_ret_t (*set_ssnh_reserved_zero_5bits)(
-      fvv_sample_stream_nal_header_t *self,
-      uint64_t                        ssnh_reserved_zero_5bits);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_sample_stream_nal_header_t, ssnh_unit_size_precision_bytes_minus1);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_sample_stream_nal_header_t, ssnh_reserved_zero_5bits);
 };
 fvv_ret_t fvv_sample_stream_nal_header_init(
     fvv_sample_stream_nal_header_t *self,
@@ -35,11 +28,6 @@ fvv_ret_t fvv_sample_stream_nal_header_pack(
 fvv_ret_t fvv_sample_stream_nal_header_copy_from(
     fvv_sample_stream_nal_header_t *self,
     fvv_sample_stream_nal_header_t *other);
-fvv_ret_t
-fvv_sample_stream_nal_header_set_ssnh_unit_size_precision_bytes_minus1(
-    fvv_sample_stream_nal_header_t *self,
-    uint64_t ssnh_unit_size_precision_bytes_minus1);
-fvv_ret_t fvv_sample_stream_nal_header_set_ssnh_reserved_zero_5bits(
-    fvv_sample_stream_nal_header_t *self,
-    uint64_t                        ssnh_reserved_zero_5bits);
+FVV_DECLARE_SCALAR_SETTER(fvv_sample_stream_nal_header_t, ssnh_unit_size_precision_bytes_minus1);
+FVV_DECLARE_SCALAR_SETTER(fvv_sample_stream_nal_header_t, ssnh_reserved_zero_5bits             );
 #endif // FVV_SYNTAX_SAMPLE_STREAM_NAL_HEADER_H

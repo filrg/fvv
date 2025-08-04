@@ -18,48 +18,31 @@ fvv_ret_t fvv_v3c_parameter_set_init(fvv_v3c_parameter_set_t *self,
   self->data      = data;
   self->pack      = fvv_v3c_parameter_set_pack;
   self->copy_from = fvv_v3c_parameter_set_copy_from;
-  self->set_vps_v3c_parameter_set_id =
-      fvv_v3c_parameter_set_set_vps_v3c_parameter_set_id;
-  self->set_vps_reserved_zero_8bits =
-      fvv_v3c_parameter_set_set_vps_reserved_zero_8bits;
-  self->set_vps_atlas_count_minus1 =
-      fvv_v3c_parameter_set_set_vps_atlas_count_minus1;
-  self->set_vps_atlas_id = fvv_v3c_parameter_set_set_vps_atlas_id;
-  self->set_vps_frame_width =
-      fvv_v3c_parameter_set_set_vps_frame_width;
-  self->set_vps_frame_height =
-      fvv_v3c_parameter_set_set_vps_frame_height;
-  self->set_vps_map_count_minus1 =
-      fvv_v3c_parameter_set_set_vps_map_count_minus1;
-  self->set_vps_multiple_map_streams_present_flag =
-      fvv_v3c_parameter_set_set_vps_multiple_map_streams_present_flag;
-  self->set_vps_map_absolute_coding_enabled_flag =
-      fvv_v3c_parameter_set_set_vps_map_absolute_coding_enabled_flag;
-  self->set_vps_map_predictor_index_diff =
-      fvv_v3c_parameter_set_set_vps_map_predictor_index_diff;
-  self->set_vps_auxiliary_video_present_flag =
-      fvv_v3c_parameter_set_set_vps_auxiliary_video_present_flag;
-  self->set_vps_occupancy_video_present_flag =
-      fvv_v3c_parameter_set_set_vps_occupancy_video_present_flag;
-  self->set_vps_geometry_video_present_flag =
-      fvv_v3c_parameter_set_set_vps_geometry_video_present_flag;
-  self->set_vps_attribute_video_present_flag =
-      fvv_v3c_parameter_set_set_vps_attribute_video_present_flag;
-  self->set_vps_extension_present_flag =
-      fvv_v3c_parameter_set_set_vps_extension_present_flag;
-  self->set_vps_extension_8bits =
-      fvv_v3c_parameter_set_set_vps_extension_8bits;
-  self->set_vps_extension_length_minus1 =
-      fvv_v3c_parameter_set_set_vps_extension_length_minus1;
-  self->set_vps_extension_data_byte =
-      fvv_v3c_parameter_set_set_vps_extension_data_byte;
-  self->set_ptl = fvv_v3c_parameter_set_set_ptl;
-  self->set_oi  = fvv_v3c_parameter_set_set_oi;
-  self->set_gi  = fvv_v3c_parameter_set_set_gi;
-  self->set_ai  = fvv_v3c_parameter_set_set_ai;
-  self->set_ba  = fvv_v3c_parameter_set_set_ba;
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_v3c_parameter_set_id);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_reserved_zero_8bits);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_atlas_count_minus1);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_extension_present_flag);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_extension_8bits);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_extension_length_minus1);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_extension_data_byte);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_atlas_id, (0x1 << FVV_BIT_VPS_ATLAS_COUNT_MINUS1) + 1);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_frame_width, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_frame_height, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_map_count_minus1, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_multiple_map_streams_present_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_auxiliary_video_present_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_occupancy_video_present_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_geometry_video_present_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_attribute_video_present_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_map_absolute_coding_enabled_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID, 0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, vps_map_predictor_index_diff, 0x1 << FVV_BIT_VPS_ATLAS_ID, 0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, ptl, fvv_profile_tier_level_t);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, oi, fvv_occupancy_information_t);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, gi, fvv_geometry_information_t);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, ai, fvv_attribute_information_t);
+  FVV_SET_SETTER_PTR(fvv_v3c_parameter_set_t, ba, fvv_byte_alignment_t);
 
-  self->ptl     = (fvv_profile_tier_level_t *)malloc(
+  self->ptl = (fvv_profile_tier_level_t *)malloc(
       sizeof(fvv_profile_tier_level_t));
   self->oi = (fvv_occupancy_information_t *)malloc(
       sizeof(fvv_occupancy_information_t));
@@ -85,31 +68,11 @@ fvv_v3c_parameter_set_destroy(fvv_v3c_parameter_set_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->ptl)
-  {
-    fvv_profile_tier_level_destroy(self->ptl);
-    free(self->ptl);
-  }
-  if (self->oi)
-  {
-    fvv_occupancy_information_destroy(self->oi);
-    free(self->oi);
-  }
-  if (self->gi)
-  {
-    fvv_geometry_information_destroy(self->gi);
-    free(self->gi);
-  }
-  if (self->ai)
-  {
-    fvv_attribute_information_destroy(self->ai);
-    free(self->ai);
-  }
-  if (self->ba)
-  {
-    fvv_byte_alignment_destroy(self->ba);
-    free(self->ba);
-  }
+  FVV_DESTROY_OBJ(fvv_v3c_parameter_set_t, ptl, fvv_profile_tier_level_t);
+  FVV_DESTROY_OBJ(fvv_v3c_parameter_set_t, oi, fvv_occupancy_information_t);
+  FVV_DESTROY_OBJ(fvv_v3c_parameter_set_t, gi, fvv_geometry_information_t);
+  FVV_DESTROY_OBJ(fvv_v3c_parameter_set_t, ai, fvv_attribute_information_t);
+  FVV_DESTROY_OBJ(fvv_v3c_parameter_set_t, ba, fvv_byte_alignment_t);
   *self = (fvv_v3c_parameter_set_t){0};
   return FVV_RET_SUCCESS;
 }
@@ -224,291 +187,60 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
 
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t fvv_v3c_parameter_set_set_vps_v3c_parameter_set_id(
-    fvv_v3c_parameter_set_t *self, uint64_t vps_v3c_parameter_set_id)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vps_v3c_parameter_set_id = vps_v3c_parameter_set_id;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_reserved_zero_8bits(
-    fvv_v3c_parameter_set_t *self, uint64_t vps_reserved_zero_8bits)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vps_reserved_zero_8bits = vps_reserved_zero_8bits;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_atlas_count_minus1(
-    fvv_v3c_parameter_set_t *self, uint64_t vps_atlas_count_minus1)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vps_atlas_count_minus1 = vps_atlas_count_minus1;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_atlas_id(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t
-        vps_atlas_id[(0x1 << FVV_BIT_VPS_ATLAS_COUNT_MINUS1) + 1])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->vps_atlas_id,
-         vps_atlas_id,
-         sizeof(uint64_t) *
-             ((0x1 << FVV_BIT_VPS_ATLAS_COUNT_MINUS1) + 1));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_frame_width(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t vps_frame_width[0x1 << FVV_BIT_VPS_ATLAS_ID])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->vps_frame_width,
-         vps_frame_width,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_frame_height(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t vps_frame_height[0x1 << FVV_BIT_VPS_ATLAS_ID])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->vps_frame_height,
-         vps_frame_height,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_map_count_minus1(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t vps_map_count_minus1[0x1 << FVV_BIT_VPS_ATLAS_ID])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->vps_map_count_minus1,
-         vps_map_count_minus1,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
-  return FVV_RET_SUCCESS;
-}
 fvv_ret_t
-fvv_v3c_parameter_set_set_vps_multiple_map_streams_present_flag(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t                 vps_multiple_map_streams_present_flag
-        [0x1 << FVV_BIT_VPS_ATLAS_ID])
+fvv_v3c_parameter_set_copy_from(fvv_v3c_parameter_set_t *self,
+                                fvv_v3c_parameter_set_t *other)
 {
   if (!self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  memcpy(self->vps_multiple_map_streams_present_flag,
-         vps_multiple_map_streams_present_flag,
-         sizeof(uint64_t) * 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  self->set_vps_v3c_parameter_set_id(self, other->vps_v3c_parameter_set_id);
+  self->set_vps_reserved_zero_8bits(self, other->vps_reserved_zero_8bits);
+  self->set_vps_atlas_count_minus1(self, other->vps_atlas_count_minus1);
+  self->set_vps_extension_present_flag(self, other->vps_extension_present_flag);
+  self->set_vps_extension_8bits(self, other->vps_extension_8bits);
+  self->set_vps_extension_length_minus1(self, other->vps_extension_length_minus1);
+  self->set_vps_extension_data_byte(self, other->vps_extension_data_byte);
+  self->set_vps_atlas_id(self, other->vps_atlas_id);
+  self->set_vps_frame_width(self, other->vps_frame_width);
+  self->set_vps_frame_height(self, other->vps_frame_height);
+  self->set_vps_map_count_minus1(self, other->vps_map_count_minus1);
+  self->set_vps_multiple_map_streams_present_flag(self, other->vps_multiple_map_streams_present_flag);
+  self->set_vps_auxiliary_video_present_flag(self, other->vps_auxiliary_video_present_flag);
+  self->set_vps_occupancy_video_present_flag(self, other->vps_occupancy_video_present_flag);
+  self->set_vps_geometry_video_present_flag(self, other->vps_geometry_video_present_flag);
+  self->set_vps_attribute_video_present_flag(self, other->vps_attribute_video_present_flag);
+  self->set_vps_map_absolute_coding_enabled_flag(self, other->vps_map_absolute_coding_enabled_flag);
+  self->set_vps_map_predictor_index_diff(self, other->vps_map_predictor_index_diff);
+  self->set_ptl(self, other->ptl);
+  self->set_gi(self, other->gi);
+  self->set_oi(self, other->oi);
+  self->set_ai(self, other->ai);
+  self->set_ba(self, other->ba);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t
-fvv_v3c_parameter_set_set_vps_map_absolute_coding_enabled_flag(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t                 vps_map_absolute_coding_enabled_flag
-        [0x1 << FVV_BIT_VPS_ATLAS_ID]
-        [0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->vps_map_absolute_coding_enabled_flag,
-         vps_map_absolute_coding_enabled_flag,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
-             (0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_map_predictor_index_diff(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t                 vps_map_predictor_index_diff
-        [0x1 << FVV_BIT_VPS_ATLAS_ID]
-        [0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->vps_map_predictor_index_diff,
-         vps_map_predictor_index_diff,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID) *
-             (0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_auxiliary_video_present_flag(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t
-        vps_auxiliary_video_present_flag[0x1
-                                         << FVV_BIT_VPS_ATLAS_ID])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->vps_auxiliary_video_present_flag,
-         vps_auxiliary_video_present_flag,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_occupancy_video_present_flag(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t
-        vps_occupancy_video_present_flag[0x1
-                                         << FVV_BIT_VPS_ATLAS_ID])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->vps_occupancy_video_present_flag,
-         vps_occupancy_video_present_flag,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_geometry_video_present_flag(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t
-        vps_geometry_video_present_flag[0x1 << FVV_BIT_VPS_ATLAS_ID])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->vps_geometry_video_present_flag,
-         vps_geometry_video_present_flag,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_attribute_video_present_flag(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t
-        vps_attribute_video_present_flag[0x1
-                                         << FVV_BIT_VPS_ATLAS_ID])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->vps_attribute_video_present_flag,
-         vps_attribute_video_present_flag,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_extension_present_flag(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t                 vps_extension_present_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vps_extension_present_flag = vps_extension_present_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_extension_8bits(
-    fvv_v3c_parameter_set_t *self, uint64_t vps_extension_8bits)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vps_extension_8bits = vps_extension_8bits;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_extension_length_minus1(
-    fvv_v3c_parameter_set_t *self,
-    uint64_t                 vps_extension_length_minus1)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vps_extension_length_minus1 = vps_extension_length_minus1;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_vps_extension_data_byte(
-    fvv_v3c_parameter_set_t *self, uint64_t vps_extension_data_byte)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vps_extension_data_byte = vps_extension_data_byte;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_v3c_parameter_set_set_ptl(fvv_v3c_parameter_set_t  *self,
-                              fvv_profile_tier_level_t *ptl)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ptl->copy_from(self->ptl, ptl);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_v3c_parameter_set_set_oi(fvv_v3c_parameter_set_t     *self,
-                             fvv_occupancy_information_t *oi)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->oi->copy_from(self->oi, oi);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_v3c_parameter_set_set_gi(fvv_v3c_parameter_set_t    *self,
-                             fvv_geometry_information_t *gi)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->gi->copy_from(self->gi, gi);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_v3c_parameter_set_set_ai(fvv_v3c_parameter_set_t     *self,
-                             fvv_attribute_information_t *ai)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ai->copy_from(self->ai, ai);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_parameter_set_set_ba(fvv_v3c_parameter_set_t *self,
-                                       fvv_byte_alignment_t    *ba)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ba->copy_from(self->ba, ba);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_SCALAR_SETTER(fvv_v3c_parameter_set_t, vps_v3c_parameter_set_id);
+FVV_DEFINE_SCALAR_SETTER(fvv_v3c_parameter_set_t, vps_reserved_zero_8bits);
+FVV_DEFINE_SCALAR_SETTER(fvv_v3c_parameter_set_t, vps_atlas_count_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_v3c_parameter_set_t, vps_extension_present_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_v3c_parameter_set_t, vps_extension_8bits);
+FVV_DEFINE_SCALAR_SETTER(fvv_v3c_parameter_set_t, vps_extension_length_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_v3c_parameter_set_t, vps_extension_data_byte);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_v3c_parameter_set_t, vps_atlas_id, (0x1 << FVV_BIT_VPS_ATLAS_COUNT_MINUS1) + 1);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_v3c_parameter_set_t, vps_frame_width, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_v3c_parameter_set_t, vps_frame_height, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_v3c_parameter_set_t, vps_map_count_minus1, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_v3c_parameter_set_t, vps_multiple_map_streams_present_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_v3c_parameter_set_t, vps_auxiliary_video_present_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_v3c_parameter_set_t, vps_occupancy_video_present_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_v3c_parameter_set_t, vps_geometry_video_present_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_v3c_parameter_set_t, vps_attribute_video_present_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_2D_STATIC_ARR_SETTER(fvv_v3c_parameter_set_t, vps_map_absolute_coding_enabled_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID, 0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1);
+FVV_DEFINE_2D_STATIC_ARR_SETTER(fvv_v3c_parameter_set_t, vps_map_predictor_index_diff, 0x1 << FVV_BIT_VPS_ATLAS_ID, 0x1 << FVV_BIT_VPS_MAP_COUNT_MINUS1);
+FVV_DEFINE_OBJ_SETTER(fvv_v3c_parameter_set_t, ptl, fvv_profile_tier_level_t);
+FVV_DEFINE_OBJ_SETTER(fvv_v3c_parameter_set_t, oi, fvv_occupancy_information_t);
+FVV_DEFINE_OBJ_SETTER(fvv_v3c_parameter_set_t, gi, fvv_geometry_information_t);
+FVV_DEFINE_OBJ_SETTER(fvv_v3c_parameter_set_t, ai, fvv_attribute_information_t);
+FVV_DEFINE_OBJ_SETTER(fvv_v3c_parameter_set_t, ba, fvv_byte_alignment_t);
 // }

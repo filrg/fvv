@@ -19,11 +19,12 @@ fvv_ret_t fvv_atlas_tile_layer_rbsp_init(
 
   self->pack      = fvv_atlas_tile_layer_rbsp_pack;
   self->copy_from = fvv_atlas_tile_layer_rbsp_copy_from;
-  self->set_ath   = fvv_atlas_tile_layer_rbsp_set_ath;
-  self->set_atdu  = fvv_atlas_tile_layer_rbsp_set_atdu;
-  self->set_rtb   = fvv_atlas_tile_layer_rbsp_set_rtb;
 
-  self->ath       = (fvv_atlas_tile_header_t *)malloc(
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_layer_rbsp_t, ath, fvv_atlas_tile_header_t);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_layer_rbsp_t, atdu, fvv_atlas_tile_data_unit_t);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_layer_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
+
+  self->ath = (fvv_atlas_tile_header_t *)malloc(
       sizeof(fvv_atlas_tile_header_t));
   self->atdu = (fvv_atlas_tile_data_unit_t *)malloc(
       sizeof(fvv_atlas_tile_data_unit_t));
@@ -44,21 +45,9 @@ fvv_atlas_tile_layer_rbsp_destroy(fvv_atlas_tile_layer_rbsp_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->ath)
-  {
-    fvv_atlas_tile_header_destroy(self->ath);
-    free(self->ath);
-  }
-  if (self->atdu)
-  {
-    fvv_atlas_tile_data_unit_destroy(self->atdu);
-    free(self->atdu);
-  }
-  if (self->rtb)
-  {
-    fvv_rbsp_trailing_bits_destroy(self->rtb);
-    free(self->rtb);
-  }
+  FVV_DESTROY_OBJ(fvv_atlas_tile_layer_rbsp_t, ath, fvv_atlas_tile_header_t);
+  FVV_DESTROY_OBJ(fvv_atlas_tile_layer_rbsp_t, atdu, fvv_atlas_tile_data_unit_t);
+  FVV_DESTROY_OBJ(fvv_atlas_tile_layer_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
   *self = (fvv_atlas_tile_layer_rbsp_t){0};
   return FVV_RET_SUCCESS;
 }
@@ -90,36 +79,6 @@ fvv_ret_t fvv_atlas_tile_layer_rbsp_copy_from(
   self->set_rtb(self, other->rtb);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t
-fvv_atlas_tile_layer_rbsp_set_ath(fvv_atlas_tile_layer_rbsp_t *self,
-                                  fvv_atlas_tile_header_t     *ath)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath->copy_from(self->ath, ath);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_tile_layer_rbsp_set_atdu(fvv_atlas_tile_layer_rbsp_t *self,
-                                   fvv_atlas_tile_data_unit_t  *atdu)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->atdu->copy_from(self->atdu, atdu);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_tile_layer_rbsp_set_rtb(fvv_atlas_tile_layer_rbsp_t *self,
-                                  fvv_rbsp_trailing_bits_t    *rtb)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->rtb->copy_from(self->rtb, rtb);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_layer_rbsp_t, ath, fvv_atlas_tile_header_t);
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_layer_rbsp_t, atdu, fvv_atlas_tile_data_unit_t);
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_layer_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);

@@ -7,14 +7,8 @@
 // 8.3.7.1 General atlas tile data unit syntax
 struct fvv_atlas_tile_data_unit_t
 {
-  uint64_t                    **atdu_patch_mode;
-  fvv_skip_patch_data_unit_t   *spdu;
-  fvv_patch_information_data_t *pid;
-
-  uint64_t                      atdu_patch_mode_size[2];
-
-  fvv_atlas_tile_header_t      *ath;
-  fvv_bitstream_t              *data;
+  fvv_atlas_tile_header_t *ath;
+  fvv_bitstream_t         *data;
 
   fvv_ret_t (*pack)(fvv_atlas_tile_data_unit_t *self,
                     uint64_t                    tileID);

@@ -83,32 +83,11 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_destroy(
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->rls)
-  {
-    fvv_ref_list_struct_destroy(self->rls);
-    free(self->rls);
-  }
-  if (self->api)
-  {
-    fvv_asps_plr_information_destroy(self->api);
-    free(self->api);
-  }
-  if (self->vp)
-  {
-    fvv_vui_parameters_destroy(self->vp);
-    free(self->vp);
-  }
-  if (self->ave)
-  {
-    fvv_asps_vpcc_extension_destroy(self->ave);
-    free(self->ave);
-  }
-  if (self->rtb)
-  {
-    fvv_rbsp_trailing_bits_destroy(self->rtb);
-    free(self->rtb);
-  }
-
+  FVV_DESTROY_OBJ(fvv_atlas_sequence_parameter_set_rbsp_t, rls, fvv_ref_list_struct_t);
+  FVV_DESTROY_OBJ(fvv_atlas_sequence_parameter_set_rbsp_t, api, fvv_asps_plr_information_t);
+  FVV_DESTROY_OBJ(fvv_atlas_sequence_parameter_set_rbsp_t, vp, fvv_vui_parameters_t);
+  FVV_DESTROY_OBJ(fvv_atlas_sequence_parameter_set_rbsp_t, ave, fvv_asps_vpcc_extension_t);
+  FVV_DESTROY_OBJ(fvv_atlas_sequence_parameter_set_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
   *self = (fvv_atlas_sequence_parameter_set_rbsp_t){0};
   return FVV_RET_SUCCESS;
 }

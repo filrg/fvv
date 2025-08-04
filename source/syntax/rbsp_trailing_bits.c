@@ -10,10 +10,8 @@ fvv_ret_t fvv_rbsp_trailing_bits_init(fvv_rbsp_trailing_bits_t *self,
 
   self->pack      = fvv_rbsp_trailing_bits_pack;
   self->copy_from = fvv_rbsp_trailing_bits_copy_from;
-  self->set_rbsp_stop_one_bit =
-      fvv_rbsp_trailing_bits_set_rbsp_stop_one_bit;
-  self->rbsp_alignment_zero_bit =
-      fvv_rbsp_trailing_bits_set_rbsp_alignment_zero_bit;
+  FVV_SET_SETTER_PTR(fvv_rbsp_trailing_bits_t, rbsp_stop_one_bit);
+  FVV_SET_SETTER_PTR(fvv_rbsp_trailing_bits_t, rbsp_alignment_zero_bit);
 
   self->rbsp_stop_one_bit       = 0x1;
   self->rbsp_alignment_zero_bit = 0x0;
@@ -66,24 +64,6 @@ fvv_rbsp_trailing_bits_copy_from(fvv_rbsp_trailing_bits_t *self,
                                     other->rbsp_alignment_zero_bit);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t fvv_rbsp_trailing_bits_set_rbsp_stop_one_bit(
-    fvv_rbsp_trailing_bits_t *self, uint64_t rbsp_stop_one_bit)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->rbsp_stop_one_bit = rbsp_stop_one_bit;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_rbsp_trailing_bits_set_rbsp_alignment_zero_bit(
-    fvv_rbsp_trailing_bits_t *self, uint64_t rbsp_alignment_zero_bit)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->rbsp_alignment_zero_bit = rbsp_alignment_zero_bit;
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_SCALAR_SETTER(fvv_rbsp_trailing_bits_t, rbsp_stop_one_bit);
+FVV_DEFINE_SCALAR_SETTER(fvv_rbsp_trailing_bits_t, rbsp_alignment_zero_bit);
 // }

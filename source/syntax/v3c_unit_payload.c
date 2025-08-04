@@ -12,13 +12,18 @@ fvv_ret_t fvv_v3c_unit_payload_init(fvv_v3c_unit_payload_t *self,
                                     fvv_v3c_unit_t         *vu,
                                     fvv_bitstream_t        *data)
 {
-  *self      = (fvv_v3c_unit_payload_t){0};
+  *self           = (fvv_v3c_unit_payload_t){0};
 
-  self->pack = fvv_v3c_unit_payload_pack;
-  self->vu   = vu;
-  self->data = data;
+  self->pack      = fvv_v3c_unit_payload_pack;
+  self->copy_from = fvv_v3c_unit_copy_from;
+  self->vu        = vu;
+  self->data      = data;
 
-  self->vps  = (fvv_v3c_parameter_set_t *)malloc(
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_payload_t, vps, fvv_v3c_parameter_set_t);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_payload_t, asb, fvv_atlas_sub_bitstream_t);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_payload_t, vsb, fvv_video_sub_bitstream_t);
+
+  self->vps = (fvv_v3c_parameter_set_t *)malloc(
       sizeof(fvv_v3c_parameter_set_t));
   self->asb = (fvv_atlas_sub_bitstream_t *)malloc(
       sizeof(fvv_atlas_sub_bitstream_t));
@@ -37,28 +42,15 @@ fvv_ret_t fvv_v3c_unit_payload_destroy(fvv_v3c_unit_payload_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->vps)
-  {
-    fvv_v3c_parameter_set_destroy(self->vps);
-    free(self->vps);
-  }
-  if (self->asb)
-  {
-    fvv_atlas_sub_bitstream_destroy(self->asb);
-    free(self->asb);
-  }
-  if (self->vsb)
-  {
-    fvv_video_sub_bitstream_destroy(self->vsb);
-    free(self->vsb);
-  }
-
+  FVV_DESTROY_OBJ(fvv_v3c_unit_payload_t, vps, fvv_v3c_parameter_set_t);
+  FVV_DESTROY_OBJ(fvv_v3c_unit_payload_t, asb, fvv_atlas_sub_bitstream_t);
+  FVV_DESTROY_OBJ(fvv_v3c_unit_payload_t, vsb, fvv_video_sub_bitstream_t);
   *self = (fvv_v3c_unit_payload_t){0};
   return FVV_RET_SUCCESS;
 }
 
 fvv_ret_t fvv_v3c_unit_payload_pack(fvv_v3c_unit_payload_t *self,
-                                    uint64_t numBytesInV3CPayload)
+                                    uint64_t                numBytesInV3CPayload)
 {
   if (!self)
   {
@@ -105,37 +97,8 @@ fvv_v3c_unit_payload_copy_from(fvv_v3c_unit_payload_t *self,
   self->set_vsb(self, other->vsb);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t fvv_v3c_unit_payload_set_vps(fvv_v3c_unit_payload_t  *self,
-                                       fvv_v3c_parameter_set_t *vps)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vps->copy_from(self->vps, vps);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_v3c_unit_payload_set_asb(fvv_v3c_unit_payload_t    *self,
-                             fvv_atlas_sub_bitstream_t *asb)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->asb->copy_from(self->asb, asb);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_v3c_unit_payload_set_vsb(fvv_v3c_unit_payload_t    *self,
-                             fvv_video_sub_bitstream_t *vsb)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vsb->copy_from(self->vsb, vsb);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_OBJ_SETTER(fvv_v3c_unit_payload_t, vps, fvv_v3c_parameter_set_t);
+FVV_DEFINE_OBJ_SETTER(fvv_v3c_unit_payload_t, asb, fvv_atlas_sub_bitstream_t);
+FVV_DEFINE_OBJ_SETTER(fvv_v3c_unit_payload_t, vsb, fvv_video_sub_bitstream_t);
 
 // }

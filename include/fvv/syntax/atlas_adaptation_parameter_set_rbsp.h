@@ -7,16 +7,8 @@
 // 8.3.6.3 Atlas adaptation parameter set RBSP syntax
 struct fvv_atlas_adaptation_parameter_set_rbsp_t
 {
-  uint64_t                   aaps_atlas_adaptation_parameter_set_id; // ue(v)
-  uint64_t                   aaps_extension_present_flag;            // u(1)
-  uint64_t                   aaps_vpcc_extension_present_flag;       // u(1)
-  uint64_t                   aaps_extension_7bits;                   // u(7)
-  uint64_t                   aaps_extension_data_flag;               // u(1)
 
-  fvv_aaps_vpcc_extension_t *ave; /* Specified in Annex H*/
-  fvv_rbsp_trailing_bits_t  *rtb;
-
-  fvv_bitstream_t           *data;
+  fvv_bitstream_t *data;
 
   fvv_ret_t (*pack)(fvv_atlas_adaptation_parameter_set_rbsp_t *self);
   fvv_ret_t (*copy_from)(
@@ -31,7 +23,6 @@ struct fvv_atlas_adaptation_parameter_set_rbsp_t
 
   FVV_DECLARE_OBJ_SETTER_PTR(fvv_atlas_adaptation_parameter_set_rbsp_t, ave, fvv_aaps_vpcc_extension_t);
   FVV_DECLARE_OBJ_SETTER_PTR(fvv_atlas_adaptation_parameter_set_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
-
 };
 
 fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_init(

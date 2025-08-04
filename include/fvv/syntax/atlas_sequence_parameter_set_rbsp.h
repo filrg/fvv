@@ -7,45 +7,7 @@
 // 8.3.6.1.1 General atlas sequence parameter set RBSP syntax
 struct fvv_atlas_sequence_parameter_set_rbsp_t
 {
-  uint64_t asps_atlas_sequence_parameter_set_id;
-  uint64_t asps_frame_width;
-  uint64_t asps_frame_height;
-  uint64_t asps_geometry_3d_bit_depth_minus1;
-  uint64_t asps_geometry_2d_bit_depth_minus1;
-  uint64_t asps_log2_max_atlas_frame_order_cnt_lsb_minus4;
-  uint64_t asps_max_dec_atlas_frame_buffering_minus1;
-  uint64_t asps_long_term_ref_atlas_frames_flag;
-  uint64_t asps_num_ref_atlas_frame_lists_in_asps;
-  uint64_t asps_use_eight_orientations_flag;
-  uint64_t asps_extended_projection_enabled_flag;
-  uint64_t asps_max_number_projections_minus1;
-  uint64_t asps_normal_axis_limits_quantization_enabled_flag;
-  uint64_t asps_normal_axis_max_delta_value_enabled_flag;
-  uint64_t asps_patch_precedence_order_flag;
-  uint64_t asps_log2_patch_packing_block_size;
-  uint64_t asps_patch_size_quantizer_present_flag;
-  uint64_t asps_map_count_minus1;
-  uint64_t asps_pixel_deinterleaving_enabled_flag;
-  uint64_t asps_raw_patch_enabled_flag;
-  uint64_t asps_eom_patch_enabled_flag;
-  uint64_t asps_eom_fix_bit_count_minus1;
-  uint64_t asps_auxiliary_video_enabled_flag;
-  uint64_t asps_plr_enabled_flag;
-  uint64_t asps_vui_parameters_present_flag;
-  uint64_t asps_extension_present_flag;
-  uint64_t asps_vpcc_extension_present_flag;
-  uint64_t asps_extension_7bits;
-  uint64_t asps_extension_data_flag;
-  uint64_t asps_map_pixel_deinterleaving_flag
-      [0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1];
-
-  fvv_ref_list_struct_t      *rls;
-  fvv_asps_plr_information_t *api;
-  fvv_vui_parameters_t       *vp;
-  fvv_asps_vpcc_extension_t  *ave; /* Specified in Annex H*/
-  fvv_rbsp_trailing_bits_t   *rtb;
-
-  fvv_bitstream_t            *data;
+  fvv_bitstream_t *data;
 
   fvv_ret_t (*pack)(fvv_atlas_sequence_parameter_set_rbsp_t *self);
   fvv_ret_t (*copy_from)(

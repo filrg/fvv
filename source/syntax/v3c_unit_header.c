@@ -7,26 +7,19 @@ fvv_ret_t fvv_v3c_unit_header_init(fvv_v3c_unit_header_t *self,
                                    fvv_v3c_unit_t        *vu,
                                    fvv_bitstream_t       *data)
 {
-  *self                   = (fvv_v3c_unit_header_t){0};
-  self->pack              = fvv_v3c_unit_header_pack;
-  self->copy_from         = fvv_v3c_unit_header_copy_from;
-  self->set_vuh_unit_type = fvv_v3c_unit_header_set_vuh_unit_type;
-  self->set_vuh_v3c_parameter_set_id =
-      fvv_v3c_unit_header_set_vuh_v3c_parameter_set_id;
-  self->set_vuh_atlas_id = fvv_v3c_unit_header_set_vuh_atlas_id;
-  self->set_vuh_attribute_index =
-      fvv_v3c_unit_header_set_vuh_attribute_index;
-  self->set_vuh_attribute_partition_index =
-      fvv_v3c_unit_header_set_vuh_attribute_partition_index;
-  self->set_vuh_map_index = fvv_v3c_unit_header_set_vuh_map_index;
-  self->set_vuh_auxiliary_video_flag =
-      fvv_v3c_unit_header_set_vuh_auxiliary_video_flag;
-  self->set_vuh_reserved_zero_12bits =
-      fvv_v3c_unit_header_set_vuh_reserved_zero_12bits;
-  self->set_vuh_reserved_zero_17bits =
-      fvv_v3c_unit_header_set_vuh_reserved_zero_17bits;
-  self->set_vuh_reserved_zero_27bits =
-      fvv_v3c_unit_header_set_vuh_reserved_zero_27bits;
+  *self           = (fvv_v3c_unit_header_t){0};
+  self->pack      = fvv_v3c_unit_header_pack;
+  self->copy_from = fvv_v3c_unit_header_copy_from;
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_header_t, vuh_unit_type);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_header_t, vuh_v3c_parameter_set_id);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_header_t, vuh_atlas_id);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_header_t, vuh_attribute_index);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_header_t, vuh_attribute_partition_index);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_header_t, vuh_map_index);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_header_t, vuh_auxiliary_video_flag);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_header_t, vuh_reserved_zero_12bits);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_header_t, vuh_reserved_zero_17bits);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_header_t, vuh_reserved_zero_27bits);
 
   self->vu   = vu;
   self->data = data;
@@ -131,118 +124,14 @@ fvv_ret_t fvv_v3c_unit_header_copy_from(fvv_v3c_unit_header_t *self,
 
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t
-fvv_v3c_unit_header_set_vuh_unit_type(fvv_v3c_unit_header_t *self,
-                                      uint64_t vuh_unit_type)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vuh_unit_type = vuh_unit_type;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_unit_header_set_vuh_v3c_parameter_set_id(
-    fvv_v3c_unit_header_t *self, uint64_t vuh_v3c_parameter_set_id)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vuh_v3c_parameter_set_id = vuh_v3c_parameter_set_id;
-  return FVV_RET_SUCCESS;
-}
-
-fvv_ret_t
-fvv_v3c_unit_header_set_vuh_atlas_id(fvv_v3c_unit_header_t *self,
-                                     uint64_t vuh_atlas_id)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vuh_atlas_id = vuh_atlas_id;
-  return FVV_RET_SUCCESS;
-}
-
-fvv_ret_t fvv_v3c_unit_header_set_vuh_attribute_index(
-    fvv_v3c_unit_header_t *self, uint64_t vuh_attribute_index)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vuh_attribute_index = vuh_attribute_index;
-  return FVV_RET_SUCCESS;
-}
-
-fvv_ret_t fvv_v3c_unit_header_set_vuh_attribute_partition_index(
-    fvv_v3c_unit_header_t *self,
-    uint64_t               vuh_attribute_partition_index)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vuh_attribute_partition_index =
-      vuh_attribute_partition_index;
-  return FVV_RET_SUCCESS;
-}
-
-fvv_ret_t
-fvv_v3c_unit_header_set_vuh_map_index(fvv_v3c_unit_header_t *self,
-                                      uint64_t vuh_map_index)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vuh_map_index = vuh_map_index;
-  return FVV_RET_SUCCESS;
-}
-
-fvv_ret_t fvv_v3c_unit_header_set_vuh_auxiliary_video_flag(
-    fvv_v3c_unit_header_t *self, uint64_t vuh_auxiliary_video_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vuh_auxiliary_video_flag = vuh_auxiliary_video_flag;
-  return FVV_RET_SUCCESS;
-}
-
-fvv_ret_t fvv_v3c_unit_header_set_vuh_reserved_zero_12bits(
-    fvv_v3c_unit_header_t *self, uint64_t vuh_reserved_zero_12bits)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vuh_reserved_zero_12bits = vuh_reserved_zero_12bits;
-  return FVV_RET_SUCCESS;
-}
-
-fvv_ret_t fvv_v3c_unit_header_set_vuh_reserved_zero_17bits(
-    fvv_v3c_unit_header_t *self, uint64_t vuh_reserved_zero_17bits)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vuh_reserved_zero_17bits = vuh_reserved_zero_17bits;
-  return FVV_RET_SUCCESS;
-}
-
-fvv_ret_t fvv_v3c_unit_header_set_vuh_reserved_zero_27bits(
-    fvv_v3c_unit_header_t *self, uint64_t vuh_reserved_zero_27bits)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vuh_reserved_zero_27bits = vuh_reserved_zero_27bits;
-  return FVV_RET_SUCCESS;
-}
-
+  FVV_DEFINE_SCALAR_SETTER(fvv_v3c_unit_header_t, vuh_unit_type);
+  FVV_DEFINE_SCALAR_SETTER(fvv_v3c_unit_header_t, vuh_v3c_parameter_set_id);
+  FVV_DEFINE_SCALAR_SETTER(fvv_v3c_unit_header_t, vuh_atlas_id);
+  FVV_DEFINE_SCALAR_SETTER(fvv_v3c_unit_header_t, vuh_attribute_index);
+  FVV_DEFINE_SCALAR_SETTER(fvv_v3c_unit_header_t, vuh_attribute_partition_index);
+  FVV_DEFINE_SCALAR_SETTER(fvv_v3c_unit_header_t, vuh_map_index);
+  FVV_DEFINE_SCALAR_SETTER(fvv_v3c_unit_header_t, vuh_auxiliary_video_flag);
+  FVV_DEFINE_SCALAR_SETTER(fvv_v3c_unit_header_t, vuh_reserved_zero_12bits);
+  FVV_DEFINE_SCALAR_SETTER(fvv_v3c_unit_header_t, vuh_reserved_zero_17bits);
+  FVV_DEFINE_SCALAR_SETTER(fvv_v3c_unit_header_t, vuh_reserved_zero_27bits);
 // }

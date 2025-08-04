@@ -8,18 +8,18 @@ fvv_ret_t fvv_filler_data_rbsp_init(
     fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
     fvv_bitstream_t                         *data)
 {
-  *self             = (fvv_filler_data_rbsp_t){0};
+  *self           = (fvv_filler_data_rbsp_t){0};
 
-  self->aspsr       = aspsr;
-  self->data        = data;
+  self->aspsr     = aspsr;
+  self->data      = data;
 
-  self->pack        = fvv_filler_data_rbsp_pack;
-  self->copy_from   = fvv_filler_data_rbsp_copy_from;
+  self->pack      = fvv_filler_data_rbsp_pack;
+  self->copy_from = fvv_filler_data_rbsp_copy_from;
 
-  self->set_ff_byte = fvv_filler_data_rbsp_set_ff_byte;
-  self->set_rtb     = fvv_filler_data_rbsp_set_rtb;
+  FVV_SET_SETTER_PTR(fvv_filler_data_rbsp_t, ff_byte);
+  FVV_SET_SETTER_PTR(fvv_filler_data_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 
-  self->rtb         = (fvv_rbsp_trailing_bits_t *)malloc(
+  self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
   fvv_rbsp_trailing_bits_init(self->rtb, data);
 
@@ -31,11 +31,8 @@ fvv_ret_t fvv_filler_data_rbsp_destroy(fvv_filler_data_rbsp_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->rtb)
-  {
-    fvv_rbsp_trailing_bits_destroy(self->rtb);
-    free(self->rtb);
-  }
+  FVV_DESTROY_OBJ(fvv_filler_data_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
+
   *self = (fvv_filler_data_rbsp_t){0};
   return FVV_RET_SUCCESS;
 }
@@ -70,25 +67,7 @@ fvv_filler_data_rbsp_copy_from(fvv_filler_data_rbsp_t *self,
   self->set_rtb(self, other->rtb);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t
-fvv_filler_data_rbsp_set_ff_byte(fvv_filler_data_rbsp_t *self,
-                                 uint64_t                ff_byte)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ff_byte = ff_byte;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_filler_data_rbsp_set_rtb(fvv_filler_data_rbsp_t *self,
-                                       fvv_rbsp_trailing_bits_t *rtb)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->rtb->copy_from(self->rtb, rtb);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_SCALAR_SETTER(fvv_filler_data_rbsp_t, ff_byte);
+FVV_DEFINE_OBJ_SETTER(fvv_filler_data_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
+
 // }

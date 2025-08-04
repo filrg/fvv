@@ -50,6 +50,7 @@ typedef struct fvv_inter_patch_data_unit_t                   fvv_inter_patch_dat
 typedef struct fvv_raw_patch_data_unit_t                     fvv_raw_patch_data_unit_t;
 typedef struct fvv_eom_patch_data_unit_t                     fvv_eom_patch_data_unit_t;
 typedef struct fvv_plr_data_t                                fvv_plr_data_t;
+
 typedef uint16_t                                             fvv_ret_t;
 
 #define FVV_CONCAT(a, b)                                        a##b
@@ -125,6 +126,8 @@ typedef uint8_t fvv_bool_t;
 #define FVV_SET_SETTER_PTR(STRUCT, ATTRIB, ...) self->set_##ATTRIB = FVV_EXPAND_CONCAT(FVV_STRIP_T(STRUCT), _set_##ATTRIB)
 
 #define FVV_DECLARE_2D_ARR_SETTER_PTR(STRUCT, ATTRIB) \
+  uint64_t **ATTRIB;                                  \
+  uint64_t   ATTRIB##_size[2];                        \
   fvv_ret_t (*set_##ATTRIB)(STRUCT * self,            \
                             uint64_t **ATTRIB,        \
                             uint64_t   ATTRIB##_size[2])
@@ -163,12 +166,28 @@ typedef uint8_t fvv_bool_t;
     self->ATTRIB##_size[1] = ATTRIB##_size[1];                                                 \
     return FVV_RET_SUCCESS;                                                                    \
   }
+#define FVV_DESTROY_2D_ARR(STRUCT, ATTRIB)                \
+  if (self->ATTRIB)                                       \
+  {                                                       \
+    for (uint64_t i = 0; i < self->ATTRIB##_size[0]; i++) \
+    {                                                     \
+      free(self->ATTRIB[i]);                              \
+    }                                                     \
+    free(self->ATTRIB);                                   \
+    self->ATTRIB           = FVV_NULL;                    \
+    self->ATTRIB##_size[0] = 0;                           \
+    self->ATTRIB##_size[1] = 0;                           \
+  }
 
 #define FVV_DECLARE_1D_ARR_SETTER_PTR(STRUCT, ATTRIB) \
+  uint64_t *ATTRIB;                                   \
+  uint64_t  ATTRIB##_size;                            \
   fvv_ret_t (*set_##ATTRIB)(STRUCT * self,            \
                             uint64_t *ATTRIB,         \
                             uint64_t  ATTRIB##_size)
 #define FVV_DECLARE_1D_ARR_SETTER(STRUCT, ATTRIB)                                   \
+  uint64_t *ATTRIB;                                                                 \
+  uint64_t  ATTRIB##_size;                                                          \
   fvv_ret_t FVV_EXPAND_CONCAT(FVV_STRIP_T(STRUCT), _set_##ATTRIB)(STRUCT * self,    \
                                                                   uint64_t *ATTRIB, \
                                                                   uint64_t  ATTRIB##_size)
@@ -192,11 +211,17 @@ typedef uint8_t fvv_bool_t;
     self->ATTRIB##_size = ATTRIB##_size;                                                   \
     return FVV_RET_SUCCESS;                                                                \
   }
+#define FVV_DESTROY_1D_ARR(STRUCT, ATTRIB) \
+  if (self->ATTRIB)                        \
+  {                                        \
+    free(self->ATTRIB);                    \
+    self->ATTRIB        = FVV_NULL;        \
+    self->ATTRIB##_size = 0;               \
+  }
 
-#define FVV_DECLARE_1D_STATIC_ARR_SETTER_PTR( \
-    STRUCT, ATTRIB, SIZE)                     \
-  fvv_ret_t (*set_##ATTRIB)(STRUCT * self,    \
-                            uint64_t ATTRIB[(SIZE)])
+#define FVV_DECLARE_1D_STATIC_ARR_SETTER_PTR(STRUCT, ATTRIB, SIZE) \
+  uint64_t ATTRIB[(SIZE)];                                         \
+  fvv_ret_t (*set_##ATTRIB)(STRUCT * self, uint64_t ATTRIB[(SIZE)])
 #define FVV_DECLARE_1D_STATIC_ARR_SETTER(STRUCT, ATTRIB, SIZE)                   \
   fvv_ret_t FVV_EXPAND_CONCAT(FVV_STRIP_T(STRUCT), _set_##ATTRIB)(STRUCT * self, \
                                                                   uint64_t ATTRIB[(SIZE)])
@@ -212,6 +237,7 @@ typedef uint8_t fvv_bool_t;
 
 #define FVV_DECLARE_2D_STATIC_ARR_SETTER_PTR( \
     STRUCT, ATTRIB, SIZE1, SIZE2)             \
+  uint64_t ATTRIB[(SIZE1)][(SIZE2)];          \
   fvv_ret_t (*set_##ATTRIB)(STRUCT * self,    \
                             uint64_t ATTRIB[(SIZE1)][(SIZE2)])
 #define FVV_DECLARE_2D_STATIC_ARR_SETTER(                          \
@@ -229,7 +255,28 @@ typedef uint8_t fvv_bool_t;
     return FVV_RET_SUCCESS;                                        \
   }
 
+#define FVV_DECLARE_3D_STATIC_ARR_SETTER_PTR( \
+    STRUCT, ATTRIB, SIZE1, SIZE2, SIZE3)      \
+  uint64_t ATTRIB[(SIZE1)][(SIZE2)][(SIZE3)]; \
+  fvv_ret_t (*set_##ATTRIB)(STRUCT * self,    \
+                            uint64_t ATTRIB[(SIZE1)][(SIZE2)][(SIZE3)])
+#define FVV_DECLARE_3D_STATIC_ARR_SETTER(                          \
+    STRUCT, ATTRIB, SIZE1, SIZE2, SIZE3)                           \
+  fvv_ret_t FVV_EXPAND_CONCAT(FVV_STRIP_T(STRUCT), _set_##ATTRIB)( \
+      STRUCT * self, uint64_t ATTRIB[(SIZE1)][(SIZE2)][(SIZE3)])
+#define FVV_DEFINE_3D_STATIC_ARR_SETTER(                           \
+    STRUCT, ATTRIB, SIZE1, SIZE2, SIZE3)                           \
+  fvv_ret_t FVV_EXPAND_CONCAT(FVV_STRIP_T(STRUCT), _set_##ATTRIB)( \
+      STRUCT * self, uint64_t ATTRIB[(SIZE1)][(SIZE2)][(SIZE3)])   \
+  {                                                                \
+    if (!self)                                                     \
+      return FVV_RET_UNINITIALIZED;                                \
+    memcpy(self->ATTRIB, ATTRIB, sizeof(self->ATTRIB));            \
+    return FVV_RET_SUCCESS;                                        \
+  }
+
 #define FVV_DECLARE_SCALAR_SETTER_PTR(STRUCT, ATTRIB) \
+  uint64_t ATTRIB;                                    \
   fvv_ret_t (*set_##ATTRIB)(STRUCT * self,            \
                             uint64_t ATTRIB)
 #define FVV_DECLARE_SCALAR_SETTER(STRUCT, ATTRIB)                                \
@@ -248,6 +295,7 @@ typedef uint8_t fvv_bool_t;
   }
 
 #define FVV_DECLARE_OBJ_SETTER_PTR(STRUCT, ATTRIB, TYPE) \
+  TYPE *ATTRIB;                                          \
   fvv_ret_t (*set_##ATTRIB)(STRUCT * self,               \
                             TYPE * ATTRIB)
 #define FVV_DECLARE_OBJ_SETTER(STRUCT, ATTRIB, TYPE)                             \
@@ -263,6 +311,12 @@ typedef uint8_t fvv_bool_t;
     }                                                                            \
     self->ATTRIB->copy_from(self->ATTRIB, ATTRIB);                               \
     return FVV_RET_SUCCESS;                                                      \
+  }
+#define FVV_DESTROY_OBJ(STRUCT, ATTRIB, TYPE)                     \
+  if (self->ATTRIB)                                               \
+  {                                                               \
+    FVV_EXPAND_CONCAT(FVV_STRIP_T(TYPE), _destroy)(self->ATTRIB); \
+    free(self->ATTRIB);                                           \
   }
 
 #endif

@@ -7,9 +7,6 @@
 // 8.3.6.5 Access unit delimiter RBSP syntax
 struct fvv_access_unit_delimiter_rbsp_t
 {
-  uint64_t                                 aframe_type; // u(3)
-  fvv_rbsp_trailing_bits_t                *rtb;
-
   fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
   fvv_bitstream_t                         *data;
 
@@ -18,11 +15,8 @@ struct fvv_access_unit_delimiter_rbsp_t
   fvv_ret_t (*copy_from)(fvv_access_unit_delimiter_rbsp_t *self,
                          fvv_access_unit_delimiter_rbsp_t *other);
 
-  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_access_unit_delimiter_rbsp_t,
-                                  aframe_type);
-  FVV_DECLARE_OBJ_SETTER_PTR(fvv_access_unit_delimiter_rbsp_t,
-                                    rtb,
-                                    fvv_rbsp_trailing_bits_t);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_access_unit_delimiter_rbsp_t, aframe_type);
+  FVV_DECLARE_OBJ_SETTER_PTR(fvv_access_unit_delimiter_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 };
 fvv_ret_t fvv_access_unit_delimiter_rbsp_init(
     fvv_access_unit_delimiter_rbsp_t        *self,

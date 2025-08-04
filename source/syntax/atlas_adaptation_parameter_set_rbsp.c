@@ -26,7 +26,7 @@ fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_init(
   FVV_SET_SETTER_PTR(fvv_atlas_adaptation_parameter_set_rbsp_t, ave, fvv_aaps_vpcc_extension_t);
   FVV_SET_SETTER_PTR(fvv_atlas_adaptation_parameter_set_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 
-  self->ave     = (fvv_aaps_vpcc_extension_t *)malloc(
+  self->ave = (fvv_aaps_vpcc_extension_t *)malloc(
       sizeof(fvv_aaps_vpcc_extension_t));
   self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
@@ -43,16 +43,8 @@ fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_destroy(
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->ave)
-  {
-    fvv_aaps_vpcc_extension_destroy(self->ave);
-    free(self->ave);
-  }
-  if (self->rtb)
-  {
-    fvv_rbsp_trailing_bits_destroy(self->rtb);
-    free(self->rtb);
-  }
+  FVV_DESTROY_OBJ(fvv_atlas_adaptation_parameter_set_rbsp_t, ave, fvv_aaps_vpcc_extension_t);
+  FVV_DESTROY_OBJ(fvv_atlas_adaptation_parameter_set_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
   *self = (fvv_atlas_adaptation_parameter_set_rbsp_t){0};
   return FVV_RET_SUCCESS;
 }

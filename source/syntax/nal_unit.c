@@ -8,15 +8,14 @@
 fvv_ret_t fvv_nal_unit_init(fvv_nal_unit_t  *self,
                             fvv_bitstream_t *data)
 {
-  *self                     = (fvv_nal_unit_t){0};
+  *self           = (fvv_nal_unit_t){0};
 
-  self->data                = data;
+  self->data      = data;
 
-  self->pack                = fvv_nal_unit_pack;
-  self->copy_from           = fvv_nal_unit_copy_from;
-  self->set_rbsp_byte       = fvv_nal_unit_set_rbsp_byte;
-  self->set_nal_unit_header = fvv_nal_unit_set_nal_unit_header;
-
+  self->pack      = fvv_nal_unit_pack;
+  self->copy_from = fvv_nal_unit_copy_from;
+  FVV_SET_SETTER_PTR(fvv_nal_unit_t, rbsp_byte);
+  FVV_SET_SETTER_PTR(fvv_nal_unit_t, nuh, fvv_nal_unit_header_t);
   self->nuh =
       (fvv_nal_unit_header_t *)malloc(sizeof(fvv_nal_unit_header_t));
   fvv_nal_unit_header_init(self->nuh, data);
@@ -29,15 +28,8 @@ fvv_ret_t fvv_nal_unit_destroy(fvv_nal_unit_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->rbsp_byte)
-  {
-    free(self->rbsp_byte);
-  }
-  if (self->nuh)
-  {
-    fvv_nal_unit_header_destroy(self->nuh);
-    free(self->nuh);
-  }
+  FVV_DESTROY_1D_ARR(fvv_nal_unit_t, rbsp_byte);
+  FVV_DESTROY_OBJ(fvv_nal_unit_t, nuh, fvv_nal_unit_header_t);
   *self = (fvv_nal_unit_t){0};
   return FVV_RET_SUCCESS;
 }
@@ -78,43 +70,10 @@ fvv_ret_t fvv_nal_unit_copy_from(fvv_nal_unit_t *self,
     return FVV_RET_UNINITIALIZED;
   }
   self->set_rbsp_byte(self, other->rbsp_byte, other->rbsp_byte_size);
-  self->set_nal_unit_header(self, other->nuh);
+  self->set_nuh(self, other->nuh);
   return FVV_RET_SUCCESS;
 }
 
-fvv_ret_t fvv_nal_unit_set_rbsp_byte(fvv_nal_unit_t *self,
-                                     uint64_t       *rbsp_byte,
-                                     uint64_t        rbsp_byte_size)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->rbsp_byte)
-  {
-    free(self->rbsp_byte);
-    self->rbsp_byte      = FVV_NULL;
-    self->rbsp_byte_size = 0;
-  }
-
-  self->rbsp_byte =
-      (uint64_t *)malloc(rbsp_byte_size * sizeof(uint64_t));
-  memcpy(
-      self->rbsp_byte, rbsp_byte, rbsp_byte_size * sizeof(uint64_t));
-  self->rbsp_byte_size = rbsp_byte_size;
-
-  return FVV_RET_SUCCESS;
-}
-
-fvv_ret_t
-fvv_nal_unit_set_nal_unit_header(fvv_nal_unit_t        *self,
-                                 fvv_nal_unit_header_t *nuh)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->nuh->copy_from(self->nuh, nuh);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_1D_ARR_SETTER(fvv_nal_unit_t, rbsp_byte);
+FVV_DEFINE_OBJ_SETTER(fvv_nal_unit_t, nuh, fvv_nal_unit_header_t);
 // }

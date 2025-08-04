@@ -1,5 +1,5 @@
-#include <fvv/syntax/nal_unit_header.h>
 #include <fvv/bitstream.h>
+#include <fvv/syntax/nal_unit_header.h>
 // 8.3.5.2 NAL unit header syntax
 // {
 fvv_ret_t fvv_nal_unit_header_init(fvv_nal_unit_header_t *self,
@@ -10,12 +10,10 @@ fvv_ret_t fvv_nal_unit_header_init(fvv_nal_unit_header_t *self,
 
   self->pack      = fvv_nal_unit_header_pack;
   self->copy_from = fvv_nal_unit_header_copy_from;
-  self->set_nal_forbidden_zero_bit =
-      fvv_nal_unit_header_set_nal_forbidden_zero_bit;
-  self->set_nal_unit_type = fvv_nal_unit_header_set_nal_unit_type;
-  self->set_nal_layer_id  = fvv_nal_unit_header_set_nal_layer_id;
-  self->set_nal_temporal_id_plus1 =
-      fvv_nal_unit_header_set_nal_temporal_id_plus1;
+  FVV_SET_SETTER_PTR(fvv_nal_unit_header_t, nal_forbidden_zero_bit);
+  FVV_SET_SETTER_PTR(fvv_nal_unit_header_t, nal_unit_type);
+  FVV_SET_SETTER_PTR(fvv_nal_unit_header_t, nal_layer_id);
+  FVV_SET_SETTER_PTR(fvv_nal_unit_header_t, nal_temporal_id_plus1);
 
   return FVV_RET_SUCCESS;
 }
@@ -61,46 +59,8 @@ fvv_ret_t fvv_nal_unit_header_copy_from(fvv_nal_unit_header_t *self,
                                   other->nal_temporal_id_plus1);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t fvv_nal_unit_header_set_nal_forbidden_zero_bit(
-    fvv_nal_unit_header_t *self, uint64_t nal_forbidden_zero_bit)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->nal_forbidden_zero_bit = nal_forbidden_zero_bit;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_nal_unit_header_set_nal_unit_type(fvv_nal_unit_header_t *self,
-                                      uint64_t nal_unit_type)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->nal_unit_type = nal_unit_type;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_nal_unit_header_set_nal_layer_id(fvv_nal_unit_header_t *self,
-                                     uint64_t nal_layer_id)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->nal_layer_id = nal_layer_id;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_nal_unit_header_set_nal_temporal_id_plus1(
-    fvv_nal_unit_header_t *self, uint64_t nal_temporal_id_plus1)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->nal_temporal_id_plus1 = nal_temporal_id_plus1;
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_SCALAR_SETTER(fvv_nal_unit_header_t, nal_forbidden_zero_bit);
+FVV_DEFINE_SCALAR_SETTER(fvv_nal_unit_header_t, nal_unit_type);
+FVV_DEFINE_SCALAR_SETTER(fvv_nal_unit_header_t, nal_layer_id);
+FVV_DEFINE_SCALAR_SETTER(fvv_nal_unit_header_t, nal_temporal_id_plus1);
 // }

@@ -15,33 +15,21 @@ fvv_ret_t fvv_merge_patch_data_unit_init(
   self->pack      = fvv_merge_patch_data_unit_pack;
   self->copy_from = fvv_merge_patch_data_unit_copy_from;
 
-  self->set_mpdu_ref_index =
-      fvv_merge_patch_data_unit_set_mpdu_ref_index;
-  self->set_mpdu_override_2d_params_flag =
-      fvv_merge_patch_data_unit_set_mpdu_override_2d_params_flag;
-  self->set_mpdu_2d_pos_x =
-      fvv_merge_patch_data_unit_set_mpdu_2d_pos_x;
-  self->set_mpdu_2d_pos_y =
-      fvv_merge_patch_data_unit_set_mpdu_2d_pos_y;
-  self->set_mpdu_2d_delta_size_x =
-      fvv_merge_patch_data_unit_set_mpdu_2d_delta_size_x;
-  self->set_mpdu_2d_delta_size_y =
-      fvv_merge_patch_data_unit_set_mpdu_2d_delta_size_y;
-  self->set_mpdu_override_3d_params_flag =
-      fvv_merge_patch_data_unit_set_mpdu_override_3d_params_flag;
-  self->set_mpdu_3d_offset_u =
-      fvv_merge_patch_data_unit_set_mpdu_3d_offset_u;
-  self->set_mpdu_3d_offset_v =
-      fvv_merge_patch_data_unit_set_mpdu_3d_offset_v;
-  self->set_mpdu_3d_offset_d =
-      fvv_merge_patch_data_unit_set_mpdu_3d_offset_d;
-  self->set_mpdu_3d_range_d =
-      fvv_merge_patch_data_unit_set_mpdu_3d_range_d;
-  self->set_mpdu_override_plr_flag =
-      fvv_merge_patch_data_unit_set_mpdu_override_plr_flag;
-  self->set_pd = fvv_merge_patch_data_unit_set_pd;
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_ref_index);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_override_2d_params_flag);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_2d_pos_x);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_2d_pos_y);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_2d_delta_size_x);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_2d_delta_size_y);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_override_3d_params_flag);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_3d_offset_u);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_3d_offset_v);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_3d_offset_d);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_3d_range_d);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, mpdu_override_plr_flag);
+  FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, pd, fvv_plr_data_t);
 
-  self->pd     = (fvv_plr_data_t *)malloc(sizeof(fvv_plr_data_t));
+  self->pd = (fvv_plr_data_t *)malloc(sizeof(fvv_plr_data_t));
   fvv_plr_data_init(self->pd, data);
 
   return FVV_RET_SUCCESS;
@@ -53,11 +41,19 @@ fvv_merge_patch_data_unit_destroy(fvv_merge_patch_data_unit_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->pd)
-  {
-    fvv_plr_data_destroy(self->pd);
-    free(self->pd);
-  }
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_ref_index);
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_override_2d_params_flag);
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_2d_pos_x);
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_2d_pos_y);
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_2d_delta_size_x);
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_2d_delta_size_y);
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_override_3d_params_flag);
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_3d_offset_u);
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_3d_offset_v);
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_3d_offset_d);
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_3d_range_d);
+  FVV_DESTROY_2D_ARR(fvv_merge_patch_data_unit_t, mpdu_override_plr_flag);
+  FVV_DESTROY_OBJ(fvv_merge_patch_data_unit_t, pd, fvv_plr_data_t);
   *self = (fvv_merge_patch_data_unit_t){0};
   return FVV_RET_SUCCESS;
 }
@@ -179,399 +175,17 @@ fvv_ret_t fvv_merge_patch_data_unit_copy_from(
   self->set_pd(self, other->pd);
   return FVV_RET_SUCCESS;
 }
-
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_ref_index(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_ref_index,
-    uint64_t                     mpdu_ref_index_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_ref_index)
-  {
-    for (uint64_t i = 0; i < self->mpdu_ref_index_size[0]; i++)
-    {
-      free(self->mpdu_ref_index[i]);
-    }
-    free(self->mpdu_ref_index);
-    self->mpdu_ref_index_size[0] = 0;
-    self->mpdu_ref_index_size[1] = 0;
-  }
-  self->mpdu_ref_index =
-      (uint64_t **)malloc(sizeof(uint64_t) * mpdu_ref_index_size[0]);
-  for (uint64_t i = 0; i < mpdu_ref_index_size[0]; i++)
-  {
-    memcpy(self->mpdu_ref_index,
-           mpdu_ref_index,
-           sizeof(uint64_t) * mpdu_ref_index_size[1]);
-  }
-  self->mpdu_ref_index_size[0] = mpdu_ref_index_size[0];
-  self->mpdu_ref_index_size[1] = mpdu_ref_index_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_override_2d_params_flag(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_override_2d_params_flag,
-    uint64_t mpdu_override_2d_params_flag_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_override_2d_params_flag)
-  {
-    for (uint64_t i = 0;
-         i < self->mpdu_override_2d_params_flag_size[0];
-         i++)
-    {
-      free(self->mpdu_override_2d_params_flag[i]);
-    }
-    free(self->mpdu_override_2d_params_flag);
-    self->mpdu_override_2d_params_flag_size[0] = 0;
-    self->mpdu_override_2d_params_flag_size[1] = 0;
-  }
-  self->mpdu_override_2d_params_flag = (uint64_t **)malloc(
-      sizeof(uint64_t) * mpdu_override_2d_params_flag_size[0]);
-  for (uint64_t i = 0; i < mpdu_override_2d_params_flag_size[0]; i++)
-  {
-    memcpy(self->mpdu_override_2d_params_flag,
-           mpdu_override_2d_params_flag,
-           sizeof(uint64_t) * mpdu_override_2d_params_flag_size[1]);
-  }
-  self->mpdu_override_2d_params_flag_size[0] =
-      mpdu_override_2d_params_flag_size[0];
-  self->mpdu_override_2d_params_flag_size[1] =
-      mpdu_override_2d_params_flag_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_2d_pos_x(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_2d_pos_x,
-    uint64_t                     mpdu_2d_pos_x_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_2d_pos_x)
-  {
-    for (uint64_t i = 0; i < self->mpdu_2d_pos_x_size[0]; i++)
-    {
-      free(self->mpdu_2d_pos_x[i]);
-    }
-    free(self->mpdu_2d_pos_x);
-    self->mpdu_2d_pos_x_size[0] = 0;
-    self->mpdu_2d_pos_x_size[1] = 0;
-  }
-  self->mpdu_2d_pos_x =
-      (uint64_t **)malloc(sizeof(uint64_t) * mpdu_2d_pos_x_size[0]);
-  for (uint64_t i = 0; i < mpdu_2d_pos_x_size[0]; i++)
-  {
-    memcpy(self->mpdu_2d_pos_x,
-           mpdu_2d_pos_x,
-           sizeof(uint64_t) * mpdu_2d_pos_x_size[1]);
-  }
-  self->mpdu_2d_pos_x_size[0] = mpdu_2d_pos_x_size[0];
-  self->mpdu_2d_pos_x_size[1] = mpdu_2d_pos_x_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_2d_pos_y(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_2d_pos_y,
-    uint64_t                     mpdu_2d_pos_y_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_2d_pos_y)
-  {
-    for (uint64_t i = 0; i < self->mpdu_2d_pos_y_size[0]; i++)
-    {
-      free(self->mpdu_2d_pos_y[i]);
-    }
-    free(self->mpdu_2d_pos_y);
-    self->mpdu_2d_pos_y_size[0] = 0;
-    self->mpdu_2d_pos_y_size[1] = 0;
-  }
-  self->mpdu_2d_pos_y =
-      (uint64_t **)malloc(sizeof(uint64_t) * mpdu_2d_pos_y_size[0]);
-  for (uint64_t i = 0; i < mpdu_2d_pos_y_size[0]; i++)
-  {
-    memcpy(self->mpdu_2d_pos_y,
-           mpdu_2d_pos_y,
-           sizeof(uint64_t) * mpdu_2d_pos_y_size[1]);
-  }
-  self->mpdu_2d_pos_y_size[0] = mpdu_2d_pos_y_size[0];
-  self->mpdu_2d_pos_y_size[1] = mpdu_2d_pos_y_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_2d_delta_size_x(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_2d_delta_size_x,
-    uint64_t                     mpdu_2d_delta_size_x_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_2d_delta_size_x)
-  {
-    for (uint64_t i = 0; i < self->mpdu_2d_delta_size_x_size[0]; i++)
-    {
-      free(self->mpdu_2d_delta_size_x[i]);
-    }
-    free(self->mpdu_2d_delta_size_x);
-    self->mpdu_2d_delta_size_x_size[0] = 0;
-    self->mpdu_2d_delta_size_x_size[1] = 0;
-  }
-  self->mpdu_2d_delta_size_x = (uint64_t **)malloc(
-      sizeof(uint64_t) * mpdu_2d_delta_size_x_size[0]);
-  for (uint64_t i = 0; i < mpdu_2d_delta_size_x_size[0]; i++)
-  {
-    memcpy(self->mpdu_2d_delta_size_x,
-           mpdu_2d_delta_size_x,
-           sizeof(uint64_t) * mpdu_2d_delta_size_x_size[1]);
-  }
-  self->mpdu_2d_delta_size_x_size[0] = mpdu_2d_delta_size_x_size[0];
-  self->mpdu_2d_delta_size_x_size[1] = mpdu_2d_delta_size_x_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_2d_delta_size_y(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_2d_delta_size_y,
-    uint64_t                     mpdu_2d_delta_size_y_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_2d_delta_size_y)
-  {
-    for (uint64_t i = 0; i < self->mpdu_2d_delta_size_y_size[0]; i++)
-    {
-      free(self->mpdu_2d_delta_size_y[i]);
-    }
-    free(self->mpdu_2d_delta_size_y);
-    self->mpdu_2d_delta_size_y_size[0] = 0;
-    self->mpdu_2d_delta_size_y_size[1] = 0;
-  }
-  self->mpdu_2d_delta_size_y = (uint64_t **)malloc(
-      sizeof(uint64_t) * mpdu_2d_delta_size_y_size[0]);
-  for (uint64_t i = 0; i < mpdu_2d_delta_size_y_size[0]; i++)
-  {
-    memcpy(self->mpdu_2d_delta_size_y,
-           mpdu_2d_delta_size_y,
-           sizeof(uint64_t) * mpdu_2d_delta_size_y_size[1]);
-  }
-  self->mpdu_2d_delta_size_y_size[0] = mpdu_2d_delta_size_y_size[0];
-  self->mpdu_2d_delta_size_y_size[1] = mpdu_2d_delta_size_y_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_override_3d_params_flag(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_override_3d_params_flag,
-    uint64_t mpdu_override_3d_params_flag_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_override_3d_params_flag)
-  {
-    for (uint64_t i = 0;
-         i < self->mpdu_override_3d_params_flag_size[0];
-         i++)
-    {
-      free(self->mpdu_override_3d_params_flag[i]);
-    }
-    free(self->mpdu_override_3d_params_flag);
-    self->mpdu_override_3d_params_flag_size[0] = 0;
-    self->mpdu_override_3d_params_flag_size[1] = 0;
-  }
-  self->mpdu_override_3d_params_flag = (uint64_t **)malloc(
-      sizeof(uint64_t) * mpdu_override_3d_params_flag_size[0]);
-  for (uint64_t i = 0; i < mpdu_override_3d_params_flag_size[0]; i++)
-  {
-    memcpy(self->mpdu_override_3d_params_flag,
-           mpdu_override_3d_params_flag,
-           sizeof(uint64_t) * mpdu_override_3d_params_flag_size[1]);
-  }
-  self->mpdu_override_3d_params_flag_size[0] =
-      mpdu_override_3d_params_flag_size[0];
-  self->mpdu_override_3d_params_flag_size[1] =
-      mpdu_override_3d_params_flag_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_3d_offset_u(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_3d_offset_u,
-    uint64_t                     mpdu_3d_offset_u_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_3d_offset_u)
-  {
-    for (uint64_t i = 0; i < self->mpdu_3d_offset_u_size[0]; i++)
-    {
-      free(self->mpdu_3d_offset_u[i]);
-    }
-    free(self->mpdu_3d_offset_u);
-    self->mpdu_3d_offset_u_size[0] = 0;
-    self->mpdu_3d_offset_u_size[1] = 0;
-  }
-  self->mpdu_3d_offset_u = (uint64_t **)malloc(
-      sizeof(uint64_t) * mpdu_3d_offset_u_size[0]);
-  for (uint64_t i = 0; i < mpdu_3d_offset_u_size[0]; i++)
-  {
-    memcpy(self->mpdu_3d_offset_u,
-           mpdu_3d_offset_u,
-           sizeof(uint64_t) * mpdu_3d_offset_u_size[1]);
-  }
-  self->mpdu_3d_offset_u_size[0] = mpdu_3d_offset_u_size[0];
-  self->mpdu_3d_offset_u_size[1] = mpdu_3d_offset_u_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_3d_offset_v(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_3d_offset_v,
-    uint64_t                     mpdu_3d_offset_v_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_3d_offset_v)
-  {
-    for (uint64_t i = 0; i < self->mpdu_3d_offset_v_size[0]; i++)
-    {
-      free(self->mpdu_3d_offset_v[i]);
-    }
-    free(self->mpdu_3d_offset_v);
-    self->mpdu_3d_offset_v_size[0] = 0;
-    self->mpdu_3d_offset_v_size[1] = 0;
-  }
-  self->mpdu_3d_offset_v = (uint64_t **)malloc(
-      sizeof(uint64_t) * mpdu_3d_offset_v_size[0]);
-  for (uint64_t i = 0; i < mpdu_3d_offset_v_size[0]; i++)
-  {
-    memcpy(self->mpdu_3d_offset_v,
-           mpdu_3d_offset_v,
-           sizeof(uint64_t) * mpdu_3d_offset_v_size[1]);
-  }
-  self->mpdu_3d_offset_v_size[0] = mpdu_3d_offset_v_size[0];
-  self->mpdu_3d_offset_v_size[1] = mpdu_3d_offset_v_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_3d_offset_d(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_3d_offset_d,
-    uint64_t                     mpdu_3d_offset_d_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_3d_offset_d)
-  {
-    for (uint64_t i = 0; i < self->mpdu_3d_offset_d_size[0]; i++)
-    {
-      free(self->mpdu_3d_offset_d[i]);
-    }
-    free(self->mpdu_3d_offset_d);
-    self->mpdu_3d_offset_d_size[0] = 0;
-    self->mpdu_3d_offset_d_size[1] = 0;
-  }
-  self->mpdu_3d_offset_d = (uint64_t **)malloc(
-      sizeof(uint64_t) * mpdu_3d_offset_d_size[0]);
-  for (uint64_t i = 0; i < mpdu_3d_offset_d_size[0]; i++)
-  {
-    memcpy(self->mpdu_3d_offset_d,
-           mpdu_3d_offset_d,
-           sizeof(uint64_t) * mpdu_3d_offset_d_size[1]);
-  }
-  self->mpdu_3d_offset_d_size[0] = mpdu_3d_offset_d_size[0];
-  self->mpdu_3d_offset_d_size[1] = mpdu_3d_offset_d_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_3d_range_d(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_3d_range_d,
-    uint64_t                     mpdu_3d_range_d_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_3d_range_d)
-  {
-    for (uint64_t i = 0; i < self->mpdu_3d_range_d_size[0]; i++)
-    {
-      free(self->mpdu_3d_range_d[i]);
-    }
-    free(self->mpdu_3d_range_d);
-    self->mpdu_3d_range_d_size[0] = 0;
-    self->mpdu_3d_range_d_size[1] = 0;
-  }
-  self->mpdu_3d_range_d = (uint64_t **)malloc(
-      sizeof(uint64_t) * mpdu_3d_range_d_size[0]);
-  for (uint64_t i = 0; i < mpdu_3d_range_d_size[0]; i++)
-  {
-    memcpy(self->mpdu_3d_range_d,
-           mpdu_3d_range_d,
-           sizeof(uint64_t) * mpdu_3d_range_d_size[1]);
-  }
-  self->mpdu_3d_range_d_size[0] = mpdu_3d_range_d_size[0];
-  self->mpdu_3d_range_d_size[1] = mpdu_3d_range_d_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_merge_patch_data_unit_set_mpdu_override_plr_flag(
-    fvv_merge_patch_data_unit_t *self,
-    uint64_t                   **mpdu_override_plr_flag,
-    uint64_t                     mpdu_override_plr_flag_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->mpdu_override_plr_flag)
-  {
-    for (uint64_t i = 0; i < self->mpdu_override_plr_flag_size[0];
-         i++)
-    {
-      free(self->mpdu_override_plr_flag[i]);
-    }
-    free(self->mpdu_override_plr_flag);
-    self->mpdu_override_plr_flag_size[0] = 0;
-    self->mpdu_override_plr_flag_size[1] = 0;
-  }
-  self->mpdu_override_plr_flag = (uint64_t **)malloc(
-      sizeof(uint64_t) * mpdu_override_plr_flag_size[0]);
-  for (uint64_t i = 0; i < mpdu_override_plr_flag_size[0]; i++)
-  {
-    memcpy(self->mpdu_override_plr_flag,
-           mpdu_override_plr_flag,
-           sizeof(uint64_t) * mpdu_override_plr_flag_size[1]);
-  }
-  self->mpdu_override_plr_flag_size[0] =
-      mpdu_override_plr_flag_size[0];
-  self->mpdu_override_plr_flag_size[1] =
-      mpdu_override_plr_flag_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_merge_patch_data_unit_set_pd(fvv_merge_patch_data_unit_t *self,
-                                 fvv_plr_data_t              *pd)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->pd->copy_from(self->pd, pd);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_ref_index);
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_override_2d_params_flag);
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_2d_pos_x);
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_2d_pos_y);
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_2d_delta_size_x);
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_2d_delta_size_y);
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_override_3d_params_flag);
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_3d_offset_u);
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_3d_offset_v);
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_3d_offset_d);
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_3d_range_d);
+FVV_DEFINE_2D_ARR_SETTER(fvv_merge_patch_data_unit_t, mpdu_override_plr_flag);
+FVV_DEFINE_OBJ_SETTER(fvv_merge_patch_data_unit_t, pd, fvv_plr_data_t);
 // }

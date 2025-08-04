@@ -14,8 +14,8 @@ fvv_ret_t fvv_sei_rbsp_init(fvv_sei_rbsp_t  *self,
   self->pack      = fvv_sei_rbsp_pack;
   self->copy_from = fvv_sei_rbsp_copy_from;
 
-  self->set_sm    = fvv_sei_rbsp_set_sm;
-  self->set_rtb   = fvv_sei_rbsp_set_rtb;
+  FVV_SET_SETTER_PTR(fvv_sei_rbsp_t, sm, fvv_sei_message_t);
+  FVV_SET_SETTER_PTR(fvv_sei_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 
   self->sm  = (fvv_sei_message_t *)malloc(sizeof(fvv_sei_message_t));
   self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
@@ -32,16 +32,8 @@ fvv_ret_t fvv_sei_rbsp_destroy(fvv_sei_rbsp_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->sm)
-  {
-    fvv_sei_message_destroy(self->sm);
-    free(self->sm);
-  }
-  if (self->rtb)
-  {
-    fvv_rbsp_trailing_bits_destroy(self->rtb);
-    free(self->rtb);
-  }
+  FVV_DESTROY_OBJ(fvv_sei_rbsp_t, sm, fvv_sei_message_t);
+  FVV_DESTROY_OBJ(fvv_sei_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t fvv_sei_rbsp_pack(fvv_sei_rbsp_t *self)
@@ -75,25 +67,7 @@ fvv_ret_t fvv_sei_rbsp_copy_from(fvv_sei_rbsp_t *self,
   return FVV_RET_SUCCESS;
 }
 
-fvv_ret_t fvv_sei_rbsp_set_sm(fvv_sei_rbsp_t    *self,
-                              fvv_sei_message_t *sm)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->sm->copy_from(self->sm, sm);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_sei_rbsp_set_rtb(fvv_sei_rbsp_t           *self,
-                               fvv_rbsp_trailing_bits_t *rtb)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->rtb->copy_from(self->rtb, rtb);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_OBJ_SETTER(fvv_sei_rbsp_t, sm, fvv_sei_message_t);
+FVV_DEFINE_OBJ_SETTER(fvv_sei_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 
 // }

@@ -14,6 +14,9 @@ fvv_ret_t fvv_byte_alignment_init(fvv_byte_alignment_t *self,
   self->data                        = data;
   self->pack                        = fvv_byte_alignment_pack;
 
+  FVV_SET_SETTER_PTR(fvv_byte_alignment_t, alignment_bit_equal_to_one);
+  FVV_SET_SETTER_PTR(fvv_byte_alignment_t, alignment_bit_equal_to_zero);
+
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t fvv_byte_alignment_destroy(fvv_byte_alignment_t *self)
@@ -63,24 +66,6 @@ fvv_ret_t fvv_byte_alignment_copy_from(fvv_byte_alignment_t *self,
       self, other->alignment_bit_equal_to_zero);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t fvv_byte_alignment_set_alignment_bit_equal_to_one(
-    fvv_byte_alignment_t *self, uint64_t alignment_bit_equal_to_one)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->alignment_bit_equal_to_one = alignment_bit_equal_to_one;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_byte_alignment_set_alignment_bit_equal_to_zero(
-    fvv_byte_alignment_t *self, uint64_t alignment_bit_equal_to_zero)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->alignment_bit_equal_to_zero = alignment_bit_equal_to_zero;
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_SCALAR_SETTER(fvv_byte_alignment_t, alignment_bit_equal_to_one);
+FVV_DEFINE_SCALAR_SETTER(fvv_byte_alignment_t, alignment_bit_equal_to_zero);
 // }

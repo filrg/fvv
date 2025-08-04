@@ -31,11 +31,7 @@ fvv_aaps_vpcc_extension_destroy(fvv_aaps_vpcc_extension_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->acp)
-  {
-    fvv_atlas_camera_parameters_destroy(self->acp);
-    free(self->acp);
-  }
+  FVV_DESTROY_OBJ(fvv_aaps_vpcc_extension_t, acp, fvv_atlas_camera_parameters_t);
   *self = (fvv_aaps_vpcc_extension_t){0};
   return FVV_RET_SUCCESS;
 }

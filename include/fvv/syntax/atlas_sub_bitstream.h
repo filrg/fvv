@@ -10,7 +10,6 @@ struct fvv_atlas_sub_bitstream_t
   fvv_v3c_unit_t                 *vu;
   fvv_bitstream_t                *data;
 
-  fvv_sample_stream_nal_header_t *ssnh;
   fvv_sample_stream_nal_unit_t  **ssnu;
   uint64_t                        ssnu_size;
 

@@ -11,10 +11,10 @@ fvv_ret_t fvv_v3c_unit_init(fvv_v3c_unit_t  *self,
 
   self->pack      = fvv_v3c_unit_pack;
   self->copy_from = fvv_v3c_unit_copy_from;
-  self->set_vuh   = fvv_v3c_unit_set_vuh;
-  self->set_vup   = fvv_v3c_unit_set_vup;
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_t, vuh, fvv_v3c_unit_header_t);
+  FVV_SET_SETTER_PTR(fvv_v3c_unit_t, vup, fvv_v3c_unit_payload_t);
 
-  self->data      = data;
+  self->data = data;
 
   self->vuh =
       (fvv_v3c_unit_header_t *)malloc(sizeof(fvv_v3c_unit_header_t));
@@ -32,16 +32,8 @@ fvv_ret_t fvv_v3c_unit_destroy(fvv_v3c_unit_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->vuh)
-  {
-    fvv_v3c_unit_header_destroy(self->vuh);
-    free(self->vuh);
-  }
-  if (self->vup)
-  {
-    fvv_v3c_unit_payload_destroy(self->vup);
-    free(self->vup);
-  }
+  FVV_DESTROY_OBJ(fvv_v3c_unit_t, vuh, fvv_v3c_unit_header_t);
+  FVV_DESTROY_OBJ(fvv_v3c_unit_t, vup, fvv_v3c_unit_payload_t);
 
   *self = (fvv_v3c_unit_t){0};
   return FVV_RET_SUCCESS;
@@ -78,25 +70,7 @@ fvv_ret_t fvv_v3c_unit_copy_from(fvv_v3c_unit_t *self,
 
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t fvv_v3c_unit_set_vuh(fvv_v3c_unit_t        *self,
-                               fvv_v3c_unit_header_t *vuh)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vuh->copy_from(self->vuh, vuh);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_v3c_unit_set_vup(fvv_v3c_unit_t         *self,
-                               fvv_v3c_unit_payload_t *vup)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->vup->copy_from(self->vup, vup);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_OBJ_SETTER(fvv_v3c_unit_t, vuh, fvv_v3c_unit_header_t);
+FVV_DEFINE_OBJ_SETTER(fvv_v3c_unit_t, vup, fvv_v3c_unit_payload_t);
 
 // }

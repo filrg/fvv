@@ -16,14 +16,10 @@ fvv_occupancy_information_init(fvv_occupancy_information_t *self,
 
   self->pack      = fvv_occupancy_information_pack;
   self->copy_from = fvv_occupancy_information_copy_from;
-  self->set_oi_occupancy_codec_id =
-      fvv_occupancy_information_set_oi_occupancy_codec_id;
-  self->set_oi_lossy_occupancy_compression_threshold =
-      fvv_occupancy_information_set_oi_lossy_occupancy_compression_threshold;
-  self->set_oi_occupancy_2d_bit_depth_minus1 =
-      fvv_occupancy_information_set_oi_occupancy_2d_bit_depth_minus1;
-  self->set_oi_occupancy_MSB_align_flag =
-      fvv_occupancy_information_set_oi_occupancy_MSB_align_flag;
+  FVV_SET_SETTER_PTR(fvv_occupancy_information_t, oi_occupancy_codec_id, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_occupancy_information_t, oi_lossy_occupancy_compression_threshold, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_occupancy_information_t, oi_occupancy_2d_bit_depth_minus1, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_occupancy_information_t, oi_occupancy_MSB_align_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
 
   return FVV_RET_SUCCESS;
 }
@@ -80,62 +76,8 @@ fvv_ret_t fvv_occupancy_information_copy_from(
       self, other->oi_occupancy_MSB_align_flag);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t fvv_occupancy_information_set_oi_occupancy_codec_id(
-    fvv_occupancy_information_t *self,
-    uint64_t oi_occupancy_codec_id[0x1 << FVV_BIT_VPS_ATLAS_ID])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->oi_occupancy_codec_id,
-         oi_occupancy_codec_id,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_occupancy_information_set_oi_lossy_occupancy_compression_threshold(
-    fvv_occupancy_information_t *self,
-    uint64_t oi_lossy_occupancy_compression_threshold
-        [0x1 << FVV_BIT_VPS_ATLAS_ID])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->oi_lossy_occupancy_compression_threshold,
-         oi_lossy_occupancy_compression_threshold,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_occupancy_information_set_oi_occupancy_2d_bit_depth_minus1(
-    fvv_occupancy_information_t *self,
-    uint64_t
-        oi_occupancy_2d_bit_depth_minus1[0x1
-                                         << FVV_BIT_VPS_ATLAS_ID])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->oi_occupancy_2d_bit_depth_minus1,
-         oi_occupancy_2d_bit_depth_minus1,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_occupancy_information_set_oi_occupancy_MSB_align_flag(
-    fvv_occupancy_information_t *self,
-    uint64_t
-        oi_occupancy_MSB_align_flag[0x1 << FVV_BIT_VPS_ATLAS_ID])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->oi_occupancy_MSB_align_flag,
-         oi_occupancy_MSB_align_flag,
-         sizeof(uint64_t) * (0x1 << FVV_BIT_VPS_ATLAS_ID));
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_occupancy_information_t, oi_occupancy_codec_id, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_occupancy_information_t, oi_lossy_occupancy_compression_threshold, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_occupancy_information_t, oi_occupancy_2d_bit_depth_minus1, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_occupancy_information_t, oi_occupancy_MSB_align_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
 // }

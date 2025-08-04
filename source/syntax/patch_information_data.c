@@ -8,20 +8,18 @@ fvv_patch_information_data_init(fvv_patch_information_data_t *self,
                                 fvv_atlas_tile_header_t      *ath,
                                 fvv_bitstream_t              *data)
 {
-  *self           = (fvv_patch_information_data_t){0};
-  self->ath       = ath;
-  self->data      = data;
+  *self      = (fvv_patch_information_data_t){0};
+  self->ath  = ath;
+  self->data = data;
 
-  self->pack      = fvv_patch_information_data_pack;
-  self->copy_from = fvv_patch_information_data_copy_from;
-  self->set_spdu  = fvv_patch_information_data_set_spdu;
-  self->set_mpdu  = fvv_patch_information_data_set_mpdu;
-  self->set_pdu   = fvv_patch_information_data_set_pdu;
-  self->set_ipdu  = fvv_patch_information_data_set_ipdu;
-  self->set_rpdu  = fvv_patch_information_data_set_rpdu;
-  self->set_epdu  = fvv_patch_information_data_set_epdu;
+  FVV_SET_SETTER_PTR(fvv_patch_information_data_t, spdu, fvv_skip_patch_data_unit_t);
+  FVV_SET_SETTER_PTR(fvv_patch_information_data_t, mpdu, fvv_merge_patch_data_unit_t);
+  FVV_SET_SETTER_PTR(fvv_patch_information_data_t, pdu, fvv_patch_data_unit_t);
+  FVV_SET_SETTER_PTR(fvv_patch_information_data_t, ipdu, fvv_inter_patch_data_unit_t);
+  FVV_SET_SETTER_PTR(fvv_patch_information_data_t, rpdu, fvv_raw_patch_data_unit_t);
+  FVV_SET_SETTER_PTR(fvv_patch_information_data_t, epdu, fvv_eom_patch_data_unit_t);
 
-  self->spdu      = (fvv_skip_patch_data_unit_t *)malloc(
+  self->spdu = (fvv_skip_patch_data_unit_t *)malloc(
       sizeof(fvv_skip_patch_data_unit_t));
   self->mpdu = (fvv_merge_patch_data_unit_t *)malloc(
       sizeof(fvv_merge_patch_data_unit_t));
@@ -50,45 +48,20 @@ fvv_ret_t fvv_patch_information_data_destroy(
   {
     return FVV_RET_UNINITIALIZED;
   }
-
-  if (self->spdu)
-  {
-    fvv_skip_patch_data_unit_destroy(self->spdu);
-    free(self->spdu);
-  }
-  if (self->mpdu)
-  {
-    fvv_merge_patch_data_unit_destroy(self->mpdu);
-    free(self->mpdu);
-  }
-  if (self->pdu)
-  {
-    fvv_patch_data_unit_destroy(self->pdu);
-    free(self->pdu);
-  }
-  if (self->ipdu)
-  {
-    fvv_inter_patch_data_unit_destroy(self->ipdu);
-    free(self->ipdu);
-  }
-  if (self->rpdu)
-  {
-    fvv_raw_patch_data_unit_destroy(self->rpdu);
-    free(self->rpdu);
-  }
-  if (self->epdu)
-  {
-    fvv_eom_patch_data_unit_destroy(self->epdu);
-    free(self->epdu);
-  }
+  FVV_DESTROY_OBJ(fvv_patch_information_data_t, spdu, fvv_skip_patch_data_unit_t);
+  FVV_DESTROY_OBJ(fvv_patch_information_data_t, mpdu, fvv_merge_patch_data_unit_t);
+  FVV_DESTROY_OBJ(fvv_patch_information_data_t, pdu, fvv_patch_data_unit_t);
+  FVV_DESTROY_OBJ(fvv_patch_information_data_t, ipdu, fvv_inter_patch_data_unit_t);
+  FVV_DESTROY_OBJ(fvv_patch_information_data_t, rpdu, fvv_raw_patch_data_unit_t);
+  FVV_DESTROY_OBJ(fvv_patch_information_data_t, epdu, fvv_eom_patch_data_unit_t);
   *self = (fvv_patch_information_data_t){0};
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t
 fvv_patch_information_data_pack(fvv_patch_information_data_t *self,
                                 uint64_t                      tileID,
-                                uint64_t patchIdx,
-                                uint64_t patchMode)
+                                uint64_t                      patchIdx,
+                                uint64_t                      patchMode)
 {
   if (!self)
   {
@@ -140,69 +113,10 @@ fvv_ret_t fvv_patch_information_data_copy_from(
   self->set_epdu(self, other->epdu);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t fvv_patch_information_data_set_spdu(
-    fvv_patch_information_data_t *self,
-    fvv_skip_patch_data_unit_t   *spdu)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->spdu->copy_from(self->spdu, spdu);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_information_data_set_mpdu(
-    fvv_patch_information_data_t *self,
-    fvv_merge_patch_data_unit_t  *mpdu)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->mpdu->copy_from(self->mpdu, mpdu);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_information_data_set_pdu(
-    fvv_patch_information_data_t *self, fvv_patch_data_unit_t *pdu)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->pdu->copy_from(self->pdu, pdu);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_information_data_set_ipdu(
-    fvv_patch_information_data_t *self,
-    fvv_inter_patch_data_unit_t  *ipdu)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ipdu->copy_from(self->ipdu, ipdu);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_information_data_set_rpdu(
-    fvv_patch_information_data_t *self,
-    fvv_raw_patch_data_unit_t    *rpdu)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->rpdu->copy_from(self->rpdu, rpdu);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_information_data_set_epdu(
-    fvv_patch_information_data_t *self,
-    fvv_eom_patch_data_unit_t    *epdu)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->epdu->copy_from(self->epdu, epdu);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_OBJ_SETTER(fvv_patch_information_data_t, spdu, fvv_skip_patch_data_unit_t);
+FVV_DEFINE_OBJ_SETTER(fvv_patch_information_data_t, mpdu, fvv_merge_patch_data_unit_t);
+FVV_DEFINE_OBJ_SETTER(fvv_patch_information_data_t, pdu, fvv_patch_data_unit_t);
+FVV_DEFINE_OBJ_SETTER(fvv_patch_information_data_t, ipdu, fvv_inter_patch_data_unit_t);
+FVV_DEFINE_OBJ_SETTER(fvv_patch_information_data_t, rpdu, fvv_raw_patch_data_unit_t);
+FVV_DEFINE_OBJ_SETTER(fvv_patch_information_data_t, epdu, fvv_eom_patch_data_unit_t);
 // }

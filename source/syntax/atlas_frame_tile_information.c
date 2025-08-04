@@ -43,6 +43,13 @@ fvv_ret_t fvv_atlas_frame_tile_information_destroy(
   {
     return FVV_RET_UNINITIALIZED;
   }
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_partition_column_width_minus1);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_partition_row_height_minus1);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_top_left_partition_idx);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_column_offset);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_row_offset);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_auxiliary_video_tile_row_height);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_tile_id);
   *self = (fvv_atlas_frame_tile_information_t){0};
   return FVV_RET_SUCCESS;
 }

@@ -31,11 +31,7 @@ fvv_ret_t fvv_access_unit_delimiter_rbsp_destroy(
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->rtb)
-  {
-    fvv_rbsp_trailing_bits_destroy(self->rtb);
-    free(self->rtb);
-  }
+  FVV_DESTROY_OBJ(fvv_access_unit_delimiter_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
   *self = (fvv_access_unit_delimiter_rbsp_t){0};
   return FVV_RET_SUCCESS;
 }

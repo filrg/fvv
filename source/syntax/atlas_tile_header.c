@@ -64,16 +64,10 @@ fvv_atlas_tile_header_destroy(fvv_atlas_tile_header_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->rls)
-  {
-    fvv_ref_list_struct_destroy(self->rls);
-    free(self->rls);
-  }
-  if (self->ba)
-  {
-    fvv_byte_alignment_destroy(self->ba);
-    free(self->ba);
-  }
+  FVV_DESTROY_1D_ARR(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_present_flag);
+  FVV_DESTROY_1D_ARR(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_val);
+  FVV_DESTROY_OBJ(fvv_atlas_tile_header_t, rls, fvv_ref_list_struct_t);
+  FVV_DESTROY_OBJ(fvv_atlas_tile_header_t, ba, fvv_byte_alignment_t);
   *self = (fvv_atlas_tile_header_t){0};
   return FVV_RET_SUCCESS;
 }

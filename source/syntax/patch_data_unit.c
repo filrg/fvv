@@ -3,44 +3,37 @@
 #include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
 #include <fvv/syntax/patch_data_unit.h>
 #include <string.h>
+
+// 8.3.7.3 Patch data unit syntax
+// {
 fvv_ret_t fvv_patch_data_unit_init(
     fvv_patch_data_unit_t                   *self,
     fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
     fvv_atlas_frame_parameter_set_rbsp_t    *afpsr,
     fvv_bitstream_t                         *data)
 {
-  *self                  = (fvv_patch_data_unit_t){0};
-  self->data             = data;
-  self->afpsr            = afpsr;
-  self->aspsr            = aspsr;
+  *self           = (fvv_patch_data_unit_t){0};
+  self->data      = data;
+  self->afpsr     = afpsr;
+  self->aspsr     = aspsr;
 
-  self->pack             = fvv_patch_data_unit_pack;
-  self->copy_from        = fvv_patch_data_unit_copy_from;
+  self->pack      = fvv_patch_data_unit_pack;
+  self->copy_from = fvv_patch_data_unit_copy_from;
 
-  self->set_pd           = fvv_patch_data_unit_set_pd;
-  self->set_pdu_2d_pos_x = fvv_patch_data_unit_set_pdu_2d_pos_x;
-  self->set_pdu_2d_pos_y = fvv_patch_data_unit_set_pdu_2d_pos_y;
-  self->set_pdu_2d_size_x_minus1 =
-      fvv_patch_data_unit_set_pdu_2d_size_x_minus1;
-  self->set_pdu_2d_size_y_minus1 =
-      fvv_patch_data_unit_set_pdu_2d_size_y_minus1;
-  self->set_pdu_3d_offset_u =
-      fvv_patch_data_unit_set_pdu_3d_offset_u;
-  self->set_pdu_3d_offset_v =
-      fvv_patch_data_unit_set_pdu_3d_offset_v;
-  self->set_pdu_3d_offset_d =
-      fvv_patch_data_unit_set_pdu_3d_offset_d;
-  self->set_pdu_3d_range_d = fvv_patch_data_unit_set_pdu_3d_range_d;
-  self->set_pdu_projection_id =
-      fvv_patch_data_unit_set_pdu_projection_id;
-  self->set_pdu_orientation_index =
-      fvv_patch_data_unit_set_pdu_orientation_index;
-  self->set_pdu_lod_enabled_flag =
-      fvv_patch_data_unit_set_pdu_lod_enabled_flag;
-  self->set_pdu_lod_scale_x_minus1 =
-      fvv_patch_data_unit_set_pdu_lod_scale_x_minus1;
-  self->set_pdu_lod_scale_y_idc =
-      fvv_patch_data_unit_set_pdu_lod_scale_y_idc;
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_2d_pos_x);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_2d_pos_y);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_2d_size_x_minus1);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_2d_size_y_minus1);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_3d_offset_u);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_3d_offset_v);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_3d_offset_d);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_3d_range_d);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_projection_id);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_orientation_index);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_lod_enabled_flag);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_lod_scale_x_minus1);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pdu_lod_scale_y_idc);
+  FVV_SET_SETTER_PTR(fvv_patch_data_unit_t, pd, fvv_plr_data_t);
 
   self->pd = (fvv_plr_data_t *)malloc(sizeof(fvv_plr_data_t));
 
@@ -54,11 +47,20 @@ fvv_ret_t fvv_patch_data_unit_destroy(fvv_patch_data_unit_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->pd)
-  {
-    fvv_plr_data_destroy(self->pd);
-    free(self->pd);
-  }
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_2d_pos_x);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_2d_pos_y);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_2d_size_x_minus1);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_2d_size_y_minus1);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_3d_offset_u);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_3d_offset_v);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_3d_offset_d);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_3d_range_d);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_projection_id);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_orientation_index);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_lod_enabled_flag);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_lod_scale_x_minus1);
+  FVV_DESTROY_2D_ARR(fvv_patch_data_unit_t, pdu_lod_scale_y_idc);
+  FVV_DESTROY_OBJ(fvv_patch_data_unit_t, pd, fvv_plr_data_t);
   *self = (fvv_patch_data_unit_t){0};
   return FVV_RET_SUCCESS;
 }
@@ -125,391 +127,22 @@ fvv_ret_t fvv_patch_data_unit_pack(fvv_patch_data_unit_t *self,
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t
-          fvv_patch_data_unit_copy_from(fvv_patch_data_unit_t *self,
-                                        fvv_patch_data_unit_t *other);
-fvv_ret_t fvv_patch_data_unit_set_pd(fvv_patch_data_unit_t *self,
-                                     fvv_plr_data_t        *pd);
-
-fvv_ret_t
-fvv_patch_data_unit_set_pdu_2d_pos_x(fvv_patch_data_unit_t *self,
-                                     uint64_t **pdu_2d_pos_x,
-                                     uint64_t   pdu_2d_pos_x_size[2])
+fvv_patch_data_unit_copy_from(fvv_patch_data_unit_t *self,
+                              fvv_patch_data_unit_t *other)
 {
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_2d_pos_x)
-  {
-    for (uint64_t i = 0; i < self->pdu_2d_pos_x_size[0]; i++)
-    {
-      free(self->pdu_2d_pos_x[i]);
-    }
-    free(self->pdu_2d_pos_x);
-  }
-  self->pdu_2d_pos_x =
-      (uint64_t **)malloc(sizeof(uint64_t *) * pdu_2d_pos_x_size[0]);
-  for (uint64_t i = 0; i < pdu_2d_pos_x_size[0]; i++)
-  {
-    memcpy(self->pdu_2d_pos_x[i],
-           pdu_2d_pos_x[i],
-           pdu_2d_pos_x_size[1]);
-  }
-  self->pdu_2d_pos_x_size[0] = pdu_2d_pos_x_size[0];
-  self->pdu_2d_pos_x_size[1] = pdu_2d_pos_x_size[1];
-  return FVV_RET_SUCCESS;
 }
-fvv_ret_t
-fvv_patch_data_unit_set_pdu_2d_pos_y(fvv_patch_data_unit_t *self,
-                                     uint64_t **pdu_2d_pos_y,
-                                     uint64_t   pdu_2d_pos_y_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_2d_pos_y)
-  {
-    for (uint64_t i = 0; i < self->pdu_2d_pos_y_size[0]; i++)
-    {
-      free(self->pdu_2d_pos_y[i]);
-    }
-    free(self->pdu_2d_pos_y);
-  }
-  self->pdu_2d_pos_y =
-      (uint64_t **)malloc(sizeof(uint64_t *) * pdu_2d_pos_y_size[0]);
-  for (uint64_t i = 0; i < pdu_2d_pos_y_size[0]; i++)
-  {
-    memcpy(self->pdu_2d_pos_y[i],
-           pdu_2d_pos_y[i],
-           pdu_2d_pos_y_size[1]);
-  }
-  self->pdu_2d_pos_y_size[0] = pdu_2d_pos_y_size[0];
-  self->pdu_2d_pos_y_size[1] = pdu_2d_pos_y_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_data_unit_set_pdu_2d_size_x_minus1(
-    fvv_patch_data_unit_t *self,
-    uint64_t             **pdu_2d_size_x_minus1,
-    uint64_t               pdu_2d_size_x_minus1_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_2d_size_x_minus1)
-  {
-    for (uint64_t i = 0; i < self->pdu_2d_size_x_minus1_size[0]; i++)
-    {
-      free(self->pdu_2d_size_x_minus1[i]);
-    }
-    free(self->pdu_2d_size_x_minus1);
-  }
-  self->pdu_2d_size_x_minus1 = (uint64_t **)malloc(
-      sizeof(uint64_t *) * pdu_2d_size_x_minus1_size[0]);
-  for (uint64_t i = 0; i < pdu_2d_size_x_minus1_size[0]; i++)
-  {
-    memcpy(self->pdu_2d_size_x_minus1[i],
-           pdu_2d_size_x_minus1[i],
-           pdu_2d_size_x_minus1_size[1]);
-  }
-  self->pdu_2d_size_x_minus1_size[0] = pdu_2d_size_x_minus1_size[0];
-  self->pdu_2d_size_x_minus1_size[1] = pdu_2d_size_x_minus1_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_data_unit_set_pdu_2d_size_y_minus1(
-    fvv_patch_data_unit_t *self,
-    uint64_t             **pdu_2d_size_y_minus1,
-    uint64_t               pdu_2d_size_y_minus1_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_2d_size_y_minus1)
-  {
-    for (uint64_t i = 0; i < self->pdu_2d_size_y_minus1_size[0]; i++)
-    {
-      free(self->pdu_2d_size_y_minus1[i]);
-    }
-    free(self->pdu_2d_size_y_minus1);
-  }
-  self->pdu_2d_size_y_minus1 = (uint64_t **)malloc(
-      sizeof(uint64_t *) * pdu_2d_size_y_minus1_size[0]);
-  for (uint64_t i = 0; i < pdu_2d_size_y_minus1_size[0]; i++)
-  {
-    memcpy(self->pdu_2d_size_y_minus1[i],
-           pdu_2d_size_y_minus1[i],
-           pdu_2d_size_y_minus1_size[1]);
-  }
-  self->pdu_2d_size_y_minus1_size[0] = pdu_2d_size_y_minus1_size[0];
-  self->pdu_2d_size_y_minus1_size[1] = pdu_2d_size_y_minus1_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_data_unit_set_pdu_3d_offset_u(
-    fvv_patch_data_unit_t *self,
-    uint64_t             **pdu_3d_offset_u,
-    uint64_t               pdu_3d_offset_u_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_3d_offset_u)
-  {
-    for (uint64_t i = 0; i < self->pdu_3d_offset_u_size[0]; i++)
-    {
-      free(self->pdu_3d_offset_u[i]);
-    }
-    free(self->pdu_3d_offset_u);
-  }
-  self->pdu_3d_offset_u = (uint64_t **)malloc(
-      sizeof(uint64_t *) * pdu_3d_offset_u_size[0]);
-  for (uint64_t i = 0; i < pdu_3d_offset_u_size[0]; i++)
-  {
-    memcpy(self->pdu_3d_offset_u[i],
-           pdu_3d_offset_u[i],
-           pdu_3d_offset_u_size[1]);
-  }
-  self->pdu_3d_offset_u_size[0] = pdu_3d_offset_u_size[0];
-  self->pdu_3d_offset_u_size[1] = pdu_3d_offset_u_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_data_unit_set_pdu_3d_offset_v(
-    fvv_patch_data_unit_t *self,
-    uint64_t             **pdu_3d_offset_v,
-    uint64_t               pdu_3d_offset_v_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_3d_offset_v)
-  {
-    for (uint64_t i = 0; i < self->pdu_3d_offset_v_size[0]; i++)
-    {
-      free(self->pdu_3d_offset_v[i]);
-    }
-    free(self->pdu_3d_offset_v);
-  }
-  self->pdu_3d_offset_v = (uint64_t **)malloc(
-      sizeof(uint64_t *) * pdu_3d_offset_v_size[0]);
-  for (uint64_t i = 0; i < pdu_3d_offset_v_size[0]; i++)
-  {
-    memcpy(self->pdu_3d_offset_v[i],
-           pdu_3d_offset_v[i],
-           pdu_3d_offset_v_size[1]);
-  }
-  self->pdu_3d_offset_v_size[0] = pdu_3d_offset_v_size[0];
-  self->pdu_3d_offset_v_size[1] = pdu_3d_offset_v_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_data_unit_set_pdu_3d_offset_d(
-    fvv_patch_data_unit_t *self,
-    uint64_t             **pdu_3d_offset_d,
-    uint64_t               pdu_3d_offset_d_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_3d_offset_d)
-  {
-    for (uint64_t i = 0; i < self->pdu_3d_offset_d_size[0]; i++)
-    {
-      free(self->pdu_3d_offset_d[i]);
-    }
-    free(self->pdu_3d_offset_d);
-  }
-  self->pdu_3d_offset_d = (uint64_t **)malloc(
-      sizeof(uint64_t *) * pdu_3d_offset_d_size[0]);
-  for (uint64_t i = 0; i < pdu_3d_offset_d_size[0]; i++)
-  {
-    memcpy(self->pdu_3d_offset_d[i],
-           pdu_3d_offset_d[i],
-           pdu_3d_offset_d_size[1]);
-  }
-  self->pdu_3d_offset_d_size[0] = pdu_3d_offset_d_size[0];
-  self->pdu_3d_offset_d_size[1] = pdu_3d_offset_d_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_data_unit_set_pdu_3d_range_d(
-    fvv_patch_data_unit_t *self,
-    uint64_t             **pdu_3d_range_d,
-    uint64_t               pdu_3d_range_d_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_3d_range_d)
-  {
-    for (uint64_t i = 0; i < self->pdu_3d_range_d_size[0]; i++)
-    {
-      free(self->pdu_3d_range_d[i]);
-    }
-    free(self->pdu_3d_range_d);
-  }
-  self->pdu_3d_range_d = (uint64_t **)malloc(sizeof(uint64_t *) *
-                                             pdu_3d_range_d_size[0]);
-  for (uint64_t i = 0; i < pdu_3d_range_d_size[0]; i++)
-  {
-    memcpy(self->pdu_3d_range_d[i],
-           pdu_3d_range_d[i],
-           pdu_3d_range_d_size[1]);
-  }
-  self->pdu_3d_range_d_size[0] = pdu_3d_range_d_size[0];
-  self->pdu_3d_range_d_size[1] = pdu_3d_range_d_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_data_unit_set_pdu_projection_id(
-    fvv_patch_data_unit_t *self,
-    uint64_t             **pdu_projection_id,
-    uint64_t               pdu_projection_id_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_projection_id)
-  {
-    for (uint64_t i = 0; i < self->pdu_projection_id_size[0]; i++)
-    {
-      free(self->pdu_projection_id[i]);
-    }
-    free(self->pdu_projection_id);
-  }
-  self->pdu_projection_id = (uint64_t **)malloc(
-      sizeof(uint64_t *) * pdu_projection_id_size[0]);
-  for (uint64_t i = 0; i < pdu_projection_id_size[0]; i++)
-  {
-    memcpy(self->pdu_projection_id[i],
-           pdu_projection_id[i],
-           pdu_projection_id_size[1]);
-  }
-  self->pdu_projection_id_size[0] = pdu_projection_id_size[0];
-  self->pdu_projection_id_size[1] = pdu_projection_id_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_data_unit_set_pdu_orientation_index(
-    fvv_patch_data_unit_t *self,
-    uint64_t             **pdu_orientation_index,
-    uint64_t               pdu_orientation_index_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_orientation_index)
-  {
-    for (uint64_t i = 0; i < self->pdu_orientation_index_size[0];
-         i++)
-    {
-      free(self->pdu_orientation_index[i]);
-    }
-    free(self->pdu_orientation_index);
-  }
-  self->pdu_orientation_index = (uint64_t **)malloc(
-      sizeof(uint64_t *) * pdu_orientation_index_size[0]);
-  for (uint64_t i = 0; i < pdu_orientation_index_size[0]; i++)
-  {
-    memcpy(self->pdu_orientation_index[i],
-           pdu_orientation_index[i],
-           pdu_orientation_index_size[1]);
-  }
-  self->pdu_orientation_index_size[0] =
-      pdu_orientation_index_size[0];
-  self->pdu_orientation_index_size[1] =
-      pdu_orientation_index_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_data_unit_set_pdu_lod_enabled_flag(
-    fvv_patch_data_unit_t *self,
-    uint64_t             **pdu_lod_enabled_flag,
-    uint64_t               pdu_lod_enabled_flag_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_lod_enabled_flag)
-  {
-    for (uint64_t i = 0; i < self->pdu_lod_enabled_flag_size[0]; i++)
-    {
-      free(self->pdu_lod_enabled_flag[i]);
-    }
-    free(self->pdu_lod_enabled_flag);
-  }
-  self->pdu_lod_enabled_flag = (uint64_t **)malloc(
-      sizeof(uint64_t *) * pdu_lod_enabled_flag_size[0]);
-  for (uint64_t i = 0; i < pdu_lod_enabled_flag_size[0]; i++)
-  {
-    memcpy(self->pdu_lod_enabled_flag[i],
-           pdu_lod_enabled_flag[i],
-           pdu_lod_enabled_flag_size[1]);
-  }
-  self->pdu_lod_enabled_flag_size[0] = pdu_lod_enabled_flag_size[0];
-  self->pdu_lod_enabled_flag_size[1] = pdu_lod_enabled_flag_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_data_unit_set_pdu_lod_scale_x_minus1(
-    fvv_patch_data_unit_t *self,
-    uint64_t             **pdu_lod_scale_x_minus1,
-    uint64_t               pdu_lod_scale_x_minus1_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_lod_scale_x_minus1)
-  {
-    for (uint64_t i = 0; i < self->pdu_lod_scale_x_minus1_size[0];
-         i++)
-    {
-      free(self->pdu_lod_scale_x_minus1[i]);
-    }
-    free(self->pdu_lod_scale_x_minus1);
-  }
-  self->pdu_lod_scale_x_minus1 = (uint64_t **)malloc(
-      sizeof(uint64_t *) * pdu_lod_scale_x_minus1_size[0]);
-  for (uint64_t i = 0; i < pdu_lod_scale_x_minus1_size[0]; i++)
-  {
-    memcpy(self->pdu_lod_scale_x_minus1[i],
-           pdu_lod_scale_x_minus1[i],
-           pdu_lod_scale_x_minus1_size[1]);
-  }
-  self->pdu_lod_scale_x_minus1_size[0] =
-      pdu_lod_scale_x_minus1_size[0];
-  self->pdu_lod_scale_x_minus1_size[1] =
-      pdu_lod_scale_x_minus1_size[1];
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_patch_data_unit_set_pdu_lod_scale_y_idc(
-    fvv_patch_data_unit_t *self,
-    uint64_t             **pdu_lod_scale_y_idc,
-    uint64_t               pdu_lod_scale_y_idc_size[2])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->pdu_lod_scale_y_idc)
-  {
-    for (uint64_t i = 0; i < self->pdu_lod_scale_y_idc_size[0]; i++)
-    {
-      free(self->pdu_lod_scale_y_idc[i]);
-    }
-    free(self->pdu_lod_scale_y_idc);
-  }
-  self->pdu_lod_scale_y_idc = (uint64_t **)malloc(
-      sizeof(uint64_t *) * pdu_lod_scale_y_idc_size[0]);
-  for (uint64_t i = 0; i < pdu_lod_scale_y_idc_size[0]; i++)
-  {
-    memcpy(self->pdu_lod_scale_y_idc[i],
-           pdu_lod_scale_y_idc[i],
-           pdu_lod_scale_y_idc_size[1]);
-  }
-  self->pdu_lod_scale_y_idc_size[0] = pdu_lod_scale_y_idc_size[0];
-  self->pdu_lod_scale_y_idc_size[1] = pdu_lod_scale_y_idc_size[1];
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_2d_pos_x);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_2d_pos_y);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_2d_size_x_minus1);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_2d_size_y_minus1);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_3d_offset_u);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_3d_offset_v);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_3d_offset_d);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_3d_range_d);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_projection_id);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_orientation_index);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_lod_enabled_flag);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_lod_scale_x_minus1);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_lod_scale_y_idc);
+FVV_DEFINE_OBJ_SETTER(fvv_patch_data_unit_t, pd, fvv_plr_data_t);
+// }

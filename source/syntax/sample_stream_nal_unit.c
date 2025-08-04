@@ -16,8 +16,10 @@ fvv_sample_stream_nal_unit_init(fvv_sample_stream_nal_unit_t *self,
   self->asb  = asb;
 
   self->pack = fvv_sample_stream_nal_unit_pack;
+  FVV_SET_SETTER_PTR(fvv_sample_stream_nal_unit_t, ssnu_nal_unit_size);
+  FVV_SET_SETTER_PTR(fvv_sample_stream_nal_unit_t, nu, fvv_nal_unit_t);
 
-  self->nu   = (fvv_nal_unit_t *)malloc(sizeof(fvv_nal_unit_t));
+  self->nu = (fvv_nal_unit_t *)malloc(sizeof(fvv_nal_unit_t));
 
   fvv_nal_unit_init(self->nu, data);
 
@@ -30,11 +32,7 @@ fvv_ret_t fvv_sample_stream_nal_unit_destroy(
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->nu)
-  {
-    fvv_nal_unit_destroy(self->nu);
-    free(self->nu);
-  }
+  FVV_DESTROY_OBJ(fvv_sample_stream_nal_unit_t, nu, fvv_nal_unit_t);
   *self = (fvv_sample_stream_nal_unit_t){0};
   return FVV_RET_SUCCESS;
 }
@@ -50,8 +48,8 @@ fvv_sample_stream_nal_unit_pack(fvv_sample_stream_nal_unit_t *self)
   fvv_nal_unit_t  *nu                                    = FVV_NULL;
   uint64_t         ssnh_unit_size_precision_bytes_minus1 = 0;
 
-  buff = self->data;
-  nu   = self->nu;
+  buff                                                   = self->data;
+  nu                                                     = self->nu;
 
   ssnh_unit_size_precision_bytes_minus1 =
       self->asb->ssnh->ssnh_unit_size_precision_bytes_minus1;
@@ -101,4 +99,6 @@ fvv_sample_stream_nal_unit_set_nu(fvv_sample_stream_nal_unit_t *self,
   self->nu->copy_from(self->nu, nu);
   return FVV_RET_SUCCESS;
 }
+FVV_DEFINE_SCALAR_SETTER(fvv_sample_stream_nal_unit_t, ssnu_nal_unit_size);
+FVV_DEFINE_OBJ_SETTER(fvv_sample_stream_nal_unit_t, nu, fvv_nal_unit_t);
 // }

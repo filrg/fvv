@@ -8,10 +8,7 @@
 
 struct fvv_aaps_vpcc_extension_t
 {
-  uint64_t                       aaps_vpcc_camera_parameters_present_flag;
-  fvv_atlas_camera_parameters_t *acp;
-
-  fvv_bitstream_t               *data;
+  fvv_bitstream_t *data;
 
   fvv_ret_t (*pack)(struct fvv_aaps_vpcc_extension_t *self);
   fvv_ret_t (*copy_from)(struct fvv_aaps_vpcc_extension_t *self,
