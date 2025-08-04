@@ -218,6 +218,18 @@
 #define FVV_BIT_ASPS_VPCC_REMOVE_DUPLICATE_POINT_ENABLED_FLAG 1
 #define FVV_BIT_ASPS_VPCC_SURFACE_THICKNESS_MINUS1            FVV_BIT_VARIABLE
 #define FVV_BIT_ATDU_PATCH_MODE                               FVV_BIT_VARIABLE
+#define FVV_BIT_MPDU_REF_INDEX                                FVV_BIT_VARIABLE
+#define FVV_BIT_MPDU_OVERRIDE_2D_PARAMS_FLAG                  1
+#define FVV_BIT_MPDU_2D_POS_X                                 FVV_BIT_VARIABLE
+#define FVV_BIT_MPDU_2D_POS_Y                                 FVV_BIT_VARIABLE
+#define FVV_BIT_MPDU_2D_DELTA_SIZE_X                          FVV_BIT_VARIABLE
+#define FVV_BIT_MPDU_2D_DELTA_SIZE_Y                          FVV_BIT_VARIABLE
+#define FVV_BIT_MPDU_OVERRIDE_3D_PARAMS_FLAG                  1
+#define FVV_BIT_MPDU_3D_OFFSET_U                              FVV_BIT_VARIABLE
+#define FVV_BIT_MPDU_3D_OFFSET_V                              FVV_BIT_VARIABLE
+#define FVV_BIT_MPDU_3D_OFFSET_D                              FVV_BIT_VARIABLE
+#define FVV_BIT_MPDU_3D_RANGE_D                               FVV_BIT_VARIABLE
+#define FVV_BIT_MPDU_OVERRIDE_PLR_FLAG                        1
 // Descriptors
 
 #define FVV_DESCRIPTOR_VUH_UNIT_TYPE                          FVV_DESCRIPTOR_U
@@ -491,7 +503,20 @@
   FVV_DESCRIPTOR_U
 #define FVV_DESCRIPTOR_ASPS_VPCC_SURFACE_THICKNESS_MINUS1 \
   FVV_DESCRIPTOR_UE
-#define FVV_DESCRIPTOR_ATDU_PATCH_MODE FVV_DESCRIPTOR_UE
+#define FVV_DESCRIPTOR_ATDU_PATCH_MODE              FVV_DESCRIPTOR_UE
+#define FVV_DESCRIPTOR_MPDU_REF_INDEX               FVV_DESCRIPTOR_UE
+#define FVV_DESCRIPTOR_MPDU_OVERRIDE_2D_PARAMS_FLAG FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_MPDU_2D_POS_X                FVV_DESCRIPTOR_SE
+#define FVV_DESCRIPTOR_MPDU_2D_POS_Y                FVV_DESCRIPTOR_SE
+#define FVV_DESCRIPTOR_MPDU_2D_DELTA_SIZE_X         FVV_DESCRIPTOR_SE
+#define FVV_DESCRIPTOR_MPDU_2D_DELTA_SIZE_Y         FVV_DESCRIPTOR_SE
+#define FVV_DESCRIPTOR_MPDU_OVERRIDE_3D_PARAMS_FLAG FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_MPDU_3D_OFFSET_U             FVV_DESCRIPTOR_SE
+#define FVV_DESCRIPTOR_MPDU_3D_OFFSET_V             FVV_DESCRIPTOR_SE
+#define FVV_DESCRIPTOR_MPDU_3D_OFFSET_D             FVV_DESCRIPTOR_SE
+#define FVV_DESCRIPTOR_MPDU_3D_RANGE_D              FVV_DESCRIPTOR_SE
+#define FVV_DESCRIPTOR_MPDU_OVERRIDE_PLR_FLAG       FVV_DESCRIPTOR_U
+
 typedef enum
 {
   FVV_V3C_VPS  = 0, // V3C parameter set
@@ -633,9 +658,9 @@ typedef enum
   FVV_P_END      = 14 // Patch termination mode
 } fvv_atdu_patch_mode_p_tile_e;
 
-typedef enum
-{
-  FVV_P_SKIP = 0, // Patch Skip mode
-} fvv_atdu_patch_mode_skip_tile_e;
+// typedef enum
+// {
+//   FVV_P_SKIP = 0, // Patch Skip mode
+// } fvv_atdu_patch_mode_skip_tile_e;
 
 #endif

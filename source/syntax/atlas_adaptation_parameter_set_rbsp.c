@@ -16,18 +16,15 @@ fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_init(
   self->pack = fvv_atlas_adaptation_parameter_set_rbsp_pack;
   self->copy_from =
       fvv_atlas_adaptation_parameter_set_rbsp_copy_from;
-  self->set_aaps_atlas_adaptation_parameter_set_id =
-      fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_atlas_adaptation_parameter_set_id;
-  self->set_aaps_extension_present_flag =
-      fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_extension_present_flag;
-  self->set_aaps_vpcc_extension_present_flag =
-      fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_vpcc_extension_present_flag;
-  self->set_aaps_extension_7bits =
-      fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_extension_7bits;
-  self->set_aaps_extension_data_flag =
-      fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_extension_data_flag;
-  self->set_ave = fvv_atlas_adaptation_parameter_set_rbsp_set_ave;
-  self->set_rtb = fvv_atlas_adaptation_parameter_set_rbsp_set_rtb;
+
+  FVV_SET_SETTER_PTR(fvv_atlas_adaptation_parameter_set_rbsp_t, aaps_atlas_adaptation_parameter_set_id);
+  FVV_SET_SETTER_PTR(fvv_atlas_adaptation_parameter_set_rbsp_t, aaps_extension_present_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_adaptation_parameter_set_rbsp_t, aaps_vpcc_extension_present_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_adaptation_parameter_set_rbsp_t, aaps_extension_7bits);
+  FVV_SET_SETTER_PTR(fvv_atlas_adaptation_parameter_set_rbsp_t, aaps_extension_data_flag);
+
+  FVV_SET_SETTER_PTR(fvv_atlas_adaptation_parameter_set_rbsp_t, ave, fvv_aaps_vpcc_extension_t);
+  FVV_SET_SETTER_PTR(fvv_atlas_adaptation_parameter_set_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 
   self->ave     = (fvv_aaps_vpcc_extension_t *)malloc(
       sizeof(fvv_aaps_vpcc_extension_t));
@@ -126,90 +123,13 @@ fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_copy_from(
   return FVV_RET_SUCCESS;
 }
 
-fvv_ret_t
-fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_atlas_adaptation_parameter_set_id(
-    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
-    uint64_t aaps_atlas_adaptation_parameter_set_id)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->aaps_atlas_adaptation_parameter_set_id =
-      aaps_atlas_adaptation_parameter_set_id;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_extension_present_flag(
-    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
-    uint64_t aaps_extension_present_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->aaps_extension_present_flag = aaps_extension_present_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_vpcc_extension_present_flag(
-    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
-    uint64_t aaps_vpcc_extension_present_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->aaps_vpcc_extension_present_flag =
-      aaps_vpcc_extension_present_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_extension_7bits(
-    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
-    uint64_t                                   aaps_extension_7bits)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->aaps_extension_7bits = aaps_extension_7bits;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_adaptation_parameter_set_rbsp_set_aaps_extension_data_flag(
-    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
-    uint64_t aaps_extension_data_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->aaps_extension_data_flag = aaps_extension_data_flag;
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_adaptation_parameter_set_rbsp_t, aaps_atlas_adaptation_parameter_set_id);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_adaptation_parameter_set_rbsp_t, aaps_extension_present_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_adaptation_parameter_set_rbsp_t, aaps_vpcc_extension_present_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_adaptation_parameter_set_rbsp_t, aaps_extension_7bits);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_adaptation_parameter_set_rbsp_t, aaps_extension_data_flag);
 
-fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_set_ave(
-    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
-    fvv_aaps_vpcc_extension_t                 *ave)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ave->copy_from(self->ave, ave);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_set_rtb(
-    fvv_atlas_adaptation_parameter_set_rbsp_t *self,
-    fvv_rbsp_trailing_bits_t                  *rtb)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->rtb->copy_from(self->rtb, rtb);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_adaptation_parameter_set_rbsp_t, ave, fvv_aaps_vpcc_extension_t);
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_adaptation_parameter_set_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 
 // }

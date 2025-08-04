@@ -18,8 +18,8 @@ struct fvv_atlas_sub_bitstream_t
                     uint64_t                   numBytes);
   fvv_ret_t (*copy_from)(fvv_atlas_sub_bitstream_t *self,
                          fvv_atlas_sub_bitstream_t *other);
-  fvv_ret_t (*set_ssnh)(fvv_atlas_sub_bitstream_t      *self,
-                        fvv_sample_stream_nal_header_t *ssnh);
+
+  FVV_DECLARE_OBJ_SETTER_PTR(fvv_atlas_sub_bitstream_t, ssnh, fvv_sample_stream_nal_header_t);
   fvv_ret_t (*set_ssnu)(fvv_atlas_sub_bitstream_t     *self,
                         fvv_sample_stream_nal_unit_t **ssnu,
                         uint64_t                       ssnu_size);
@@ -39,12 +39,10 @@ fvv_atlas_sub_bitstream_pack(fvv_atlas_sub_bitstream_t *self,
 fvv_ret_t
 fvv_atlas_sub_bitstream_copy_from(fvv_atlas_sub_bitstream_t *self,
                                   fvv_atlas_sub_bitstream_t *other);
-fvv_ret_t fvv_atlas_sub_bitstream_set_ssnh(
-    fvv_atlas_sub_bitstream_t      *self,
-    fvv_sample_stream_nal_header_t *ssnh);
+FVV_DECLARE_OBJ_SETTER(fvv_atlas_sub_bitstream_t, ssnh, fvv_sample_stream_nal_header_t);
 fvv_ret_t
 fvv_atlas_sub_bitstream_set_ssnu(fvv_atlas_sub_bitstream_t     *self,
                                  fvv_sample_stream_nal_unit_t **ssnu,
-                                 uint64_t ssnu_size);
+                                 uint64_t                       ssnu_size);
 
 #endif // FVV_SYNTAX_ATLAS_SUB_BITSTREAM_H

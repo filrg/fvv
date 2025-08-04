@@ -13,11 +13,11 @@ fvv_ret_t fvv_access_unit_delimiter_rbsp_init(
   self->data      = data;
   self->pack      = fvv_access_unit_delimiter_rbsp_pack;
   self->copy_from = fvv_access_unit_delimiter_rbsp_copy_from;
-  self->set_aframe_type =
-      fvv_access_unit_delimiter_rbsp_set_aframe_type;
-  self->set_rtb = fvv_access_unit_delimiter_rbsp_set_rtb;
 
-  self->rtb     = (fvv_rbsp_trailing_bits_t *)malloc(
+  FVV_SET_SETTER_PTR(fvv_access_unit_delimiter_rbsp_t, aframe_type);
+  FVV_SET_SETTER_PTR(fvv_access_unit_delimiter_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
+
+  self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
 
   fvv_rbsp_trailing_bits_init(self->rtb, data);
@@ -68,26 +68,8 @@ fvv_ret_t fvv_access_unit_delimiter_rbsp_copy_from(
 
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t fvv_access_unit_delimiter_rbsp_set_aframe_type(
-    fvv_access_unit_delimiter_rbsp_t *self, uint64_t aframe_type)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->aframe_type = aframe_type;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_access_unit_delimiter_rbsp_set_rtb(
-    fvv_access_unit_delimiter_rbsp_t *self,
-    fvv_rbsp_trailing_bits_t         *rtb)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->rtb->copy_from(self->rtb, rtb);
-  return FVV_RET_SUCCESS;
-}
+
+FVV_DEFINE_SCALAR_SETTER(fvv_access_unit_delimiter_rbsp_t, aframe_type);
+FVV_DEFINE_OBJ_SETTER(fvv_access_unit_delimiter_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 
 // }

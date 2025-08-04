@@ -20,13 +20,10 @@ struct fvv_atlas_tile_data_unit_t
                     uint64_t                    tileID);
   fvv_ret_t (*copy_from)(fvv_atlas_tile_data_unit_t *self,
                          fvv_atlas_tile_data_unit_t *other);
-  fvv_ret_t (*set_atdu_patch_mode)(fvv_atlas_tile_data_unit_t *self,
-                                   uint64_t **atdu_patch_mode,
-                                   uint64_t atdu_patch_mode_size[2]);
-  fvv_ret_t (*set_spdu)(fvv_atlas_tile_data_unit_t *self,
-                        fvv_skip_patch_data_unit_t *spdu);
-  fvv_ret_t (*set_pid)(fvv_atlas_tile_data_unit_t   *self,
-                       fvv_patch_information_data_t *pid);
+
+  FVV_DECLARE_2D_ARR_SETTER_PTR(fvv_atlas_tile_data_unit_t, atdu_patch_mode);
+  FVV_DECLARE_OBJ_SETTER_PTR(fvv_atlas_tile_data_unit_t, spdu, fvv_skip_patch_data_unit_t);
+  FVV_DECLARE_OBJ_SETTER_PTR(fvv_atlas_tile_data_unit_t, pid, fvv_patch_information_data_t);
 };
 
 fvv_ret_t
@@ -36,19 +33,12 @@ fvv_atlas_tile_data_unit_init(fvv_atlas_tile_data_unit_t *self,
 fvv_ret_t
 fvv_atlas_tile_data_unit_destroy(fvv_atlas_tile_data_unit_t *self);
 fvv_ret_t
-fvv_atlas_tile_data_unit_pack(fvv_atlas_tile_data_unit_t *self,
-                              uint64_t                    tileID);
+          fvv_atlas_tile_data_unit_pack(fvv_atlas_tile_data_unit_t *self,
+                                        uint64_t                    tileID);
 fvv_ret_t fvv_atlas_tile_data_unit_copy_from(
     fvv_atlas_tile_data_unit_t *self,
     fvv_atlas_tile_data_unit_t *other);
-fvv_ret_t fvv_atlas_tile_data_unit_set_atdu_patch_mode(
-    fvv_atlas_tile_data_unit_t *self,
-    uint64_t                  **atdu_patch_mode,
-    uint64_t                    atdu_patch_mode_size[2]);
-fvv_ret_t
-fvv_atlas_tile_data_unit_set_spdu(fvv_atlas_tile_data_unit_t *self,
-                                  fvv_skip_patch_data_unit_t *spdu);
-fvv_ret_t
-fvv_atlas_tile_data_unit_set_pid(fvv_atlas_tile_data_unit_t   *self,
-                                 fvv_patch_information_data_t *pid);
+FVV_DECLARE_2D_ARR_SETTER(fvv_atlas_tile_data_unit_t, atdu_patch_mode);
+FVV_DECLARE_OBJ_SETTER(fvv_atlas_tile_data_unit_t, spdu, fvv_skip_patch_data_unit_t);
+FVV_DECLARE_OBJ_SETTER(fvv_atlas_tile_data_unit_t, pid, fvv_patch_information_data_t);
 #endif // FVV_ATLAS_TILE_DATA_UNIT_H

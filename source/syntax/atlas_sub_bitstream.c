@@ -17,6 +17,9 @@ fvv_atlas_sub_bitstream_init(fvv_atlas_sub_bitstream_t *self,
   self->vu   = vu;
   self->data = data;
 
+  FVV_SET_SETTER_PTR(fvv_atlas_sub_bitstream_t, ssnh, fvv_sample_stream_nal_header_t);
+  FVV_SET_SETTER_PTR(fvv_atlas_sub_bitstream_t, ssnu, fvv_sample_stream_nal_unit_t);
+
   self->ssnh = (fvv_sample_stream_nal_header_t *)malloc(
       sizeof(fvv_sample_stream_nal_header_t));
 
@@ -101,21 +104,11 @@ fvv_atlas_sub_bitstream_copy_from(fvv_atlas_sub_bitstream_t *self,
   self->set_ssnu(self, other->ssnu, other->ssnu_size);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t fvv_atlas_sub_bitstream_set_ssnh(
-    fvv_atlas_sub_bitstream_t      *self,
-    fvv_sample_stream_nal_header_t *ssnh)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ssnh->copy_from(self->ssnh, ssnh);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_sub_bitstream_t, ssnh, fvv_sample_stream_nal_header_t);
 fvv_ret_t
 fvv_atlas_sub_bitstream_set_ssnu(fvv_atlas_sub_bitstream_t     *self,
                                  fvv_sample_stream_nal_unit_t **ssnu,
-                                 uint64_t ssnu_size)
+                                 uint64_t                       ssnu_size)
 {
   if (!self)
   {

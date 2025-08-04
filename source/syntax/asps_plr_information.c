@@ -17,20 +17,36 @@ fvv_ret_t fvv_asps_plr_information_init(
 
   self->pack      = fvv_asps_plr_information_pack;
   self->copy_from = fvv_asps_plr_information_copy_from;
-  self->set_plri_map_present_flag =
-      fvv_asps_plr_information_set_plri_map_present_flag;
-  self->set_plri_number_of_modes_minus1 =
-      fvv_asps_plr_information_set_plri_number_of_modes_minus1;
-  self->set_plri_interpolate_flag =
-      fvv_asps_plr_information_set_plri_interpolate_flag;
-  self->set_plri_filling_flag =
-      fvv_asps_plr_information_set_plri_filling_flag;
-  self->set_plri_minimum_depth =
-      fvv_asps_plr_information_set_plri_minimum_depth;
-  self->set_plri_neighbour_minus1 =
-      fvv_asps_plr_information_set_plri_neighbour_minus1;
-  self->set_plri_block_threshold_per_patch_minus1 =
-      fvv_asps_plr_information_set_plri_block_threshold_per_patch_minus1;
+
+  FVV_SET_SETTER_PTR(fvv_asps_plr_information_t,
+                     plri_interpolate_flag,
+                     (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1,
+                     (0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) +
+                         1);
+  FVV_SET_SETTER_PTR(fvv_asps_plr_information_t,
+                     plri_filling_flag,
+                     (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1,
+                     (0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) +
+                         1);
+  FVV_SET_SETTER_PTR(fvv_asps_plr_information_t,
+                     plri_minimum_depth,
+                     (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1,
+                     (0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) +
+                         1);
+  FVV_SET_SETTER_PTR(fvv_asps_plr_information_t,
+                     plri_neighbour_minus1,
+                     (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1,
+                     (0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) +
+                         1);
+  FVV_SET_SETTER_PTR(fvv_asps_plr_information_t,
+                     plri_map_present_flag,
+                     (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1);
+  FVV_SET_SETTER_PTR(fvv_asps_plr_information_t,
+                     plri_number_of_modes_minus1,
+                     (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1);
+  FVV_SET_SETTER_PTR(fvv_asps_plr_information_t,
+                     plri_block_threshold_per_patch_minus1,
+                     (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1);
 
   return FVV_RET_SUCCESS;
 }
@@ -46,7 +62,7 @@ fvv_asps_plr_information_destroy(fvv_asps_plr_information_t *self)
 }
 fvv_ret_t
 fvv_asps_plr_information_pack(fvv_asps_plr_information_t *self,
-                              uint64_t mapCountMinus1)
+                              uint64_t                    mapCountMinus1)
 {
   if (!self)
   {
@@ -116,108 +132,38 @@ fvv_asps_plr_information_copy_from(fvv_asps_plr_information_t *self,
   return FVV_RET_SUCCESS;
 }
 
-fvv_ret_t fvv_asps_plr_information_set_plri_map_present_flag(
-    fvv_asps_plr_information_t *self,
-    uint64_t                    plri_map_present_flag
-        [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->plri_map_present_flag,
-         plri_map_present_flag,
-         sizeof(self->plri_map_present_flag));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_asps_plr_information_set_plri_number_of_modes_minus1(
-    fvv_asps_plr_information_t *self,
-    uint64_t                    plri_number_of_modes_minus1
-        [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->plri_number_of_modes_minus1,
-         plri_number_of_modes_minus1,
-         sizeof(self->plri_number_of_modes_minus1));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_asps_plr_information_set_plri_interpolate_flag(
-    fvv_asps_plr_information_t *self,
-    uint64_t                    plri_interpolate_flag
-        [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
-        [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->plri_interpolate_flag,
-         plri_interpolate_flag,
-         sizeof(self->plri_interpolate_flag));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_asps_plr_information_set_plri_filling_flag(
-    fvv_asps_plr_information_t *self,
-    uint64_t                    plri_filling_flag
-        [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
-        [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->plri_filling_flag,
-         plri_filling_flag,
-         sizeof(self->plri_filling_flag));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_asps_plr_information_set_plri_minimum_depth(
-    fvv_asps_plr_information_t *self,
-    uint64_t                    plri_minimum_depth
-        [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
-        [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->plri_minimum_depth,
-         plri_minimum_depth,
-         sizeof(self->plri_minimum_depth));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_asps_plr_information_set_plri_neighbour_minus1(
-    fvv_asps_plr_information_t *self,
-    uint64_t                    plri_neighbour_minus1
-        [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1]
-        [(0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->plri_neighbour_minus1,
-         plri_neighbour_minus1,
-         sizeof(self->plri_neighbour_minus1));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_asps_plr_information_set_plri_block_threshold_per_patch_minus1(
-    fvv_asps_plr_information_t *self,
-    uint64_t                    plri_block_threshold_per_patch_minus1
-        [(0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->plri_block_threshold_per_patch_minus1,
-         plri_block_threshold_per_patch_minus1,
-         sizeof(self->plri_block_threshold_per_patch_minus1));
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_2D_STATIC_ARR_SETTER(
+    fvv_asps_plr_information_t,
+    plri_interpolate_flag,
+    (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1,
+    (0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1);
+FVV_DEFINE_2D_STATIC_ARR_SETTER(
+    fvv_asps_plr_information_t,
+    plri_filling_flag,
+    (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1,
+    (0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1);
+FVV_DEFINE_2D_STATIC_ARR_SETTER(
+    fvv_asps_plr_information_t,
+    plri_minimum_depth,
+    (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1,
+    (0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1);
+FVV_DEFINE_2D_STATIC_ARR_SETTER(
+    fvv_asps_plr_information_t,
+    plri_neighbour_minus1,
+    (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1,
+    (0x1 << FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1) + 1);
+
+FVV_DEFINE_1D_STATIC_ARR_SETTER(
+    fvv_asps_plr_information_t,
+    plri_map_present_flag,
+    (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(
+    fvv_asps_plr_information_t,
+    plri_number_of_modes_minus1,
+    (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(
+    fvv_asps_plr_information_t,
+    plri_block_threshold_per_patch_minus1,
+    (0x1 << FVV_BIT_ASPS_MAP_COUNT_MINUS1) + 1);
 
 // }

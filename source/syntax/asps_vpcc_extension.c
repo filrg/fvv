@@ -17,10 +17,10 @@ fvv_ret_t fvv_asps_vpcc_extension_init(
   self->aspsr     = aspsr;
   self->pack      = fvv_asps_vpcc_extension_pack;
   self->copy_from = fvv_asps_vpcc_extension_copy_from;
-  self->set_asps_vpcc_remove_duplicate_point_enabled_flag =
-      fvv_asps_vpcc_extension_set_asps_vpcc_remove_duplicate_point_enabled_flag;
-  self->set_asps_vpcc_surface_thickness_minus1 =
-      fvv_asps_vpcc_extension_set_asps_vpcc_surface_thickness_minus1;
+  FVV_SET_SETTER_PTR(fvv_asps_vpcc_extension_t,
+                     asps_vpcc_remove_duplicate_point_enabled_flag);
+  FVV_SET_SETTER_PTR(fvv_asps_vpcc_extension_t,
+                     asps_vpcc_surface_thickness_minus1);
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t
@@ -71,31 +71,9 @@ fvv_asps_vpcc_extension_copy_from(fvv_asps_vpcc_extension_t *self,
       self, other->asps_vpcc_surface_thickness_minus1);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t
-fvv_asps_vpcc_extension_set_asps_vpcc_remove_duplicate_point_enabled_flag(
-    fvv_asps_vpcc_extension_t *self,
-    uint64_t asps_vpcc_remove_duplicate_point_enabled_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->asps_vpcc_remove_duplicate_point_enabled_flag =
-      asps_vpcc_remove_duplicate_point_enabled_flag;
-  return FVV_RET_SUCCESS;
-}
-
-fvv_ret_t
-fvv_asps_vpcc_extension_set_asps_vpcc_surface_thickness_minus1(
-    struct fvv_asps_vpcc_extension_t *self,
-    uint64_t asps_vpcc_surface_thickness_minus1)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->asps_vpcc_surface_thickness_minus1 =
-      asps_vpcc_surface_thickness_minus1;
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_SCALAR_SETTER(
+    fvv_asps_vpcc_extension_t,
+    asps_vpcc_remove_duplicate_point_enabled_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_asps_vpcc_extension_t,
+                           asps_vpcc_surface_thickness_minus1);
 // }

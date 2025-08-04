@@ -16,26 +16,20 @@ fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_init(
   self->aspsr     = aspsr;
   self->pack      = fvv_atlas_frame_parameter_set_rbsp_pack;
   self->copy_from = fvv_atlas_frame_parameter_set_rbsp_copy_from;
-  self->set_afps_atlas_frame_parameter_set_id =
-      fvv_atlas_frame_parameter_set_rbsp_set_afps_atlas_frame_parameter_set_id;
-  self->set_afps_atlas_sequence_parameter_set_id =
-      fvv_atlas_frame_parameter_set_rbsp_set_afps_atlas_sequence_parameter_set_id;
-  self->set_afps_output_flag_present_flag =
-      fvv_atlas_frame_parameter_set_rbsp_set_afps_output_flag_present_flag;
-  self->set_afps_num_ref_idx_default_active_minus1 =
-      fvv_atlas_frame_parameter_set_rbsp_set_afps_num_ref_idx_default_active_minus1;
-  self->set_afps_additional_lt_afoc_lsb_len =
-      fvv_atlas_frame_parameter_set_rbsp_set_afps_additional_lt_afoc_lsb_len;
-  self->set_afps_lod_mode_enabled_flag =
-      fvv_atlas_frame_parameter_set_rbsp_set_afps_lod_mode_enabled_flag;
-  self->set_afps_raw_3d_offset_bit_count_explicit_mode_flag =
-      fvv_atlas_frame_parameter_set_rbsp_set_afps_raw_3d_offset_bit_count_explicit_mode_flag;
-  self->set_afps_extension_present_flag =
-      fvv_atlas_frame_parameter_set_rbsp_set_afps_extension_present_flag;
-  self->set_afps_extension_8bits =
-      fvv_atlas_frame_parameter_set_rbsp_set_afps_extension_8bits;
-  self->set_afps_extension_data_flag =
-      fvv_atlas_frame_parameter_set_rbsp_set_afps_extension_data_flag;
+
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, afps_atlas_frame_parameter_set_id);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, afps_atlas_sequence_parameter_set_id);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, afps_output_flag_present_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, afps_num_ref_idx_default_active_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, afps_additional_lt_afoc_lsb_len);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, afps_lod_mode_enabled_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, afps_raw_3d_offset_bit_count_explicit_mode_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, afps_extension_present_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, afps_extension_8bits);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, afps_extension_data_flag);
+
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, afti, fvv_atlas_frame_tile_information_t);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_parameter_set_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 
   self->afti = (fvv_atlas_frame_tile_information_t *)malloc(
       sizeof(fvv_atlas_frame_tile_information_t));
@@ -164,152 +158,18 @@ fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_copy_from(
   return FVV_RET_SUCCESS;
 }
 
-fvv_ret_t
-fvv_atlas_frame_parameter_set_rbsp_set_afps_atlas_frame_parameter_set_id(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    uint64_t afps_atlas_frame_parameter_set_id)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->afps_atlas_frame_parameter_set_id =
-      afps_atlas_frame_parameter_set_id;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_frame_parameter_set_rbsp_set_afps_atlas_sequence_parameter_set_id(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    uint64_t afps_atlas_sequence_parameter_set_id)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->afps_atlas_sequence_parameter_set_id =
-      afps_atlas_sequence_parameter_set_id;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_frame_parameter_set_rbsp_set_afps_output_flag_present_flag(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    uint64_t afps_output_flag_present_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->afps_output_flag_present_flag =
-      afps_output_flag_present_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_frame_parameter_set_rbsp_set_afps_num_ref_idx_default_active_minus1(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    uint64_t afps_num_ref_idx_default_active_minus1)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->afps_num_ref_idx_default_active_minus1 =
-      afps_num_ref_idx_default_active_minus1;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_frame_parameter_set_rbsp_set_afps_additional_lt_afoc_lsb_len(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    uint64_t afps_additional_lt_afoc_lsb_len)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->afps_additional_lt_afoc_lsb_len =
-      afps_additional_lt_afoc_lsb_len;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_frame_parameter_set_rbsp_set_afps_lod_mode_enabled_flag(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    uint64_t                              afps_lod_mode_enabled_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->afps_lod_mode_enabled_flag = afps_lod_mode_enabled_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_frame_parameter_set_rbsp_set_afps_raw_3d_offset_bit_count_explicit_mode_flag(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    uint64_t afps_raw_3d_offset_bit_count_explicit_mode_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->afps_raw_3d_offset_bit_count_explicit_mode_flag =
-      afps_raw_3d_offset_bit_count_explicit_mode_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_frame_parameter_set_rbsp_set_afps_extension_present_flag(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    uint64_t afps_extension_present_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->afps_extension_present_flag = afps_extension_present_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_frame_parameter_set_rbsp_set_afps_extension_8bits(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    uint64_t                              afps_extension_8bits)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->afps_extension_8bits = afps_extension_8bits;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_frame_parameter_set_rbsp_set_afps_extension_data_flag(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    uint64_t                              afps_extension_data_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->afps_extension_data_flag = afps_extension_data_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_set_afti(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    fvv_atlas_frame_tile_information_t   *afti)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->afti->copy_from(self->afti, afti);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_set_rtb(
-    fvv_atlas_frame_parameter_set_rbsp_t *self,
-    fvv_rbsp_trailing_bits_t             *rtb)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->rtb->copy_from(self->rtb, rtb);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, afps_atlas_frame_parameter_set_id);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, afps_atlas_sequence_parameter_set_id);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, afps_output_flag_present_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, afps_num_ref_idx_default_active_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, afps_additional_lt_afoc_lsb_len);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, afps_lod_mode_enabled_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, afps_raw_3d_offset_bit_count_explicit_mode_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, afps_extension_present_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, afps_extension_8bits);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, afps_extension_data_flag);
+
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, afti, fvv_atlas_frame_tile_information_t);
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_frame_parameter_set_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
+
 // }

@@ -8,7 +8,7 @@
 
 struct fvv_aaps_vpcc_extension_t
 {
-  uint64_t aaps_vpcc_camera_parameters_present_flag;
+  uint64_t                       aaps_vpcc_camera_parameters_present_flag;
   fvv_atlas_camera_parameters_t *acp;
 
   fvv_bitstream_t               *data;
@@ -16,11 +16,8 @@ struct fvv_aaps_vpcc_extension_t
   fvv_ret_t (*pack)(struct fvv_aaps_vpcc_extension_t *self);
   fvv_ret_t (*copy_from)(struct fvv_aaps_vpcc_extension_t *self,
                          struct fvv_aaps_vpcc_extension_t *other);
-  fvv_ret_t (*set_aaps_vpcc_camera_parameters_present_flag)(
-      struct fvv_aaps_vpcc_extension_t *self,
-      uint64_t aaps_vpcc_camera_parameters_present_flag);
-  fvv_ret_t (*set_acp)(struct fvv_aaps_vpcc_extension_t *self,
-                       fvv_atlas_camera_parameters_t    *acp);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_aaps_vpcc_extension_t, aaps_vpcc_camera_parameters_present_flag);
+  FVV_DECLARE_OBJ_SETTER_PTR(fvv_aaps_vpcc_extension_t, acp, fvv_atlas_camera_parameters_t);
 };
 
 fvv_ret_t
@@ -33,12 +30,6 @@ fvv_aaps_vpcc_extension_pack(fvv_aaps_vpcc_extension_t *self);
 fvv_ret_t
 fvv_aaps_vpcc_extension_copy_from(fvv_aaps_vpcc_extension_t *self,
                                   fvv_aaps_vpcc_extension_t *other);
-fvv_ret_t
-fvv_aaps_vpcc_extension_set_aaps_vpcc_camera_parameters_present_flag(
-    fvv_aaps_vpcc_extension_t *self,
-    uint64_t aaps_vpcc_camera_parameters_present_flag);
-fvv_ret_t
-fvv_aaps_vpcc_extension_set_acp(fvv_aaps_vpcc_extension_t     *self,
-                                fvv_atlas_camera_parameters_t *acp);
-
+FVV_DECLARE_SCALAR_SETTER(fvv_aaps_vpcc_extension_t, aaps_vpcc_camera_parameters_present_flag);
+FVV_DECLARE_OBJ_SETTER(fvv_aaps_vpcc_extension_t, acp, fvv_atlas_camera_parameters_t);
 #endif // FVV_SYNTAX_AAPS_VPCC_EXTENSION_H

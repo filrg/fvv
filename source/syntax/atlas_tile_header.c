@@ -27,43 +27,26 @@ fvv_ret_t fvv_atlas_tile_header_init(
   self->pack      = fvv_atlas_tile_header_pack;
   self->copy_from = fvv_atlas_tile_header_copy_from;
 
-  self->set_rls   = fvv_atlas_tile_header_set_rls;
-  self->set_ba    = fvv_atlas_tile_header_set_ba;
-  self->set_ath_no_output_of_prior_atlas_frames_flag =
-      fvv_atlas_tile_header_set_ath_no_output_of_prior_atlas_frames_flag;
-  self->set_ath_atlas_frame_parameter_set_id =
-      fvv_atlas_tile_header_set_ath_atlas_frame_parameter_set_id;
-  self->set_ath_atlas_adaptation_parameter_set_id =
-      fvv_atlas_tile_header_set_ath_atlas_adaptation_parameter_set_id;
-  self->set_ath_id   = fvv_atlas_tile_header_set_ath_id;
-  self->set_ath_type = fvv_atlas_tile_header_set_ath_type;
-  self->set_ath_atlas_output_flag =
-      fvv_atlas_tile_header_set_ath_atlas_output_flag;
-  self->set_ath_atlas_frm_order_cnt_lsb =
-      fvv_atlas_tile_header_set_ath_atlas_frm_order_cnt_lsb;
-  self->set_ath_ref_atlas_frame_list_asps_flag =
-      fvv_atlas_tile_header_set_ath_ref_atlas_frame_list_asps_flag;
-  self->set_ath_ref_atlas_frame_list_idx =
-      fvv_atlas_tile_header_set_ath_ref_atlas_frame_list_idx;
-  self->set_ath_pos_min_d_quantizer =
-      fvv_atlas_tile_header_set_ath_pos_min_d_quantizer;
-  self->set_ath_pos_delta_max_d_quantizer =
-      fvv_atlas_tile_header_set_ath_pos_delta_max_d_quantizer;
-  self->set_ath_patch_size_x_info_quantizer =
-      fvv_atlas_tile_header_set_ath_patch_size_x_info_quantizer;
-  self->set_ath_patch_size_y_info_quantizer =
-      fvv_atlas_tile_header_set_ath_patch_size_y_info_quantizer;
-  self->set_ath_raw_3d_offset_axis_bit_count_minus1 =
-      fvv_atlas_tile_header_set_ath_raw_3d_offset_axis_bit_count_minus1;
-  self->set_ath_num_ref_idx_active_override_flag =
-      fvv_atlas_tile_header_set_ath_num_ref_idx_active_override_flag;
-  self->set_ath_num_ref_idx_active_minus1 =
-      fvv_atlas_tile_header_set_ath_num_ref_idx_active_minus1;
-  self->set_ath_additional_afoc_lsb_present_flag =
-      fvv_atlas_tile_header_set_ath_additional_afoc_lsb_present_flag;
-  self->set_ath_additional_afoc_lsb_val =
-      fvv_atlas_tile_header_set_ath_additional_afoc_lsb_val;
-
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_no_output_of_prior_atlas_frames_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_atlas_frame_parameter_set_id);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_atlas_adaptation_parameter_set_id);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_id);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_type);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_atlas_output_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_atlas_frm_order_cnt_lsb);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_ref_atlas_frame_list_asps_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_ref_atlas_frame_list_idx);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_pos_min_d_quantizer);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_pos_delta_max_d_quantizer);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_patch_size_x_info_quantizer);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_patch_size_y_info_quantizer);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_raw_3d_offset_axis_bit_count_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_num_ref_idx_active_override_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_num_ref_idx_active_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_present_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_val);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, rls, fvv_ref_list_struct_t);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ba, fvv_byte_alignment_t);
   self->rls =
       (fvv_ref_list_struct_t *)malloc(sizeof(fvv_ref_list_struct_t));
   self->ba =
@@ -248,264 +231,24 @@ fvv_atlas_tile_header_copy_from(fvv_atlas_tile_header_t *self,
   return FVV_RET_SUCCESS;
 }
 
-fvv_ret_t
-fvv_atlas_tile_header_set_ath_no_output_of_prior_atlas_frames_flag(
-    fvv_atlas_tile_header_t *self,
-    uint64_t ath_no_output_of_prior_atlas_frames_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_no_output_of_prior_atlas_frames_flag =
-      ath_no_output_of_prior_atlas_frames_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_tile_header_set_ath_atlas_frame_parameter_set_id(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                 ath_atlas_frame_parameter_set_id)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_atlas_frame_parameter_set_id =
-      ath_atlas_frame_parameter_set_id;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_tile_header_set_ath_atlas_adaptation_parameter_set_id(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                 ath_atlas_adaptation_parameter_set_id)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_atlas_adaptation_parameter_set_id =
-      ath_atlas_adaptation_parameter_set_id;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_tile_header_set_ath_id(fvv_atlas_tile_header_t *self,
-                                 uint64_t                 ath_id)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_id = ath_id;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_tile_header_set_ath_type(fvv_atlas_tile_header_t *self,
-                                   uint64_t                 ath_type)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_type = ath_type;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_tile_header_set_ath_atlas_output_flag(
-    fvv_atlas_tile_header_t *self, uint64_t ath_atlas_output_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_atlas_output_flag = ath_atlas_output_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_tile_header_set_ath_atlas_frm_order_cnt_lsb(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                 ath_atlas_frm_order_cnt_lsb)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_atlas_frm_order_cnt_lsb = ath_atlas_frm_order_cnt_lsb;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_tile_header_set_ath_ref_atlas_frame_list_asps_flag(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                 ath_ref_atlas_frame_list_asps_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_ref_atlas_frame_list_asps_flag =
-      ath_ref_atlas_frame_list_asps_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_tile_header_set_ath_ref_atlas_frame_list_idx(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                 ath_ref_atlas_frame_list_idx)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_ref_atlas_frame_list_idx = ath_ref_atlas_frame_list_idx;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_tile_header_set_ath_pos_min_d_quantizer(
-    fvv_atlas_tile_header_t *self, uint64_t ath_pos_min_d_quantizer)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_pos_min_d_quantizer = ath_pos_min_d_quantizer;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_tile_header_set_ath_pos_delta_max_d_quantizer(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                 ath_pos_delta_max_d_quantizer)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_pos_delta_max_d_quantizer =
-      ath_pos_delta_max_d_quantizer;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_tile_header_set_ath_patch_size_x_info_quantizer(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                 ath_patch_size_x_info_quantizer)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_patch_size_x_info_quantizer =
-      ath_patch_size_x_info_quantizer;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_tile_header_set_ath_patch_size_y_info_quantizer(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                 ath_patch_size_y_info_quantizer)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_patch_size_y_info_quantizer =
-      ath_patch_size_y_info_quantizer;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_tile_header_set_ath_raw_3d_offset_axis_bit_count_minus1(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                 ath_raw_3d_offset_axis_bit_count_minus1)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_raw_3d_offset_axis_bit_count_minus1 =
-      ath_raw_3d_offset_axis_bit_count_minus1;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_tile_header_set_ath_num_ref_idx_active_override_flag(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                 ath_num_ref_idx_active_override_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_num_ref_idx_active_override_flag =
-      ath_num_ref_idx_active_override_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_tile_header_set_ath_num_ref_idx_active_minus1(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                 ath_num_ref_idx_active_minus1)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ath_num_ref_idx_active_minus1 =
-      ath_num_ref_idx_active_minus1;
-  return FVV_RET_SUCCESS;
-}
-
-fvv_ret_t
-fvv_atlas_tile_header_set_ath_additional_afoc_lsb_present_flag(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                *ath_additional_afoc_lsb_present_flag,
-    uint64_t ath_additional_afoc_lsb_present_flag_size)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->ath_additional_afoc_lsb_present_flag)
-  {
-    free(self->ath_additional_afoc_lsb_present_flag);
-    self->ath_additional_afoc_lsb_present_flag      = FVV_NULL;
-    self->ath_additional_afoc_lsb_present_flag_size = 0;
-  }
-  self->ath_additional_afoc_lsb_present_flag = (uint64_t *)malloc(
-      sizeof(uint64_t) * ath_additional_afoc_lsb_present_flag_size);
-  memcpy(self->ath_additional_afoc_lsb_present_flag,
-         ath_additional_afoc_lsb_present_flag,
-         ath_additional_afoc_lsb_present_flag_size);
-  self->ath_additional_afoc_lsb_present_flag_size =
-      ath_additional_afoc_lsb_present_flag_size;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_tile_header_set_ath_additional_afoc_lsb_val(
-    fvv_atlas_tile_header_t *self,
-    uint64_t                *ath_additional_afoc_lsb_val,
-    uint64_t                 ath_additional_afoc_lsb_val_size)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->ath_additional_afoc_lsb_val)
-  {
-    free(self->ath_additional_afoc_lsb_val);
-    self->ath_additional_afoc_lsb_val      = FVV_NULL;
-    self->ath_additional_afoc_lsb_val_size = 0;
-  }
-  self->ath_additional_afoc_lsb_val = (uint64_t *)malloc(
-      sizeof(uint64_t) * ath_additional_afoc_lsb_val_size);
-  memcpy(self->ath_additional_afoc_lsb_val,
-         ath_additional_afoc_lsb_val,
-         ath_additional_afoc_lsb_val_size);
-  self->ath_additional_afoc_lsb_val_size =
-      ath_additional_afoc_lsb_val_size;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_atlas_tile_header_set_rls(fvv_atlas_tile_header_t *self,
-                              fvv_ref_list_struct_t   *rls)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->rls->copy_from(self->rls, rls);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_tile_header_set_ba(fvv_atlas_tile_header_t *self,
-                                       fvv_byte_alignment_t    *ba)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ba->copy_from(self->ba, ba);
-  return FVV_RET_SUCCESS;
-}
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_no_output_of_prior_atlas_frames_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_atlas_frame_parameter_set_id);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_atlas_adaptation_parameter_set_id);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_id);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_type);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_atlas_output_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_atlas_frm_order_cnt_lsb);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_ref_atlas_frame_list_asps_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_ref_atlas_frame_list_idx);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_pos_min_d_quantizer);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_pos_delta_max_d_quantizer);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_patch_size_x_info_quantizer);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_patch_size_y_info_quantizer);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_raw_3d_offset_axis_bit_count_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_num_ref_idx_active_override_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_num_ref_idx_active_minus1);
+FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_present_flag);
+FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_val);
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_header_t, rls, fvv_ref_list_struct_t);
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_header_t, ba, fvv_byte_alignment_t);
 // }

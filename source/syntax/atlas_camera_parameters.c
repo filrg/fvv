@@ -12,24 +12,18 @@ fvv_atlas_camera_parameters_init(fvv_atlas_camera_parameters_t *self,
   self->data      = data;
   self->pack      = fvv_atlas_camera_parameters_pack;
   self->copy_from = fvv_atlas_camera_parameters_copy_from;
-  self->set_acp_camera_model =
-      fvv_atlas_camera_parameters_set_acp_camera_model;
-  self->set_acp_scale_enabled_flag =
-      fvv_atlas_camera_parameters_set_acp_scale_enabled_flag;
-  self->set_acp_offset_enabled_flag =
-      fvv_atlas_camera_parameters_set_acp_offset_enabled_flag;
-  self->set_acp_rotation_enabled_flag =
-      fvv_atlas_camera_parameters_set_acp_rotation_enabled_flag;
-  self->set_acp_scale_on_axis =
-      fvv_atlas_camera_parameters_set_acp_scale_on_axis;
-  self->set_acp_offset_on_axis =
-      fvv_atlas_camera_parameters_set_acp_offset_on_axis;
-  self->set_acp_rotation_qx =
-      fvv_atlas_camera_parameters_set_acp_rotation_qx;
-  self->set_acp_rotation_qy =
-      fvv_atlas_camera_parameters_set_acp_rotation_qy;
-  self->set_acp_rotation_qz =
-      fvv_atlas_camera_parameters_set_acp_rotation_qz;
+
+  FVV_SET_SETTER_PTR(fvv_atlas_camera_parameters_t, acp_camera_model);
+  FVV_SET_SETTER_PTR(fvv_atlas_camera_parameters_t, acp_scale_enabled_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_camera_parameters_t, acp_offset_enabled_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_camera_parameters_t, acp_rotation_enabled_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_camera_parameters_t, acp_rotation_qx);
+  FVV_SET_SETTER_PTR(fvv_atlas_camera_parameters_t, acp_rotation_qy);
+  FVV_SET_SETTER_PTR(fvv_atlas_camera_parameters_t, acp_rotation_qz);
+
+  FVV_SET_SETTER_PTR(fvv_atlas_camera_parameters_t, acp_scale_on_axis, 3);
+  FVV_SET_SETTER_PTR(fvv_atlas_camera_parameters_t, acp_offset_on_axis, 3);
+
   return FVV_RET_SUCCESS;
 }
 
@@ -119,102 +113,14 @@ fvv_ret_t fvv_atlas_camera_parameters_copy_from(
   self->set_acp_rotation_qz(self, other->acp_rotation_qz);
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t fvv_atlas_camera_parameters_set_acp_camera_model(
-    fvv_atlas_camera_parameters_t *self, uint64_t acp_camera_model)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->acp_camera_model = acp_camera_model;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_camera_parameters_set_acp_scale_enabled_flag(
-    fvv_atlas_camera_parameters_t *self,
-    uint64_t                       acp_scale_enabled_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->acp_scale_enabled_flag = acp_scale_enabled_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_camera_parameters_set_acp_offset_enabled_flag(
-    fvv_atlas_camera_parameters_t *self,
-    uint64_t                       acp_offset_enabled_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->acp_offset_enabled_flag = acp_offset_enabled_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_camera_parameters_set_acp_rotation_enabled_flag(
-    fvv_atlas_camera_parameters_t *self,
-    uint64_t                       acp_rotation_enabled_flag)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->acp_rotation_enabled_flag = acp_rotation_enabled_flag;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_camera_parameters_set_acp_scale_on_axis(
-    fvv_atlas_camera_parameters_t *self,
-    uint64_t                       acp_scale_on_axis[3])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->acp_scale_on_axis,
-         acp_scale_on_axis,
-         sizeof(self->acp_scale_on_axis));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_camera_parameters_set_acp_offset_on_axis(
-    fvv_atlas_camera_parameters_t *self,
-    uint64_t                       acp_offset_on_axis[3])
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  memcpy(self->acp_offset_on_axis,
-         acp_offset_on_axis,
-         sizeof(self->acp_offset_on_axis));
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_camera_parameters_set_acp_rotation_qx(
-    fvv_atlas_camera_parameters_t *self, uint64_t acp_rotation_qx)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->acp_rotation_qx = acp_rotation_qx;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_camera_parameters_set_acp_rotation_qy(
-    fvv_atlas_camera_parameters_t *self, uint64_t acp_rotation_qy)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->acp_rotation_qy = acp_rotation_qy;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_atlas_camera_parameters_set_acp_rotation_qz(
-    fvv_atlas_camera_parameters_t *self, uint64_t acp_rotation_qz)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->acp_rotation_qz = acp_rotation_qz;
-  return FVV_RET_SUCCESS;
-}
+
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_camera_parameters_t, acp_camera_model);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_camera_parameters_t, acp_scale_enabled_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_camera_parameters_t, acp_offset_enabled_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_camera_parameters_t, acp_rotation_enabled_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_camera_parameters_t, acp_rotation_qx);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_camera_parameters_t, acp_rotation_qy);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_camera_parameters_t, acp_rotation_qz);
+
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_atlas_camera_parameters_t, acp_scale_on_axis, 3);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_atlas_camera_parameters_t, acp_offset_on_axis, 3);

@@ -7,32 +7,33 @@
 // 8.3.6.2.2 Atlas frame tile information syntax
 struct fvv_atlas_frame_tile_information_t
 {
-  uint64_t  afti_single_tile_in_atlas_frame_flag;       // u(1)
-  uint64_t  afti_uniform_partition_spacing_flag;        // u(1)
-  uint64_t  afti_partition_cols_width_minus1;           // ue(v)
-  uint64_t  afti_partition_rows_height_minus1;          // ue(v)
-  uint64_t  afti_num_partition_columns_minus1;          // ue(v)
-  uint64_t  afti_num_partition_rows_minus1;             // ue(v)
-  uint64_t *afti_partition_column_width_minus1;         // ue(v)
-  uint64_t *afti_partition_row_height_minus1;           // ue(v)
-  uint64_t  afti_single_partition_per_tile_flag;        // u(1)
-  uint64_t  afti_num_tiles_in_atlas_frame_minus1;       // ue(v)
-  uint64_t *afti_top_left_partition_idx;                // u(v)
-  uint64_t *afti_bottom_right_partition_column_offset;  // ue(v)
-  uint64_t *afti_bottom_right_partition_row_offset;     // ue(v)
-  uint64_t  afti_auxiliary_video_tile_row_width_minus1; // ue(v)
-  uint64_t *afti_auxiliary_video_tile_row_height;       // ue(v)
-  uint64_t  afti_signalled_tile_id_flag;                // u(1)
-  uint64_t  afti_signalled_tile_id_length_minus1;       // ue(v)
-  uint64_t *afti_tile_id;                               // u(v)
+  uint64_t                                 afti_single_tile_in_atlas_frame_flag;       // u(1)
+  uint64_t                                 afti_uniform_partition_spacing_flag;        // u(1)
+  uint64_t                                 afti_partition_cols_width_minus1;           // ue(v)
+  uint64_t                                 afti_partition_rows_height_minus1;          // ue(v)
+  uint64_t                                 afti_num_partition_columns_minus1;          // ue(v)
+  uint64_t                                 afti_num_partition_rows_minus1;             // ue(v)
+  uint64_t                                 afti_single_partition_per_tile_flag;        // u(1)
+  uint64_t                                 afti_num_tiles_in_atlas_frame_minus1;       // ue(v)
+  uint64_t                                 afti_auxiliary_video_tile_row_width_minus1; // ue(v)
+  uint64_t                                 afti_signalled_tile_id_flag;                // u(1)
+  uint64_t                                 afti_signalled_tile_id_length_minus1;       // ue(v)
 
-  uint64_t  afti_partition_column_width_minus1_size;
-  uint64_t  afti_partition_column_height_minus1_size;
-  uint64_t  afti_top_left_partition_idx_size;
-  uint64_t  afti_bottom_right_partition_column_offset_size;
-  uint64_t  afti_bottom_right_partition_row_offset_size;
-  uint64_t  afti_auxiliary_video_tile_row_height_size;
-  uint64_t  afti_tile_id_size;
+  uint64_t                                *afti_partition_column_width_minus1;        // ue(v)
+  uint64_t                                *afti_partition_row_height_minus1;          // ue(v)
+  uint64_t                                *afti_top_left_partition_idx;               // u(v)
+  uint64_t                                *afti_bottom_right_partition_column_offset; // ue(v)
+  uint64_t                                *afti_bottom_right_partition_row_offset;    // ue(v)
+  uint64_t                                *afti_auxiliary_video_tile_row_height;      // ue(v)
+  uint64_t                                *afti_tile_id;                              // u(v)
+
+  uint64_t                                 afti_partition_column_width_minus1_size;
+  uint64_t                                 afti_partition_row_height_minus1_size;
+  uint64_t                                 afti_top_left_partition_idx_size;
+  uint64_t                                 afti_bottom_right_partition_column_offset_size;
+  uint64_t                                 afti_bottom_right_partition_row_offset_size;
+  uint64_t                                 afti_auxiliary_video_tile_row_height_size;
+  uint64_t                                 afti_tile_id_size;
 
   fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
   fvv_bitstream_t                         *data;
@@ -42,68 +43,25 @@ struct fvv_atlas_frame_tile_information_t
   fvv_ret_t (*copy_from)(fvv_atlas_frame_tile_information_t *self,
                          fvv_atlas_frame_tile_information_t *other);
 
-  fvv_ret_t (*set_afti_single_tile_in_atlas_frame_flag)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t afti_single_tile_in_atlas_frame_flag);
-  fvv_ret_t (*set_afti_uniform_partition_spacing_flag)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t afti_uniform_partition_spacing_flag);
-  fvv_ret_t (*set_afti_partition_cols_width_minus1)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t afti_partition_cols_width_minus1);
-  fvv_ret_t (*set_afti_partition_rows_height_minus1)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t afti_partition_rows_height_minus1);
-  fvv_ret_t (*set_afti_num_partition_columns_minus1)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t afti_num_partition_columns_minus1);
-  fvv_ret_t (*set_afti_num_partition_rows_minus1)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t afti_num_partition_rows_minus1);
-  fvv_ret_t (*set_afti_single_partition_per_tile_flag)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t afti_single_partition_per_tile_flag);
-  fvv_ret_t (*set_afti_num_tiles_in_atlas_frame_minus1)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t afti_num_tiles_in_atlas_frame_minus1);
-  fvv_ret_t (*set_afti_auxiliary_video_tile_row_width_minus1)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t afti_auxiliary_video_tile_row_width_minus1);
-  fvv_ret_t (*set_afti_signalled_tile_id_flag)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t afti_signalled_tile_id_flag);
-  fvv_ret_t (*set_afti_signalled_tile_id_length_minus1)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t afti_signalled_tile_id_length_minus1);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_single_tile_in_atlas_frame_flag);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_uniform_partition_spacing_flag);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_partition_cols_width_minus1);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_partition_rows_height_minus1);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_num_partition_columns_minus1);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_num_partition_rows_minus1);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_single_partition_per_tile_flag);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_num_tiles_in_atlas_frame_minus1);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_auxiliary_video_tile_row_width_minus1);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_signalled_tile_id_flag);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_signalled_tile_id_length_minus1);
 
-  fvv_ret_t (*set_afti_partition_column_width_minus1)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t *afti_partition_column_width_minus1,
-      uint64_t  afti_partition_column_width_minus1_size);
-  fvv_ret_t (*set_afti_partition_row_height_minus1)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t *afti_partition_row_height_minus1,
-      uint64_t  afti_partition_column_height_minus1_size);
-  fvv_ret_t (*set_afti_top_left_partition_idx)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t *afti_top_left_partition_idx,
-      uint64_t  afti_top_left_partition_idx_size);
-  fvv_ret_t (*set_afti_bottom_right_partition_column_offset)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t *afti_bottom_right_partition_column_offset,
-      uint64_t  afti_bottom_right_partition_column_offset_size);
-  fvv_ret_t (*set_afti_bottom_right_partition_row_offset)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t *afti_bottom_right_partition_row_offset,
-      uint64_t  afti_bottom_right_partition_row_offset_size);
-  fvv_ret_t (*set_afti_auxiliary_video_tile_row_height)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t *afti_auxiliary_video_tile_row_height,
-      uint64_t  afti_auxiliary_video_tile_row_height_size);
-  fvv_ret_t (*set_afti_tile_id)(
-      fvv_atlas_frame_tile_information_t *self,
-      uint64_t                           *afti_tile_id,
-      uint64_t                            afti_tile_id_size);
+  FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_partition_column_width_minus1);
+  FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_partition_row_height_minus1);
+  FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_top_left_partition_idx);
+  FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_column_offset);
+  FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_row_offset);
+  FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_auxiliary_video_tile_row_height);
+  FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_tile_id);
 };
 fvv_ret_t fvv_atlas_frame_tile_information_init(
     fvv_atlas_frame_tile_information_t      *self,
@@ -117,84 +75,23 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
 fvv_ret_t fvv_atlas_frame_tile_information_copy_from(
     fvv_atlas_frame_tile_information_t *self,
     fvv_atlas_frame_tile_information_t *other);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_single_tile_in_atlas_frame_flag(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t afti_single_tile_in_atlas_frame_flag);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_uniform_partition_spacing_flag(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t afti_uniform_partition_spacing_flag);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_partition_cols_width_minus1(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t afti_partition_cols_width_minus1);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_partition_rows_height_minus1(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t afti_partition_rows_height_minus1);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_num_partition_columns_minus1(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t afti_num_partition_columns_minus1);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_num_partition_rows_minus1(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t afti_num_partition_rows_minus1);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_single_partition_per_tile_flag(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t afti_single_partition_per_tile_flag);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_num_tiles_in_atlas_frame_minus1(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t afti_num_tiles_in_atlas_frame_minus1);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_auxiliary_video_tile_row_width_minus1(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t afti_auxiliary_video_tile_row_width_minus1);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_signalled_tile_id_flag(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t                            afti_signalled_tile_id_flag);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_signalled_tile_id_length_minus1(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t afti_signalled_tile_id_length_minus1);
-
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_partition_column_width_minus1(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t *afti_partition_column_width_minus1,
-    uint64_t  afti_partition_column_width_minus1_size);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_partition_row_height_minus1(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t *afti_partition_row_height_minus1,
-    uint64_t  afti_partition_column_height_minus1_size);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_top_left_partition_idx(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t                           *afti_top_left_partition_idx,
-    uint64_t afti_top_left_partition_idx_size);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_bottom_right_partition_column_offset(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t *afti_bottom_right_partition_column_offset,
-    uint64_t  afti_bottom_right_partition_column_offset_size);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_bottom_right_partition_row_offset(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t *afti_bottom_right_partition_row_offset,
-    uint64_t  afti_bottom_right_partition_row_offset_size);
-fvv_ret_t
-fvv_atlas_frame_tile_information_set_afti_auxiliary_video_tile_row_height(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t *afti_auxiliary_video_tile_row_height,
-    uint64_t  afti_auxiliary_video_tile_row_height_size);
-fvv_ret_t fvv_atlas_frame_tile_information_set_afti_tile_id(
-    fvv_atlas_frame_tile_information_t *self,
-    uint64_t                           *afti_tile_id,
-    uint64_t                            afti_tile_id_size);
+FVV_DECLARE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_single_tile_in_atlas_frame_flag);
+FVV_DECLARE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_uniform_partition_spacing_flag);
+FVV_DECLARE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_partition_cols_width_minus1);
+FVV_DECLARE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_partition_rows_height_minus1);
+FVV_DECLARE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_num_partition_columns_minus1);
+FVV_DECLARE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_num_partition_rows_minus1);
+FVV_DECLARE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_single_partition_per_tile_flag);
+FVV_DECLARE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_num_tiles_in_atlas_frame_minus1);
+FVV_DECLARE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_auxiliary_video_tile_row_width_minus1);
+FVV_DECLARE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_signalled_tile_id_flag);
+FVV_DECLARE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_signalled_tile_id_length_minus1);
+FVV_DECLARE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_partition_column_width_minus1);
+FVV_DECLARE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_partition_row_height_minus1);
+FVV_DECLARE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_top_left_partition_idx);
+FVV_DECLARE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_column_offset);
+FVV_DECLARE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_row_offset);
+FVV_DECLARE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_auxiliary_video_tile_row_height);
+FVV_DECLARE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_tile_id);
 
 #endif // FVV_SYNTAX_ATLAS_FRAME_TILE_INFORMATION_H

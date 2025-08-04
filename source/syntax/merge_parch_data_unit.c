@@ -84,7 +84,7 @@ fvv_merge_patch_data_unit_pack(fvv_merge_patch_data_unit_t *self,
   buff->pad(buff,
             self->mpdu_override_2d_params_flag[tileID][patchIdx],
             FVV_BIT_MPDU_OVERRIDE_2D_PARAMS_FLAG);
-  if (mpdu_override_2d_params_flag[tileID][patchIdx])
+  if (self->mpdu_override_2d_params_flag[tileID][patchIdx])
   {
     buff->pad(buff,
               self->mpdu_2d_pos_x[tileID][patchIdx],
