@@ -50,6 +50,8 @@ typedef struct fvv_inter_patch_data_unit_t                   fvv_inter_patch_dat
 typedef struct fvv_raw_patch_data_unit_t                     fvv_raw_patch_data_unit_t;
 typedef struct fvv_eom_patch_data_unit_t                     fvv_eom_patch_data_unit_t;
 typedef struct fvv_plr_data_t                                fvv_plr_data_t;
+typedef struct fvv_sei_message_t                             fvv_sei_message_t;
+typedef struct fvv_sei_payload_t                             fvv_sei_payload_t;
 
 typedef uint16_t                                             fvv_ret_t;
 
@@ -104,6 +106,8 @@ typedef uint16_t                                             fvv_ret_t;
 #define TYPE_NAME_fvv_raw_patch_data_unit_t                     raw_patch_data_unit
 #define TYPE_NAME_fvv_eom_patch_data_unit_t                     eom_patch_data_unit
 #define TYPE_NAME_fvv_plr_data_t                                plr_data
+#define TYPE_NAME_fvv_sei_message_t                             sei_message
+#define TYPE_NAME_fvv_sei_payload_t                             sei_payload
 
 #define FVV_RET_SUCCESS                                         0x0000
 #define FVV_RET_FAIL                                            0x0001
@@ -124,6 +128,159 @@ typedef uint8_t fvv_bool_t;
 #define FVV_BITS_PER_BYTE                       0x08
 
 #define FVV_SET_SETTER_PTR(STRUCT, ATTRIB, ...) self->set_##ATTRIB = FVV_EXPAND_CONCAT(FVV_STRIP_T(STRUCT), _set_##ATTRIB)
+
+#define FVV_DECLARE_4D_ARR_SETTER_PTR(STRUCT, ATTRIB) \
+  uint64_t ****ATTRIB;                                \
+  uint64_t     ATTRIB##_size[4];                      \
+  fvv_ret_t (*set_##ATTRIB)(STRUCT * self,            \
+                            uint64_t ****ATTRIB,      \
+                            uint64_t     ATTRIB##_size[4])
+#define FVV_DECLARE_4D_ARR_SETTER(STRUCT, ATTRIB)                                      \
+  fvv_ret_t FVV_EXPAND_CONCAT(FVV_STRIP_T(STRUCT), _set_##ATTRIB)(STRUCT * self,       \
+                                                                  uint64_t ****ATTRIB, \
+                                                                  uint64_t     ATTRIB##_size[4])
+#define FVV_DEFINE_4D_ARR_SETTER(STRUCT, ATTRIB)                                                 \
+  fvv_ret_t FVV_EXPAND_CONCAT(FVV_STRIP_T(STRUCT), _set_##ATTRIB)(STRUCT * self,                 \
+                                                                  uint64_t ****ATTRIB,           \
+                                                                  uint64_t     ATTRIB##_size[4]) \
+  {                                                                                              \
+    if (!self)                                                                                   \
+    {                                                                                            \
+      return FVV_RET_UNINITIALIZED;                                                              \
+    }                                                                                            \
+    if (self->ATTRIB)                                                                            \
+    {                                                                                            \
+      for (uint64_t i = 0; i < self->ATTRIB##_size[0]; i++)                                      \
+      {                                                                                          \
+        for (uint64_t j = 0; j < self->ATTRIB##_size[1]; j++)                                    \
+        {                                                                                        \
+          for (uint64_t k = 0; k < self->ATTRIB##_size[2]; k++)                                  \
+          {                                                                                      \
+            free(self->ATTRIB[i][j][k]);                                                         \
+          }                                                                                      \
+          free(self->ATTRIB[i][j]);                                                              \
+        }                                                                                        \
+        free(self->ATTRIB[i]);                                                                   \
+      }                                                                                          \
+      free(self->ATTRIB);                                                                        \
+      self->ATTRIB##_size[0] = 0;                                                                \
+      self->ATTRIB##_size[1] = 0;                                                                \
+      self->ATTRIB##_size[2] = 0;                                                                \
+      self->ATTRIB##_size[3] = 0;                                                                \
+    }                                                                                            \
+    self->ATTRIB =                                                                               \
+        (uint64_t ****)malloc(sizeof(uint64_t ***) * ATTRIB##_size[0]);                          \
+    for (uint64_t i = 0; i < ATTRIB##_size[0]; i++)                                              \
+    {                                                                                            \
+      self->ATTRIB[i] = (uint64_t ***)malloc(sizeof(uint64_t **) * ATTRIB##_size[1]);            \
+      for (uint64_t j = 0; j < ATTRIB##_size[1]; j++)                                            \
+      {                                                                                          \
+        self->ATTRIB[i][j] = (uint64_t **)malloc(sizeof(uint64_t *) * ATTRIB##_size[2]);         \
+        for (uint64_t k = 0; k < ATTRIB##_size[2]; k++)                                          \
+        {                                                                                        \
+          self->ATTRIB[i][j][k] = (uint64_t *)malloc(sizeof(uint64_t) * ATTRIB##_size[3]);       \
+          memcpy(self->ATTRIB[i][j][k], ATTRIB[i][j][k], sizeof(uint64_t) * ATTRIB##_size[3]);   \
+        }                                                                                        \
+      }                                                                                          \
+    }                                                                                            \
+    self->ATTRIB##_size[0] = ATTRIB##_size[0];                                                   \
+    self->ATTRIB##_size[1] = ATTRIB##_size[1];                                                   \
+    self->ATTRIB##_size[2] = ATTRIB##_size[2];                                                   \
+    self->ATTRIB##_size[3] = ATTRIB##_size[3];                                                   \
+    return FVV_RET_SUCCESS;                                                                      \
+  }
+#define FVV_DESTROY_4D_ARR(STRUCT, ATTRIB)                    \
+  if (self->ATTRIB)                                           \
+  {                                                           \
+    for (uint64_t i = 0; i < self->ATTRIB##_size[0]; i++)     \
+    {                                                         \
+      for (uint64_t j = 0; j < self->ATTRIB##_size[1]; j++)   \
+      {                                                       \
+        for (uint64_t k = 0; k < self->ATTRIB##_size[2]; k++) \
+        {                                                     \
+          free(self->ATTRIB[i][j][k]);                        \
+        }                                                     \
+        free(self->ATTRIB[i][j]);                             \
+      }                                                       \
+      free(self->ATTRIB[i]);                                  \
+    }                                                         \
+    free(self->ATTRIB);                                       \
+    self->ATTRIB           = FVV_NULL;                        \
+    self->ATTRIB##_size[0] = 0;                               \
+    self->ATTRIB##_size[1] = 0;                               \
+    self->ATTRIB##_size[2] = 0;                               \
+    self->ATTRIB##_size[3] = 0;                               \
+  }
+
+#define FVV_DECLARE_3D_ARR_SETTER_PTR(STRUCT, ATTRIB) \
+  uint64_t ***ATTRIB;                                 \
+  uint64_t    ATTRIB##_size[3];                       \
+  fvv_ret_t (*set_##ATTRIB)(STRUCT * self,            \
+                            uint64_t ***ATTRIB,       \
+                            uint64_t    ATTRIB##_size[3])
+#define FVV_DECLARE_3D_ARR_SETTER(STRUCT, ATTRIB)                                     \
+  fvv_ret_t FVV_EXPAND_CONCAT(FVV_STRIP_T(STRUCT), _set_##ATTRIB)(STRUCT * self,      \
+                                                                  uint64_t ***ATTRIB, \
+                                                                  uint64_t    ATTRIB##_size[3])
+#define FVV_DEFINE_3D_ARR_SETTER(STRUCT, ATTRIB)                                                \
+  fvv_ret_t FVV_EXPAND_CONCAT(FVV_STRIP_T(STRUCT), _set_##ATTRIB)(STRUCT * self,                \
+                                                                  uint64_t ***ATTRIB,           \
+                                                                  uint64_t    ATTRIB##_size[3]) \
+  {                                                                                             \
+    if (!self)                                                                                  \
+    {                                                                                           \
+      return FVV_RET_UNINITIALIZED;                                                             \
+    }                                                                                           \
+    if (self->ATTRIB)                                                                           \
+    {                                                                                           \
+      for (uint64_t i = 0; i < self->ATTRIB##_size[0]; i++)                                     \
+      {                                                                                         \
+        for (uint64_t j = 0; j < self->ATTRIB##_size[1]; j++)                                   \
+        {                                                                                       \
+          free(self->ATTRIB[i][j]);                                                             \
+        }                                                                                       \
+        free(self->ATTRIB[i]);                                                                  \
+      }                                                                                         \
+      free(self->ATTRIB);                                                                       \
+      self->ATTRIB##_size[0] = 0;                                                               \
+      self->ATTRIB##_size[1] = 0;                                                               \
+      self->ATTRIB##_size[2] = 0;                                                               \
+    }                                                                                           \
+    self->ATTRIB =                                                                              \
+        (uint64_t ***)malloc(sizeof(uint64_t **) * ATTRIB##_size[0]);                           \
+    for (uint64_t i = 0; i < ATTRIB##_size[0]; i++)                                             \
+    {                                                                                           \
+      self->ATTRIB[i] =                                                                         \
+          (uint64_t **)malloc(sizeof(uint64_t *) * ATTRIB##_size[1]);                           \
+      for (uint64_t j = 0; j < ATTRIB##_size[1]; j++)                                           \
+      {                                                                                         \
+        self->ATTRIB[i][j] =                                                                    \
+            (uint64_t *)malloc(sizeof(uint64_t) * ATTRIB##_size[2]);                            \
+        memcpy(self->ATTRIB[i][j], ATTRIB[i][j], sizeof(uint64_t) * ATTRIB##_size[2]);          \
+      }                                                                                         \
+    }                                                                                           \
+    self->ATTRIB##_size[0] = ATTRIB##_size[0];                                                  \
+    self->ATTRIB##_size[1] = ATTRIB##_size[1];                                                  \
+    self->ATTRIB##_size[2] = ATTRIB##_size[2];                                                  \
+    return FVV_RET_SUCCESS;                                                                     \
+  }
+#define FVV_DESTROY_3D_ARR(STRUCT, ATTRIB)                  \
+  if (self->ATTRIB)                                         \
+  {                                                         \
+    for (uint64_t i = 0; i < self->ATTRIB##_size[0]; i++)   \
+    {                                                       \
+      for (uint64_t j = 0; j < self->ATTRIB##_size[1]; j++) \
+      {                                                     \
+        free(self->ATTRIB[i][j]);                           \
+      }                                                     \
+      free(self->ATTRIB[i]);                                \
+    }                                                       \
+    free(self->ATTRIB);                                     \
+    self->ATTRIB           = FVV_NULL;                      \
+    self->ATTRIB##_size[0] = 0;                             \
+    self->ATTRIB##_size[1] = 0;                             \
+    self->ATTRIB##_size[2] = 0;                             \
+  }
 
 #define FVV_DECLARE_2D_ARR_SETTER_PTR(STRUCT, ATTRIB) \
   uint64_t **ATTRIB;                                  \
