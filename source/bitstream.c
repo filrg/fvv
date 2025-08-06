@@ -55,9 +55,98 @@ fvv_ret_t fvv_bitstream_free(fvv_bitstream_t *self)
   return FVV_RET_SUCCESS;
 }
 
-fvv_ret_t fvv_bitstream_pad(fvv_bitstream_t *self,
-                            uint64_t         value,
-                            uint8_t          bit_width)
+static fvv_ret_t fvv_bitstream_padb(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->byte_pos >= self->byte_count)
+  {
+    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
+  }
+  return FVV_RET_SUCCESS;
+}
+
+static fvv_ret_t fvv_bitstream_padf(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->byte_pos >= self->byte_count)
+  {
+    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
+  }
+  return FVV_RET_SUCCESS;
+}
+
+static fvv_ret_t fvv_bitstream_padfl(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->byte_pos >= self->byte_count)
+  {
+    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
+  }
+  return FVV_RET_SUCCESS;
+}
+
+static fvv_ret_t fvv_bitstream_padi(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->byte_pos >= self->byte_count)
+  {
+    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
+  }
+  return FVV_RET_SUCCESS;
+}
+
+static fvv_ret_t fvv_bitstream_padse(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->byte_pos >= self->byte_count)
+  {
+    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
+  }
+  return FVV_RET_SUCCESS;
+}
+static fvv_ret_t fvv_bitstream_padst(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->byte_pos >= self->byte_count)
+  {
+    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
+  }
+  return FVV_RET_SUCCESS;
+}
+
+static fvv_ret_t fvv_bitstream_padu(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width)
 {
   if (!self)
   {
@@ -105,6 +194,21 @@ fvv_ret_t fvv_bitstream_pad(fvv_bitstream_t *self,
       (self->bit_offset + bit_width) / FVV_BITS_PER_BYTE;
   self->bit_offset =
       (self->bit_offset + bit_width) % FVV_BITS_PER_BYTE;
+  return FVV_RET_SUCCESS;
+}
+
+static fvv_ret_t fvv_bitstream_padue(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->byte_pos >= self->byte_count)
+  {
+    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
+  }
   return FVV_RET_SUCCESS;
 }
 
