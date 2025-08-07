@@ -13,8 +13,10 @@ fvv_ret_t fvv_sample_stream_nal_header_init(
   self->data = data;
   self->pack = fvv_sample_stream_nal_header_pack;
 
-  FVV_SET_SETTER_PTR(fvv_sample_stream_nal_header_t, ssnh_unit_size_precision_bytes_minus1);
-  FVV_SET_SETTER_PTR(fvv_sample_stream_nal_header_t, ssnh_reserved_zero_5bits);
+  FVV_SET_SETTER_PTR(fvv_sample_stream_nal_header_t,
+                     ssnh_unit_size_precision_bytes_minus1);
+  FVV_SET_SETTER_PTR(fvv_sample_stream_nal_header_t,
+                     ssnh_reserved_zero_5bits);
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t fvv_sample_stream_nal_header_destroy(
@@ -38,12 +40,15 @@ fvv_ret_t fvv_sample_stream_nal_header_pack(
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
 
+  buff->write_bits(
+      buff,
+      self->ssnh_unit_size_precision_bytes_minus1,
+      FVV_BIT_SSNH_UNIT_SIZE_PRECISION_BYTES_MINUS1,
+      FVV_DESCRIPTOR_SSNH_UNIT_SIZE_PRECISION_BYTES_MINUS1);
   buff->write_bits(buff,
-            self->ssnh_unit_size_precision_bytes_minus1,
-            FVV_BIT_SSNH_UNIT_SIZE_PRECISION_BYTES_MINUS1);
-  buff->write_bits(buff,
-            self->ssnh_reserved_zero_5bits,
-            FVV_BIT_SSNH_RESERVED_ZERO_5BITS);
+                   self->ssnh_reserved_zero_5bits,
+                   FVV_BIT_SSNH_RESERVED_ZERO_5BITS,
+                   FVV_DESCRIPTOR_SSNH_RESERVED_ZERO_5BITS);
 
   return FVV_RET_SUCCESS;
 }
@@ -57,10 +62,12 @@ fvv_ret_t fvv_sample_stream_nal_header_copy_from(
   }
   self->set_ssnh_unit_size_precision_bytes_minus1(
       self, other->ssnh_unit_size_precision_bytes_minus1);
-  self->set_ssnh_reserved_zero_5bits(
-      self, other->ssnh_reserved_zero_5bits);
+  self->set_ssnh_reserved_zero_5bits(self,
+                                     other->ssnh_reserved_zero_5bits);
   return FVV_RET_SUCCESS;
 }
-FVV_DEFINE_SCALAR_SETTER(fvv_sample_stream_nal_header_t, ssnh_unit_size_precision_bytes_minus1);
-FVV_DEFINE_SCALAR_SETTER(fvv_sample_stream_nal_header_t, ssnh_reserved_zero_5bits);
+FVV_DEFINE_SCALAR_SETTER(fvv_sample_stream_nal_header_t,
+                         ssnh_unit_size_precision_bytes_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_sample_stream_nal_header_t,
+                         ssnh_reserved_zero_5bits);
 // }

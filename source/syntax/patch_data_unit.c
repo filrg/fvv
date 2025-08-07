@@ -1,6 +1,8 @@
 #include <fvv/bitstream.h>
+#include <fvv/math.h>
 #include <fvv/syntax/atlas_frame_parameter_set_rbsp.h>
 #include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
+#include <fvv/syntax/atlas_tile_header.h>
 #include <fvv/syntax/patch_data_unit.h>
 #include <string.h>
 
@@ -10,12 +12,14 @@ fvv_ret_t fvv_patch_data_unit_init(
     fvv_patch_data_unit_t                   *self,
     fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
     fvv_atlas_frame_parameter_set_rbsp_t    *afpsr,
+    fvv_atlas_tile_header_t                 *ath,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_patch_data_unit_t){0};
   self->data      = data;
   self->afpsr     = afpsr;
   self->aspsr     = aspsr;
+  self->ath       = ath;
 
   self->pack      = fvv_patch_data_unit_pack;
   self->copy_from = fvv_patch_data_unit_copy_from;
@@ -76,49 +80,68 @@ fvv_ret_t fvv_patch_data_unit_pack(fvv_patch_data_unit_t *self,
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
   buff->write_bits(buff,
-            self->pdu_2d_pos_x[tileID][patchIdx],
-            FVV_BIT_PDU_2D_POS_X);
+                   self->pdu_2d_pos_x[tileID][patchIdx],
+                   FVV_BIT_PDU_2D_POS_X,
+                   FVV_DESCRIPTOR_PDU_2D_POS_X);
   buff->write_bits(buff,
-            self->pdu_2d_pos_y[tileID][patchIdx],
-            FVV_BIT_PDU_2D_POS_Y);
+                   self->pdu_2d_pos_y[tileID][patchIdx],
+                   FVV_BIT_PDU_2D_POS_Y,
+                   FVV_DESCRIPTOR_PDU_2D_POS_Y);
   buff->write_bits(buff,
-            self->pdu_2d_size_x_minus1[tileID][patchIdx],
-            FVV_BIT_PDU_2D_SIZE_X_MINUS1);
+                   self->pdu_2d_size_x_minus1[tileID][patchIdx],
+                   FVV_BIT_PDU_2D_SIZE_X_MINUS1,
+                   FVV_DESCRIPTOR_PDU_2D_SIZE_X_MINUS1);
   buff->write_bits(buff,
-            self->pdu_2d_size_y_minus1[tileID][patchIdx],
-            FVV_BIT_PDU_2D_SIZE_Y_MINUS1);
+                   self->pdu_2d_size_y_minus1[tileID][patchIdx],
+                   FVV_BIT_PDU_2D_SIZE_Y_MINUS1,
+                   FVV_DESCRIPTOR_PDU_2D_SIZE_Y_MINUS1);
   buff->write_bits(buff,
-            self->pdu_3d_offset_u[tileID][patchIdx],
-            FVV_BIT_PDU_3D_OFFSET_U);
+                   self->pdu_3d_offset_u[tileID][patchIdx],
+                   self->aspsr->asps_geometry_3d_bit_depth_minus1 + 1,
+                   FVV_DESCRIPTOR_PDU_3D_OFFSET_U);
   buff->write_bits(buff,
-            self->pdu_3d_offset_v[tileID][patchIdx],
-            FVV_BIT_PDU_3D_OFFSET_V);
+                   self->pdu_3d_offset_v[tileID][patchIdx],
+                   self->aspsr->asps_geometry_3d_bit_depth_minus1 + 1,
+                   FVV_DESCRIPTOR_PDU_3D_OFFSET_V);
   buff->write_bits(buff,
-            self->pdu_3d_offset_d[tileID][patchIdx],
-            FVV_BIT_PDU_3D_OFFSET_D);
+                   self->pdu_3d_offset_d[tileID][patchIdx],
+                   self->aspsr->asps_geometry_3d_bit_depth_minus1 -
+                       self->ath->ath_pos_min_d_quantizer + 1,
+                   FVV_DESCRIPTOR_PDU_3D_OFFSET_D);
   if (self->aspsr->asps_normal_axis_max_delta_value_enabled_flag)
     buff->write_bits(buff,
-              self->pdu_3d_range_d[tileID][patchIdx],
-              FVV_BIT_PDU_3D_RANGE_D);
+                     self->pdu_3d_range_d[tileID][patchIdx],
+                     rangeDBitDepth -
+                         self->ath->ath_pos_delta_max_d_quantizer,
+                     FVV_DESCRIPTOR_PDU_3D_RANGE_D);
+  buff->write_bits(
+      buff,
+      self->pdu_projection_id[tileID][patchIdx],
+      (uint8_t)(fvv_ceil(fvv_log2(
+          (double)(self->aspsr->asps_max_number_projections_minus1 +
+                   1)))),
+      FVV_DESCRIPTOR_PDU_PROJECTION_ID);
   buff->write_bits(buff,
-            self->pdu_projection_id[tileID][patchIdx],
-            FVV_BIT_PDU_PROJECTION_ID);
-  buff->write_bits(buff,
-            self->pdu_orientation_index[tileID][patchIdx],
-            FVV_BIT_PDU_ORIENTATION_INDEX);
+                   self->pdu_orientation_index[tileID][patchIdx],
+                   self->aspsr->asps_use_eight_orientations_flag ? 3
+                                                                 : 1,
+                   FVV_DESCRIPTOR_PDU_ORIENTATION_INDEX);
   if (self->afpsr->afps_lod_mode_enabled_flag)
   {
     buff->write_bits(buff,
-              self->pdu_lod_enabled_flag[tileID][patchIdx],
-              FVV_BIT_PDU_LOD_ENABLED_FLAG);
+                     self->pdu_lod_enabled_flag[tileID][patchIdx],
+                     FVV_BIT_PDU_LOD_ENABLED_FLAG,
+                     FVV_DESCRIPTOR_PDU_LOD_ENABLED_FLAG);
     if (self->pdu_lod_enabled_flag[tileID][patchIdx] > 0)
     {
       buff->write_bits(buff,
-                self->pdu_lod_scale_x_minus1[tileID][patchIdx],
-                FVV_BIT_PDU_LOD_SCALE_X_MINUS1);
+                       self->pdu_lod_scale_x_minus1[tileID][patchIdx],
+                       FVV_BIT_PDU_LOD_SCALE_X_MINUS1,
+                       FVV_DESCRIPTOR_PDU_LOD_SCALE_X_MINUS1);
       buff->write_bits(buff,
-                self->pdu_lod_scale_y_idc[tileID][patchIdx],
-                FVV_BIT_PDU_LOD_SCALE_Y_IDC);
+                       self->pdu_lod_scale_y_idc[tileID][patchIdx],
+                       FVV_BIT_PDU_LOD_SCALE_Y_IDC,
+                       FVV_DESCRIPTOR_PDU_LOD_SCALE_Y_IDC);
     }
   }
   if (self->aspsr->asps_plr_enabled_flag)
@@ -126,9 +149,8 @@ fvv_ret_t fvv_patch_data_unit_pack(fvv_patch_data_unit_t *self,
 
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t
-fvv_patch_data_unit_copy_from(fvv_patch_data_unit_t *self,
-                              fvv_patch_data_unit_t *other)
+fvv_ret_t fvv_patch_data_unit_copy_from(fvv_patch_data_unit_t *self,
+                                        fvv_patch_data_unit_t *other)
 {
 }
 FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_2d_pos_x);
@@ -140,9 +162,11 @@ FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_3d_offset_v);
 FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_3d_offset_d);
 FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_3d_range_d);
 FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_projection_id);
-FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_orientation_index);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t,
+                         pdu_orientation_index);
 FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_lod_enabled_flag);
-FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_lod_scale_x_minus1);
+FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t,
+                         pdu_lod_scale_x_minus1);
 FVV_DEFINE_2D_ARR_SETTER(fvv_patch_data_unit_t, pdu_lod_scale_y_idc);
 FVV_DEFINE_OBJ_SETTER(fvv_patch_data_unit_t, pd, fvv_plr_data_t);
 // }

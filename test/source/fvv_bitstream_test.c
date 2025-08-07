@@ -1,4 +1,5 @@
 #include <fvv/bitstream.h>
+#include <fvv/semantic.h>
 
 int main()
 {
@@ -9,11 +10,11 @@ int main()
   uint64_t        baz  = 0x00000004; // u(3)
 
   fvv_bitstream_init(&bits);
-  
+
   bits.alloc(&bits, 3);
-  bits.write_bits(&bits, foo, 8);
-  bits.write_bits(&bits, bar, 13);
-  bits.write_bits(&bits, baz, 3);
+  bits.write_bits(&bits, foo, 8, FVV_DESCRIPTOR_U);
+  bits.write_bits(&bits, bar, 13, FVV_DESCRIPTOR_U);
+  bits.write_bits(&bits, baz, 3, FVV_DESCRIPTOR_U);
 
   fvv_bitstream_destroy(&bits);
 }

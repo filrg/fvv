@@ -11,7 +11,8 @@ fvv_ret_t fvv_rbsp_trailing_bits_init(fvv_rbsp_trailing_bits_t *self,
   self->pack      = fvv_rbsp_trailing_bits_pack;
   self->copy_from = fvv_rbsp_trailing_bits_copy_from;
   FVV_SET_SETTER_PTR(fvv_rbsp_trailing_bits_t, rbsp_stop_one_bit);
-  FVV_SET_SETTER_PTR(fvv_rbsp_trailing_bits_t, rbsp_alignment_zero_bit);
+  FVV_SET_SETTER_PTR(fvv_rbsp_trailing_bits_t,
+                     rbsp_alignment_zero_bit);
 
   self->rbsp_stop_one_bit       = 0x1;
   self->rbsp_alignment_zero_bit = 0x0;
@@ -37,15 +38,18 @@ fvv_ret_t fvv_rbsp_trailing_bits_pack(fvv_rbsp_trailing_bits_t *self)
   fvv_bool_t      *byte_aligned = 0;
   buff                          = self->data;
 
-  buff->write_bits(
-      buff, self->rbsp_stop_one_bit, FVV_BIT_RBSP_STOP_ONE_BIT);
+  buff->write_bits(buff,
+                   self->rbsp_stop_one_bit,
+                   FVV_BIT_RBSP_STOP_ONE_BIT,
+                   FVV_DESCRIPTOR_RBSP_STOP_ONE_BIT);
 
   buff->byte_aligned(buff, &byte_aligned);
   while (!byte_aligned)
   {
     buff->write_bits(buff,
-              self->rbsp_alignment_zero_bit,
-              FVV_BIT_RBSP_ALIGNMENT_ZERO_BIT);
+                     self->rbsp_alignment_zero_bit,
+                     FVV_BIT_RBSP_ALIGNMENT_ZERO_BIT,
+                     FVV_DESCRIPTOR_RBSP_ALIGNMENT_ZERO_BIT);
     buff->byte_aligned(buff, &byte_aligned);
   }
 
@@ -65,5 +69,6 @@ fvv_rbsp_trailing_bits_copy_from(fvv_rbsp_trailing_bits_t *self,
   return FVV_RET_SUCCESS;
 }
 FVV_DEFINE_SCALAR_SETTER(fvv_rbsp_trailing_bits_t, rbsp_stop_one_bit);
-FVV_DEFINE_SCALAR_SETTER(fvv_rbsp_trailing_bits_t, rbsp_alignment_zero_bit);
+FVV_DEFINE_SCALAR_SETTER(fvv_rbsp_trailing_bits_t,
+                         rbsp_alignment_zero_bit);
 // }

@@ -1,4 +1,5 @@
 #include <fvv/bitstream.h>
+#include <fvv/semantic.h>
 
 static fvv_ret_t fvv_bitstream_pad(fvv_bitstream_t *self,
                                    uint64_t         value,
@@ -248,7 +249,7 @@ fvv_ret_t fvv_bitstream_write_bits(fvv_bitstream_t *self,
   case FVV_DESCRIPTOR_U:
     return fvv_bitstream_padu(self, value, bit_width);
   case FVV_DESCRIPTOR_UE:
-    return fvv_bitstream_padue(seld, value, bit_width);
+    return fvv_bitstream_padue(self, value, bit_width);
   default:
     return FVV_RET_FAIL;
     break;

@@ -15,24 +15,42 @@ fvv_ret_t fvv_atlas_frame_tile_information_init(
   self->pack      = fvv_atlas_frame_tile_information_pack;
   self->copy_from = fvv_atlas_frame_tile_information_copy_from;
 
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_single_tile_in_atlas_frame_flag);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_uniform_partition_spacing_flag);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_partition_cols_width_minus1);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_partition_rows_height_minus1);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_num_partition_columns_minus1);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_num_partition_rows_minus1);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_single_partition_per_tile_flag);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_num_tiles_in_atlas_frame_minus1);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_auxiliary_video_tile_row_width_minus1);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_signalled_tile_id_flag);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_signalled_tile_id_length_minus1);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_partition_column_width_minus1);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_partition_row_height_minus1);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_top_left_partition_idx);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_column_offset);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_row_offset);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_auxiliary_video_tile_row_height);
-  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t, afti_tile_id);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_single_tile_in_atlas_frame_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_uniform_partition_spacing_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_partition_cols_width_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_partition_rows_height_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_num_partition_columns_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_num_partition_rows_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_single_partition_per_tile_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_num_tiles_in_atlas_frame_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_auxiliary_video_tile_row_width_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_signalled_tile_id_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_signalled_tile_id_length_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_partition_column_width_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_partition_row_height_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_top_left_partition_idx);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_bottom_right_partition_column_offset);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_bottom_right_partition_row_offset);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_auxiliary_video_tile_row_height);
+  FVV_SET_SETTER_PTR(fvv_atlas_frame_tile_information_t,
+                     afti_tile_id);
 
   return FVV_RET_SUCCESS;
 }
@@ -43,13 +61,20 @@ fvv_ret_t fvv_atlas_frame_tile_information_destroy(
   {
     return FVV_RET_UNINITIALIZED;
   }
-  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_partition_column_width_minus1);
-  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_partition_row_height_minus1);
-  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_top_left_partition_idx);
-  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_column_offset);
-  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_row_offset);
-  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_auxiliary_video_tile_row_height);
-  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t, afti_tile_id);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t,
+                     afti_partition_column_width_minus1);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t,
+                     afti_partition_row_height_minus1);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t,
+                     afti_top_left_partition_idx);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t,
+                     afti_bottom_right_partition_column_offset);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t,
+                     afti_bottom_right_partition_row_offset);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t,
+                     afti_auxiliary_video_tile_row_height);
+  FVV_DESTROY_1D_ARR(fvv_atlas_frame_tile_information_t,
+                     afti_tile_id);
   *self = (fvv_atlas_frame_tile_information_t){0};
   return FVV_RET_SUCCESS;
 }
@@ -65,60 +90,84 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
   uint64_t         i    = 0;
   buff                  = self->data;
 
-  buff->write_bits(buff,
-            self->afti_single_tile_in_atlas_frame_flag,
-            FVV_BIT_AFTI_SINGLE_TILE_IN_ATLAS_FRAME_FLAG);
+  buff->write_bits(
+      buff,
+      self->afti_single_tile_in_atlas_frame_flag,
+      FVV_BIT_AFTI_SINGLE_TILE_IN_ATLAS_FRAME_FLAG,
+      FVV_DESCRIPTOR_AFTI_SINGLE_TILE_IN_ATLAS_FRAME_FLAG);
   if (!self->afti_single_tile_in_atlas_frame_flag)
   {
-    buff->write_bits(buff,
-              self->afti_uniform_partition_spacing_flag,
-              FVV_BIT_AFTI_UNIFORM_PARTITION_SPACING_FLAG);
+    buff->write_bits(
+        buff,
+        self->afti_uniform_partition_spacing_flag,
+        FVV_BIT_AFTI_UNIFORM_PARTITION_SPACING_FLAG,
+        FVV_DESCRIPTOR_AFTI_UNIFORM_PARTITION_SPACING_FLAG);
     if (self->afti_uniform_partition_spacing_flag)
     {
-      buff->write_bits(buff,
-                self->afti_partition_cols_width_minus1,
-                FVV_BIT_AFTI_PARTITION_COLS_WIDTH_MINUS1);
-      buff->write_bits(buff,
-                self->afti_partition_rows_height_minus1,
-                FVV_BIT_AFTI_PARTITION_ROWS_HEIGHT_MINUS1);
+      buff->write_bits(
+          buff,
+          self->afti_partition_cols_width_minus1,
+          FVV_BIT_AFTI_PARTITION_COLS_WIDTH_MINUS1,
+          FVV_DESCRIPTOR_AFTI_PARTITION_COLS_WIDTH_MINUS1);
+      buff->write_bits(
+          buff,
+          self->afti_partition_rows_height_minus1,
+          FVV_BIT_AFTI_PARTITION_ROWS_HEIGHT_MINUS1,
+          FVV_DESCRIPTOR_AFTI_PARTITION_ROWS_HEIGHT_MINUS1);
     }
     else
     {
+      buff->write_bits(
+          buff,
+          self->afti_num_partition_columns_minus1,
+          FVV_BIT_AFTI_NUM_PARTITION_COLUMNS_MINUS1,
+          FVV_DESCRIPTOR_AFTI_NUM_PARTITION_COLUMNS_MINUS1);
       buff->write_bits(buff,
-                self->afti_num_partition_columns_minus1,
-                FVV_BIT_AFTI_NUM_PARTITION_COLUMNS_MINUS1);
-      buff->write_bits(buff,
-                self->afti_num_partition_rows_minus1,
-                FVV_BIT_AFTI_NUM_PARTITION_ROWS_MINUS1);
+                       self->afti_num_partition_rows_minus1,
+                       FVV_BIT_AFTI_NUM_PARTITION_ROWS_MINUS1,
+                       FVV_DESCRIPTOR_AFTI_NUM_PARTITION_ROWS_MINUS1);
       for (i = 0; i < self->afti_num_partition_columns_minus1; i++)
-        buff->write_bits(buff,
-                  self->afti_partition_column_width_minus1[i],
-                  FVV_BIT_AFTI_PARTITION_COLUMN_WIDTH_MINUS1);
+        buff->write_bits(
+            buff,
+            self->afti_partition_column_width_minus1[i],
+            FVV_BIT_AFTI_PARTITION_COLUMN_WIDTH_MINUS1,
+            FVV_DESCRIPTOR_AFTI_PARTITION_COLUMN_WIDTH_MINUS1);
       for (i = 0; i < self->afti_num_partition_rows_minus1; i++)
-        buff->write_bits(buff,
-                  self->afti_partition_row_height_minus1[i],
-                  FVV_BIT_AFTI_PARTITION_ROW_HEIGHT_MINUS1);
+        buff->write_bits(
+            buff,
+            self->afti_partition_row_height_minus1[i],
+            FVV_BIT_AFTI_PARTITION_ROW_HEIGHT_MINUS1,
+            FVV_DESCRIPTOR_AFTI_PARTITION_ROW_HEIGHT_MINUS1);
     }
-    buff->write_bits(buff,
-              self->afti_single_partition_per_tile_flag,
-              FVV_BIT_AFTI_SINGLE_PARTITION_PER_TILE_FLAG);
+    buff->write_bits(
+        buff,
+        self->afti_single_partition_per_tile_flag,
+        FVV_BIT_AFTI_SINGLE_PARTITION_PER_TILE_FLAG,
+        FVV_DESCRIPTOR_AFTI_SINGLE_PARTITION_PER_TILE_FLAG);
     if (!self->afti_single_partition_per_tile_flag)
     {
-      buff->write_bits(buff,
-                self->afti_num_tiles_in_atlas_frame_minus1,
-                FVV_BIT_AFTI_NUM_TILES_IN_ATLAS_FRAME_MINUS1);
+      buff->write_bits(
+          buff,
+          self->afti_num_tiles_in_atlas_frame_minus1,
+          FVV_BIT_AFTI_NUM_TILES_IN_ATLAS_FRAME_MINUS1,
+          FVV_DESCRIPTOR_AFTI_NUM_TILES_IN_ATLAS_FRAME_MINUS1);
       for (i = 0; i < self->afti_num_tiles_in_atlas_frame_minus1 + 1;
            i++)
       {
         buff->write_bits(buff,
-                  self->afti_top_left_partition_idx[i],
-                  FVV_BIT_AFTI_TOP_LEFT_PARTITION_IDX);
-        buff->write_bits(buff,
-                  self->afti_bottom_right_partition_column_offset[i],
-                  FVV_BIT_AFTI_BOTTOM_RIGHT_PARTITION_COLUMN_OFFSET);
-        buff->write_bits(buff,
-                  self->afti_bottom_right_partition_row_offset[i],
-                  FVV_BIT_AFTI_BOTTOM_RIGHT_PARTITION_ROW_OFFSET);
+                         self->afti_top_left_partition_idx[i],
+                         FVV_BIT_AFTI_TOP_LEFT_PARTITION_IDX,
+                         FVV_DESCRIPTOR_AFTI_TOP_LEFT_PARTITION_IDX);
+        buff->write_bits(
+            buff,
+            self->afti_bottom_right_partition_column_offset[i],
+            FVV_BIT_AFTI_BOTTOM_RIGHT_PARTITION_COLUMN_OFFSET,
+            FVV_DESCRIPTOR_AFTI_BOTTOM_RIGHT_PARTITION_COLUMN_OFFSET);
+        buff->write_bits(
+            buff,
+            self->afti_bottom_right_partition_row_offset[i],
+            FVV_BIT_AFTI_BOTTOM_RIGHT_PARTITION_ROW_OFFSET,
+            FVV_DESCRIPTOR_AFTI_BOTTOM_RIGHT_PARTITION_ROW_OFFSET);
       }
     }
     else
@@ -131,29 +180,39 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
   }
   if (self->aspsr->asps_auxiliary_video_enabled_flag)
   {
-    buff->write_bits(buff,
-              self->afti_auxiliary_video_tile_row_width_minus1,
-              FVV_BIT_AFTI_AUXILIARY_VIDEO_TILE_ROW_WIDTH_MINUS1);
+    buff->write_bits(
+        buff,
+        self->afti_auxiliary_video_tile_row_width_minus1,
+        FVV_BIT_AFTI_AUXILIARY_VIDEO_TILE_ROW_WIDTH_MINUS1,
+        FVV_DESCRIPTOR_AFTI_AUXILIARY_VIDEO_TILE_ROW_WIDTH_MINUS1);
+    for (i = 0; i < self->afti_num_tiles_in_atlas_frame_minus1 + 1;
+         i++)
+    {
+      buff->write_bits(
+          buff,
+          self->afti_auxiliary_video_tile_row_height[i],
+          FVV_BIT_AFTI_AUXILIARY_VIDEO_TILE_ROW_HEIGHT,
+          FVV_DESCRIPTOR_AFTI_AUXILIARY_VIDEO_TILE_ROW_HEIGHT);
+    }
+  }
+  buff->write_bits(buff,
+                   self->afti_signalled_tile_id_flag,
+                   FVV_BIT_AFTI_SIGNALLED_TILE_ID_FLAG,
+                   FVV_DESCRIPTOR_AFTI_SIGNALLED_TILE_ID_FLAG);
+  if (self->afti_signalled_tile_id_flag)
+  {
+    buff->write_bits(
+        buff,
+        self->afti_signalled_tile_id_length_minus1,
+        FVV_BIT_AFTI_SIGNALLED_TILE_ID_LENGTH_MINUS1,
+        FVV_DESCRIPTOR_AFTI_SIGNALLED_TILE_ID_LENGTH_MINUS1);
     for (i = 0; i < self->afti_num_tiles_in_atlas_frame_minus1 + 1;
          i++)
     {
       buff->write_bits(buff,
-                self->afti_auxiliary_video_tile_row_height[i],
-                FVV_BIT_AFTI_AUXILIARY_VIDEO_TILE_ROW_HEIGHT);
-    }
-  }
-  buff->write_bits(buff,
-            self->afti_signalled_tile_id_flag,
-            FVV_BIT_AFTI_SIGNALLED_TILE_ID_FLAG);
-  if (self->afti_signalled_tile_id_flag)
-  {
-    buff->write_bits(buff,
-              self->afti_signalled_tile_id_length_minus1,
-              FVV_BIT_AFTI_SIGNALLED_TILE_ID_LENGTH_MINUS1);
-    for (i = 0; i < self->afti_num_tiles_in_atlas_frame_minus1 + 1;
-         i++)
-    {
-      buff->write_bits(buff, self->afti_tile_id[i], FVV_BIT_AFTI_TILE_ID);
+                       self->afti_tile_id[i],
+                       FVV_BIT_AFTI_TILE_ID,
+                       FVV_DESCRIPTOR_AFTI_TILE_ID);
       TileIDToIndex[self->afti_tile_id[i]] = i;
       TileIndexToID[i]                     = self->afti_tile_id[i];
     }
@@ -229,22 +288,40 @@ fvv_ret_t fvv_atlas_frame_tile_information_copy_from(
 
   return FVV_RET_SUCCESS;
 }
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_single_tile_in_atlas_frame_flag);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_uniform_partition_spacing_flag);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_partition_cols_width_minus1);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_partition_rows_height_minus1);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_num_partition_columns_minus1);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_num_partition_rows_minus1);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_single_partition_per_tile_flag);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_num_tiles_in_atlas_frame_minus1);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_auxiliary_video_tile_row_width_minus1);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_signalled_tile_id_flag);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t, afti_signalled_tile_id_length_minus1);
-FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_partition_column_width_minus1);
-FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_partition_row_height_minus1);
-FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_top_left_partition_idx);
-FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_column_offset);
-FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_bottom_right_partition_row_offset);
-FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_auxiliary_video_tile_row_height);
-FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t, afti_tile_id);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_single_tile_in_atlas_frame_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_uniform_partition_spacing_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_partition_cols_width_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_partition_rows_height_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_num_partition_columns_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_num_partition_rows_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_single_partition_per_tile_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_num_tiles_in_atlas_frame_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_auxiliary_video_tile_row_width_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_signalled_tile_id_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_signalled_tile_id_length_minus1);
+FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_partition_column_width_minus1);
+FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_partition_row_height_minus1);
+FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_top_left_partition_idx);
+FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_bottom_right_partition_column_offset);
+FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_bottom_right_partition_row_offset);
+FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_auxiliary_video_tile_row_height);
+FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_frame_tile_information_t,
+                         afti_tile_id);
 // }

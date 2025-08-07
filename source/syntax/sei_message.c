@@ -1,16 +1,20 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/sei_message.h>
 
-fvv_ret_t fvv_sei_message_init(fvv_sei_message_t *self, fvv_bitstream_t *data)
+fvv_ret_t fvv_sei_message_init(fvv_sei_message_t *self,
+                               fvv_bitstream_t   *data)
 {
   *self           = (fvv_sei_message_t){0};
   self->data      = data;
   self->pack      = fvv_sei_message_pack;
   self->copy_from = fvv_sei_message_copy_from;
 
-  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_sei_message_t, sm_payload_type_byte);
-  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_sei_message_t, sm_payload_size_byte);
-  FVV_DECLARE_OBJ_SETTER_PTR(fvv_sei_message_t, sp, fvv_sei_payload_t);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_sei_message_t,
+                                sm_payload_type_byte);
+  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_sei_message_t,
+                                sm_payload_size_byte);
+  FVV_DECLARE_OBJ_SETTER_PTR(
+      fvv_sei_message_t, sp, fvv_sei_payload_t);
 
   return FVV_RET_SUCCESS;
 }
@@ -40,20 +44,27 @@ fvv_ret_t fvv_sei_message_pack(fvv_sei_message_t *self)
 
   do
   {
-    buff->write_bits(buff, self->sm_payload_type_byte, FVV_BIT_SM_PAYLOAD_TYPE_BYTE);
+    buff->write_bits(buff,
+                     self->sm_payload_type_byte,
+                     FVV_BIT_SM_PAYLOAD_TYPE_BYTE,
+                     FVV_DESCRIPTOR_SM_PAYLOAD_TYPE_BYTE);
     payloadType += self->sm_payload_type_byte;
   } while (self->sm_payload_type_byte == 0xFF);
   payloadSize = 0;
   do
   {
-    buff->write_bits(buff, self->sm_payload_size_byte, FVV_BIT_SM_PAYLOAD_SIZE_BYTE);
+    buff->write_bits(buff,
+                     self->sm_payload_size_byte,
+                     FVV_BIT_SM_PAYLOAD_SIZE_BYTE,
+                     FVV_DESCRIPTOR_SM_PAYLOAD_SIZE_BYTE);
     payloadSize += self->sm_payload_size_byte;
   } while (self->sm_payload_size_byte == 0xFF);
   self->sp->pack(self->sp, payloadType, payloadSize);
   return FVV_RET_SUCCESS;
 }
 
-fvv_ret_t fvv_sei_message_copy_from(fvv_sei_message_t *self, fvv_sei_message_t *other)
+fvv_ret_t fvv_sei_message_copy_from(fvv_sei_message_t *self,
+                                    fvv_sei_message_t *other)
 {
   if (!self)
   {

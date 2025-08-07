@@ -27,26 +27,43 @@ fvv_ret_t fvv_atlas_tile_header_init(
   self->pack      = fvv_atlas_tile_header_pack;
   self->copy_from = fvv_atlas_tile_header_copy_from;
 
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_no_output_of_prior_atlas_frames_flag);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_atlas_frame_parameter_set_id);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_atlas_adaptation_parameter_set_id);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_no_output_of_prior_atlas_frames_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_atlas_frame_parameter_set_id);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_atlas_adaptation_parameter_set_id);
   FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_id);
   FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_type);
   FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_atlas_output_flag);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_atlas_frm_order_cnt_lsb);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_ref_atlas_frame_list_asps_flag);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_ref_atlas_frame_list_idx);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_pos_min_d_quantizer);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_pos_delta_max_d_quantizer);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_patch_size_x_info_quantizer);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_patch_size_y_info_quantizer);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_raw_3d_offset_axis_bit_count_minus1);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_num_ref_idx_active_override_flag);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_num_ref_idx_active_minus1);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_present_flag);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_val);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, rls, fvv_ref_list_struct_t);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t, ba, fvv_byte_alignment_t);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_atlas_frm_order_cnt_lsb);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_ref_atlas_frame_list_asps_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_ref_atlas_frame_list_idx);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_pos_min_d_quantizer);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_pos_delta_max_d_quantizer);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_patch_size_x_info_quantizer);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_patch_size_y_info_quantizer);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_raw_3d_offset_axis_bit_count_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_num_ref_idx_active_override_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_num_ref_idx_active_minus1);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_additional_afoc_lsb_present_flag);
+  FVV_SET_SETTER_PTR(fvv_atlas_tile_header_t,
+                     ath_additional_afoc_lsb_val);
+  FVV_SET_SETTER_PTR(
+      fvv_atlas_tile_header_t, rls, fvv_ref_list_struct_t);
+  FVV_SET_SETTER_PTR(
+      fvv_atlas_tile_header_t, ba, fvv_byte_alignment_t);
   self->rls =
       (fvv_ref_list_struct_t *)malloc(sizeof(fvv_ref_list_struct_t));
   self->ba =
@@ -57,16 +74,18 @@ fvv_ret_t fvv_atlas_tile_header_init(
 
   return FVV_RET_SUCCESS;
 }
-fvv_ret_t
-fvv_atlas_tile_header_destroy(fvv_atlas_tile_header_t *self)
+fvv_ret_t fvv_atlas_tile_header_destroy(fvv_atlas_tile_header_t *self)
 {
   if (!self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  FVV_DESTROY_1D_ARR(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_present_flag);
-  FVV_DESTROY_1D_ARR(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_val);
-  FVV_DESTROY_OBJ(fvv_atlas_tile_header_t, rls, fvv_ref_list_struct_t);
+  FVV_DESTROY_1D_ARR(fvv_atlas_tile_header_t,
+                     ath_additional_afoc_lsb_present_flag);
+  FVV_DESTROY_1D_ARR(fvv_atlas_tile_header_t,
+                     ath_additional_afoc_lsb_val);
+  FVV_DESTROY_OBJ(
+      fvv_atlas_tile_header_t, rls, fvv_ref_list_struct_t);
   FVV_DESTROY_OBJ(fvv_atlas_tile_header_t, ba, fvv_byte_alignment_t);
   *self = (fvv_atlas_tile_header_t){0};
   return FVV_RET_SUCCESS;
@@ -87,48 +106,65 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
 
   if (nal_unit_type >= FVV_NAL_BLA_W_LP &&
       nal_unit_type <= FVV_NAL_RSV_IRAP_ACL_29)
-    buff->write_bits(buff,
-              self->ath_no_output_of_prior_atlas_frames_flag,
-              FVV_BIT_ATH_NO_OUTPUT_OF_PRIOR_ATLAS_FRAMES_FLAG);
+    buff->write_bits(
+        buff,
+        self->ath_no_output_of_prior_atlas_frames_flag,
+        FVV_BIT_ATH_NO_OUTPUT_OF_PRIOR_ATLAS_FRAMES_FLAG,
+        FVV_DESCRIPTOR_ATH_NO_OUTPUT_OF_PRIOR_ATLAS_FRAMES_FLAG);
   buff->write_bits(buff,
-            self->ath_atlas_frame_parameter_set_id,
-            FVV_BIT_ATH_ATLAS_FRAME_PARAMETER_SET_ID);
-  buff->write_bits(buff,
-            self->ath_atlas_adaptation_parameter_set_id,
-            FVV_BIT_ATH_ATLAS_ADAPTATION_PARAMETER_SET_ID);
-  buff->write_bits(buff, self->ath_id, FVV_BIT_ATH_ID);
+                   self->ath_atlas_frame_parameter_set_id,
+                   FVV_BIT_ATH_ATLAS_FRAME_PARAMETER_SET_ID,
+                   FVV_DESCRIPTOR_ATH_ATLAS_FRAME_PARAMETER_SET_ID);
+  buff->write_bits(
+      buff,
+      self->ath_atlas_adaptation_parameter_set_id,
+      FVV_BIT_ATH_ATLAS_ADAPTATION_PARAMETER_SET_ID,
+      FVV_DESCRIPTOR_ATH_ATLAS_ADAPTATION_PARAMETER_SET_ID);
+  buff->write_bits(
+      buff, self->ath_id, FVV_BIT_ATH_ID, FVV_DESCRIPTOR_ATH_ID);
   tileID = self->ath_id;
-  buff->write_bits(buff, self->ath_type, FVV_BIT_ATH_TYPE);
+  buff->write_bits(buff,
+                   self->ath_type,
+                   FVV_BIT_ATH_TYPE,
+                   FVV_DESCRIPTOR_ATH_TYPE);
   if (self->afpsr->afps_output_flag_present_flag)
   {
     buff->write_bits(buff,
-              self->ath_atlas_output_flag,
-              FVV_BIT_ATH_ATLAS_OUTPUT_FLAG);
+                     self->ath_atlas_output_flag,
+                     FVV_BIT_ATH_ATLAS_OUTPUT_FLAG,
+                     FVV_DESCRIPTOR_ATH_ATLAS_OUTPUT_FLAG);
   }
   buff->write_bits(buff,
-            self->ath_atlas_frm_order_cnt_lsb,
-            FVV_BIT_ATH_ATLAS_FRM_ORDER_CNT_LSB);
+                   self->ath_atlas_frm_order_cnt_lsb,
+                   FVV_BIT_ATH_ATLAS_FRM_ORDER_CNT_LSB,
+                   FVV_DESCRIPTOR_ATH_ATLAS_FRM_ORDER_CNT_LSB);
   if (self->aspsr->asps_num_ref_atlas_frame_lists_in_asps > 0)
-    buff->write_bits(buff,
-              self->ath_ref_atlas_frame_list_asps_flag,
-              FVV_BIT_ATH_REF_ATLAS_FRAME_LIST_ASPS_FLAG);
+    buff->write_bits(
+        buff,
+        self->ath_ref_atlas_frame_list_asps_flag,
+        FVV_BIT_ATH_REF_ATLAS_FRAME_LIST_ASPS_FLAG,
+        FVV_DESCRIPTOR_ATH_REF_ATLAS_FRAME_LIST_ASPS_FLAG);
   if (self->ath_ref_atlas_frame_list_asps_flag == 0)
     self->rls->pack(
         self->rls,
         self->aspsr->asps_num_ref_atlas_frame_lists_in_asps);
   else if (self->aspsr->asps_num_ref_atlas_frame_lists_in_asps > 1)
     buff->write_bits(buff,
-              self->ath_ref_atlas_frame_list_idx,
-              FVV_BIT_ATH_REF_ATLAS_FRAME_LIST_IDX);
+                     self->ath_ref_atlas_frame_list_idx,
+                     FVV_BIT_ATH_REF_ATLAS_FRAME_LIST_IDX,
+                     FVV_DESCRIPTOR_ATH_REF_ATLAS_FRAME_LIST_IDX);
   for (j = 0; j < NumLtrAtlasFrmEntries; j++)
   {
-    buff->write_bits(buff,
-              self->ath_additional_afoc_lsb_present_flag[j],
-              FVV_BIT_ATH_ADDITIONAL_AFOC_LSB_PRESENT_FLAG);
+    buff->write_bits(
+        buff,
+        self->ath_additional_afoc_lsb_present_flag[j],
+        FVV_BIT_ATH_ADDITIONAL_AFOC_LSB_PRESENT_FLAG,
+        FVV_DESCRIPTOR_ATH_ADDITIONAL_AFOC_LSB_PRESENT_FLAG);
     if (self->ath_additional_afoc_lsb_present_flag[j])
       buff->write_bits(buff,
-                self->ath_additional_afoc_lsb_val[j],
-                FVV_BIT_ATH_ADDITIONAL_AFOC_LSB_VAL);
+                       self->ath_additional_afoc_lsb_val[j],
+                       FVV_BIT_ATH_ADDITIONAL_AFOC_LSB_VAL,
+                       FVV_DESCRIPTOR_ATH_ADDITIONAL_AFOC_LSB_VAL);
   }
   if (self->ath_type != FVV_SKIP_TILE)
   {
@@ -136,36 +172,49 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
             ->asps_normal_axis_limits_quantization_enabled_flag)
     {
       buff->write_bits(buff,
-                self->ath_pos_min_d_quantizer,
-                FVV_BIT_ATH_POS_MIN_D_QUANTIZER);
+                       self->ath_pos_min_d_quantizer,
+                       FVV_BIT_ATH_POS_MIN_D_QUANTIZER,
+                       FVV_DESCRIPTOR_ATH_POS_MIN_D_QUANTIZER);
       if (self->aspsr->asps_normal_axis_max_delta_value_enabled_flag)
-        buff->write_bits(buff,
-                  self->ath_pos_delta_max_d_quantizer,
-                  FVV_BIT_ATH_POS_DELTA_MAX_D_QUANTIZER);
+        buff->write_bits(
+            buff,
+            self->ath_pos_delta_max_d_quantizer,
+            FVV_BIT_ATH_POS_DELTA_MAX_D_QUANTIZER,
+            FVV_DESCRIPTOR_ATH_POS_DELTA_MAX_D_QUANTIZER);
     }
     if (self->aspsr->asps_patch_size_quantizer_present_flag)
     {
-      buff->write_bits(buff,
-                self->ath_patch_size_x_info_quantizer,
-                FVV_BIT_ATH_PATCH_SIZE_X_INFO_QUANTIZER);
-      buff->write_bits(buff,
-                self->ath_patch_size_y_info_quantizer,
-                FVV_BIT_ATH_PATCH_SIZE_Y_INFO_QUANTIZER);
+      buff->write_bits(
+          buff,
+          self->ath_patch_size_x_info_quantizer,
+          FVV_BIT_ATH_PATCH_SIZE_X_INFO_QUANTIZER,
+          FVV_DESCRIPTOR_ATH_PATCH_SIZE_X_INFO_QUANTIZER);
+      buff->write_bits(
+          buff,
+          self->ath_patch_size_y_info_quantizer,
+          FVV_BIT_ATH_PATCH_SIZE_Y_INFO_QUANTIZER,
+          FVV_DESCRIPTOR_ATH_PATCH_SIZE_Y_INFO_QUANTIZER);
     }
     if (self->afpsr->afps_raw_3d_offset_bit_count_explicit_mode_flag)
-      buff->write_bits(buff,
-                self->ath_raw_3d_offset_axis_bit_count_minus1,
-                FVV_BIT_ATH_RAW_3D_OFFSET_AXIS_BIT_COUNT_MINUS1);
+      buff->write_bits(
+          buff,
+          self->ath_raw_3d_offset_axis_bit_count_minus1,
+          FVV_BIT_ATH_RAW_3D_OFFSET_AXIS_BIT_COUNT_MINUS1,
+          FVV_DESCRIPTOR_ATH_RAW_3D_OFFSET_AXIS_BIT_COUNT_MINUS1);
     if (self->ath_type == FVV_P_TILE &&
         self->rls->num_ref_entries[RlsIdx] > 1)
     {
-      buff->write_bits(buff,
-                self->ath_num_ref_idx_active_override_flag,
-                FVV_BIT_ATH_NUM_REF_IDX_ACTIVE_OVERRIDE_FLAG);
+      buff->write_bits(
+          buff,
+          self->ath_num_ref_idx_active_override_flag,
+          FVV_BIT_ATH_NUM_REF_IDX_ACTIVE_OVERRIDE_FLAG,
+          FVV_DESCRIPTOR_ATH_NUM_REF_IDX_ACTIVE_OVERRIDE_FLAG);
       if (self->ath_num_ref_idx_active_override_flag)
-        buff->write_bits(buff,
-                  self->ath_num_ref_idx_active_minus1,
-                  FVV_BIT_ATH_NUM_REF_IDX_ACTIVE_MINUS1);
+        buff->write_bits(
+            buff,
+            self->ath_num_ref_idx_active_minus1,
+            FVV_BIT_ATH_NUM_REF_IDX_ACTIVE_MINUS1,
+            FVV_DESCRIPTOR_ATH_NUM_REF_IDX_ACTIVE_MINUS1);
     }
   }
   self->ba->pack(self->ba);
@@ -188,8 +237,7 @@ fvv_atlas_tile_header_copy_from(fvv_atlas_tile_header_t *self,
       self, other->ath_atlas_adaptation_parameter_set_id);
   self->set_ath_id(self, other->ath_id);
   self->set_ath_type(self, other->ath_type);
-  self->set_ath_atlas_output_flag(self,
-                                  other->ath_atlas_output_flag);
+  self->set_ath_atlas_output_flag(self, other->ath_atlas_output_flag);
   self->set_ath_atlas_frm_order_cnt_lsb(
       self, other->ath_atlas_frm_order_cnt_lsb);
   self->set_ath_ref_atlas_frame_list_asps_flag(
@@ -225,24 +273,44 @@ fvv_atlas_tile_header_copy_from(fvv_atlas_tile_header_t *self,
   return FVV_RET_SUCCESS;
 }
 
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_no_output_of_prior_atlas_frames_flag);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_atlas_frame_parameter_set_id);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_atlas_adaptation_parameter_set_id);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_no_output_of_prior_atlas_frames_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_atlas_frame_parameter_set_id);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_atlas_adaptation_parameter_set_id);
 FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_id);
 FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_type);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_atlas_output_flag);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_atlas_frm_order_cnt_lsb);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_ref_atlas_frame_list_asps_flag);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_ref_atlas_frame_list_idx);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_pos_min_d_quantizer);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_pos_delta_max_d_quantizer);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_patch_size_x_info_quantizer);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_patch_size_y_info_quantizer);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_raw_3d_offset_axis_bit_count_minus1);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_num_ref_idx_active_override_flag);
-FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t, ath_num_ref_idx_active_minus1);
-FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_present_flag);
-FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_tile_header_t, ath_additional_afoc_lsb_val);
-FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_header_t, rls, fvv_ref_list_struct_t);
-FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_header_t, ba, fvv_byte_alignment_t);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_atlas_output_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_atlas_frm_order_cnt_lsb);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_ref_atlas_frame_list_asps_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_ref_atlas_frame_list_idx);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_pos_min_d_quantizer);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_pos_delta_max_d_quantizer);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_patch_size_x_info_quantizer);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_patch_size_y_info_quantizer);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_raw_3d_offset_axis_bit_count_minus1);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_num_ref_idx_active_override_flag);
+FVV_DEFINE_SCALAR_SETTER(fvv_atlas_tile_header_t,
+                         ath_num_ref_idx_active_minus1);
+FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_tile_header_t,
+                         ath_additional_afoc_lsb_present_flag);
+FVV_DEFINE_1D_ARR_SETTER(fvv_atlas_tile_header_t,
+                         ath_additional_afoc_lsb_val);
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_header_t,
+                      rls,
+                      fvv_ref_list_struct_t);
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_header_t,
+                      ba,
+                      fvv_byte_alignment_t);
 // }

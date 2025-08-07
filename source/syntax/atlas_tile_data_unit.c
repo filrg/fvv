@@ -17,11 +17,15 @@ fvv_atlas_tile_data_unit_init(fvv_atlas_tile_data_unit_t *self,
   self->copy_from = fvv_atlas_tile_data_unit_copy_from;
 
   FVV_SET_SETTER_PTR(fvv_atlas_tile_data_unit_t, atdu_patch_mode);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_data_unit_t, spdu, fvv_skip_patch_data_unit_t);
-  FVV_SET_SETTER_PTR(fvv_atlas_tile_data_unit_t, pid, fvv_patch_information_data_t);
+  FVV_SET_SETTER_PTR(
+      fvv_atlas_tile_data_unit_t, spdu, fvv_skip_patch_data_unit_t);
+  FVV_SET_SETTER_PTR(
+      fvv_atlas_tile_data_unit_t, pid, fvv_patch_information_data_t);
 
-  self->spdu = (fvv_skip_patch_data_unit_t *)malloc(sizeof(fvv_skip_patch_data_unit_t));
-  self->pid  = (fvv_patch_information_data_t *)malloc(sizeof(fvv_patch_information_data_t));
+  self->spdu = (fvv_skip_patch_data_unit_t *)malloc(
+      sizeof(fvv_skip_patch_data_unit_t));
+  self->pid = (fvv_patch_information_data_t *)malloc(
+      sizeof(fvv_patch_information_data_t));
 
   fvv_skip_patch_data_unit_init(self->spdu, data);
   fvv_patch_information_data_init(self->pid, data);
@@ -36,8 +40,10 @@ fvv_atlas_tile_data_unit_destroy(fvv_atlas_tile_data_unit_t *self)
     return FVV_RET_UNINITIALIZED;
   }
   FVV_DESTROY_2D_ARR(fvv_atlas_tile_data_unit_t, atdu_patch_mode);
-  FVV_DESTROY_OBJ(fvv_atlas_tile_data_unit_t, spdu, fvv_skip_patch_data_unit_t);
-  FVV_DESTROY_OBJ(fvv_atlas_tile_data_unit_t, pid, fvv_patch_information_data_t);
+  FVV_DESTROY_OBJ(
+      fvv_atlas_tile_data_unit_t, spdu, fvv_skip_patch_data_unit_t);
+  FVV_DESTROY_OBJ(
+      fvv_atlas_tile_data_unit_t, pid, fvv_patch_information_data_t);
 
   *self = (fvv_atlas_tile_data_unit_t){0};
   return FVV_RET_SUCCESS;
@@ -66,8 +72,9 @@ fvv_atlas_tile_data_unit_pack(fvv_atlas_tile_data_unit_t *self,
     do
     {
       buff->write_bits(buff,
-                self->atdu_patch_mode[tileID][p],
-                FVV_BIT_ATDU_PATCH_MODE);
+                       self->atdu_patch_mode[tileID][p],
+                       FVV_BIT_ATDU_PATCH_MODE,
+                       FVV_DESCRIPTOR_ATDU_PATCH_MODE);
       isEnd = (self->ath->ath_type == FVV_P_TILE &&
                self->atdu_patch_mode[tileID][p] == FVV_P_END) ||
               (self->ath->ath_type == FVV_I_TILE &&
@@ -98,6 +105,10 @@ fvv_atlas_tile_data_unit_copy_from(fvv_atlas_tile_data_unit_t *self,
   return FVV_RET_SUCCESS;
 }
 FVV_DEFINE_2D_ARR_SETTER(fvv_atlas_tile_data_unit_t, atdu_patch_mode);
-FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_data_unit_t, spdu, fvv_skip_patch_data_unit_t);
-FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_data_unit_t, pid, fvv_patch_information_data_t);
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_data_unit_t,
+                      spdu,
+                      fvv_skip_patch_data_unit_t);
+FVV_DEFINE_OBJ_SETTER(fvv_atlas_tile_data_unit_t,
+                      pid,
+                      fvv_patch_information_data_t);
 // }

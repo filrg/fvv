@@ -15,7 +15,9 @@ fvv_ret_t fvv_access_unit_delimiter_rbsp_init(
   self->copy_from = fvv_access_unit_delimiter_rbsp_copy_from;
 
   FVV_SET_SETTER_PTR(fvv_access_unit_delimiter_rbsp_t, aframe_type);
-  FVV_SET_SETTER_PTR(fvv_access_unit_delimiter_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
+  FVV_SET_SETTER_PTR(fvv_access_unit_delimiter_rbsp_t,
+                     rtb,
+                     fvv_rbsp_trailing_bits_t);
 
   self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
@@ -31,7 +33,9 @@ fvv_ret_t fvv_access_unit_delimiter_rbsp_destroy(
   {
     return FVV_RET_UNINITIALIZED;
   }
-  FVV_DESTROY_OBJ(fvv_access_unit_delimiter_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
+  FVV_DESTROY_OBJ(fvv_access_unit_delimiter_rbsp_t,
+                  rtb,
+                  fvv_rbsp_trailing_bits_t);
   *self = (fvv_access_unit_delimiter_rbsp_t){0};
   return FVV_RET_SUCCESS;
 }
@@ -45,7 +49,10 @@ fvv_ret_t fvv_access_unit_delimiter_rbsp_pack(
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
 
-  buff->write_bits(buff, self->aframe_type, FVV_BIT_AFRAME_TYPE);
+  buff->write_bits(buff,
+                   self->aframe_type,
+                   FVV_BIT_AFRAME_TYPE,
+                   FVV_DESCRIPTOR_AFRAME_TYPE);
 
   self->rtb->pack(self->rtb);
 
@@ -65,7 +72,10 @@ fvv_ret_t fvv_access_unit_delimiter_rbsp_copy_from(
   return FVV_RET_SUCCESS;
 }
 
-FVV_DEFINE_SCALAR_SETTER(fvv_access_unit_delimiter_rbsp_t, aframe_type);
-FVV_DEFINE_OBJ_SETTER(fvv_access_unit_delimiter_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
+FVV_DEFINE_SCALAR_SETTER(fvv_access_unit_delimiter_rbsp_t,
+                         aframe_type);
+FVV_DEFINE_OBJ_SETTER(fvv_access_unit_delimiter_rbsp_t,
+                      rtb,
+                      fvv_rbsp_trailing_bits_t);
 
 // }

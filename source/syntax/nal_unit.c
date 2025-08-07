@@ -55,7 +55,10 @@ fvv_ret_t fvv_nal_unit_pack(fvv_nal_unit_t *self,
   NumBytesInRbsp = 0;
   for (i = 2; i < NumBytesInNalUnit; i++)
   {
-    buff->write_bits(buff, self->rbsp_byte[i], FVV_BIT_RBSP_BYTE);
+    buff->write_bits(buff,
+                     self->rbsp_byte[i],
+                     FVV_BIT_RBSP_BYTE,
+                     FVV_DESCRIPTOR_RBSP_BYTE);
     NumBytesInRbsp++;
   }
 

@@ -16,11 +16,21 @@ fvv_geometry_information_init(fvv_geometry_information_t *self,
   self->data      = data;
   self->pack      = fvv_geometry_information_pack;
   self->copy_from = fvv_geometry_information_copy_from;
-  FVV_SET_SETTER_PTR(fvv_geometry_information_t, gi_geometry_codec_id, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-  FVV_SET_SETTER_PTR(fvv_geometry_information_t, gi_geometry_2d_bit_depth_minus1, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-  FVV_SET_SETTER_PTR(fvv_geometry_information_t, gi_geometry_MSB_align_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-  FVV_SET_SETTER_PTR(fvv_geometry_information_t, gi_geometry_3d_coordinates_bit_depth_minus1, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-  FVV_SET_SETTER_PTR(fvv_geometry_information_t, gi_auxiliary_geometry_codec_id, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_geometry_information_t,
+                     gi_geometry_codec_id,
+                     0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_geometry_information_t,
+                     gi_geometry_2d_bit_depth_minus1,
+                     0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_geometry_information_t,
+                     gi_geometry_MSB_align_flag,
+                     0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_geometry_information_t,
+                     gi_geometry_3d_coordinates_bit_depth_minus1,
+                     0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_geometry_information_t,
+                     gi_auxiliary_geometry_codec_id,
+                     0x1 << FVV_BIT_VPS_ATLAS_ID);
   return FVV_RET_SUCCESS;
 }
 
@@ -47,23 +57,28 @@ fvv_geometry_information_pack(fvv_geometry_information_t *self,
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
   buff->write_bits(buff,
-            self->gi_geometry_codec_id[atlasID],
-            FVV_BIT_GI_GEOMETRY_CODEC_ID);
+                   self->gi_geometry_codec_id[atlasID],
+                   FVV_BIT_GI_GEOMETRY_CODEC_ID,
+                   FVV_DESCRIPTOR_GI_GEOMETRY_CODEC_ID);
   buff->write_bits(buff,
-            self->gi_geometry_2d_bit_depth_minus1[atlasID],
-            FVV_BIT_GI_GEOMETRY_2D_BIT_DEPTH_MINUS1);
+                   self->gi_geometry_2d_bit_depth_minus1[atlasID],
+                   FVV_BIT_GI_GEOMETRY_2D_BIT_DEPTH_MINUS1,
+                   FVV_DESCRIPTOR_GI_GEOMETRY_2D_BIT_DEPTH_MINUS1);
   buff->write_bits(buff,
-            self->gi_geometry_MSB_align_flag[atlasID],
-            FVV_BIT_GI_GEOMETRY_MSB_ALIGN_FLAG);
+                   self->gi_geometry_MSB_align_flag[atlasID],
+                   FVV_BIT_GI_GEOMETRY_MSB_ALIGN_FLAG,
+                   FVV_DESCRIPTOR_GI_GEOMETRY_MSB_ALIGN_FLAG);
   buff->write_bits(
       buff,
       self->gi_geometry_3d_coordinates_bit_depth_minus1[atlasID],
-      FVV_BIT_GI_GEOMETRY_3D_COORDINATES_BIT_DEPTH_MINUS1);
+      FVV_BIT_GI_GEOMETRY_3D_COORDINATES_BIT_DEPTH_MINUS1,
+      FVV_DESCRIPTOR_GI_GEOMETRY_3D_COORDINATES_BIT_DEPTH_MINUS1);
   if (self->vps->vps_auxiliary_video_present_flag[atlasID])
   {
     buff->write_bits(buff,
-              self->gi_auxiliary_geometry_codec_id[atlasID],
-              FVV_BIT_GI_AUXILIARY_GEOMETRY_CODEC_ID);
+                     self->gi_auxiliary_geometry_codec_id[atlasID],
+                     FVV_BIT_GI_AUXILIARY_GEOMETRY_CODEC_ID,
+                     FVV_DESCRIPTOR_GI_AUXILIARY_GEOMETRY_CODEC_ID);
   }
   return FVV_RET_SUCCESS;
 }
@@ -86,9 +101,20 @@ fvv_geometry_information_copy_from(fvv_geometry_information_t *self,
       self, other->gi_auxiliary_geometry_codec_id);
   return FVV_RET_SUCCESS;
 }
-FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_geometry_information_t, gi_geometry_codec_id, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_geometry_information_t, gi_geometry_2d_bit_depth_minus1, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_geometry_information_t, gi_geometry_MSB_align_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_geometry_information_t, gi_geometry_3d_coordinates_bit_depth_minus1, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_geometry_information_t, gi_auxiliary_geometry_codec_id, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_geometry_information_t,
+                                gi_geometry_codec_id,
+                                0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_geometry_information_t,
+                                gi_geometry_2d_bit_depth_minus1,
+                                0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_geometry_information_t,
+                                gi_geometry_MSB_align_flag,
+                                0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(
+    fvv_geometry_information_t,
+    gi_geometry_3d_coordinates_bit_depth_minus1,
+    0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_geometry_information_t,
+                                gi_auxiliary_geometry_codec_id,
+                                0x1 << FVV_BIT_VPS_ATLAS_ID);
 // }

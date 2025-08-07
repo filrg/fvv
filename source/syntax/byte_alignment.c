@@ -14,8 +14,10 @@ fvv_ret_t fvv_byte_alignment_init(fvv_byte_alignment_t *self,
   self->data                        = data;
   self->pack                        = fvv_byte_alignment_pack;
 
-  FVV_SET_SETTER_PTR(fvv_byte_alignment_t, alignment_bit_equal_to_one);
-  FVV_SET_SETTER_PTR(fvv_byte_alignment_t, alignment_bit_equal_to_zero);
+  FVV_SET_SETTER_PTR(fvv_byte_alignment_t,
+                     alignment_bit_equal_to_one);
+  FVV_SET_SETTER_PTR(fvv_byte_alignment_t,
+                     alignment_bit_equal_to_zero);
 
   return FVV_RET_SUCCESS;
 }
@@ -41,14 +43,16 @@ fvv_ret_t fvv_byte_alignment_pack(fvv_byte_alignment_t *self)
   buff                          = self->data;
 
   buff->write_bits(buff,
-            self->alignment_bit_equal_to_one,
-            FVV_BIT_ALIGNMENT_BIT_EQUAL_TO_ONE);
+                   self->alignment_bit_equal_to_one,
+                   FVV_BIT_ALIGNMENT_BIT_EQUAL_TO_ONE,
+                   FVV_DESCRIPTOR_ALIGNMENT_BIT_EQUAL_TO_ONE);
   buff->byte_aligned(buff, &byte_aligned);
   while (!byte_aligned)
   {
     buff->write_bits(buff,
-              self->alignment_bit_equal_to_zero,
-              FVV_BIT_ALIGNMENT_BIT_EQUAL_TO_ZERO);
+                     self->alignment_bit_equal_to_zero,
+                     FVV_BIT_ALIGNMENT_BIT_EQUAL_TO_ZERO,
+                     FVV_DESCRIPTOR_ALIGNMENT_BIT_EQUAL_TO_ZERO);
     buff->byte_aligned(buff, &byte_aligned);
   }
   return FVV_RET_SUCCESS;
@@ -66,6 +70,8 @@ fvv_ret_t fvv_byte_alignment_copy_from(fvv_byte_alignment_t *self,
       self, other->alignment_bit_equal_to_zero);
   return FVV_RET_SUCCESS;
 }
-FVV_DEFINE_SCALAR_SETTER(fvv_byte_alignment_t, alignment_bit_equal_to_one);
-FVV_DEFINE_SCALAR_SETTER(fvv_byte_alignment_t, alignment_bit_equal_to_zero);
+FVV_DEFINE_SCALAR_SETTER(fvv_byte_alignment_t,
+                         alignment_bit_equal_to_one);
+FVV_DEFINE_SCALAR_SETTER(fvv_byte_alignment_t,
+                         alignment_bit_equal_to_zero);
 // }

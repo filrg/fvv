@@ -14,8 +14,10 @@ fvv_aaps_vpcc_extension_init(fvv_aaps_vpcc_extension_t *self,
   self->pack      = fvv_aaps_vpcc_extension_pack;
   self->copy_from = fvv_aaps_vpcc_extension_copy_from;
 
-  FVV_SET_SETTER_PTR(fvv_aaps_vpcc_extension_t, aaps_vpcc_camera_parameters_present_flag);
-  FVV_SET_SETTER_PTR(fvv_aaps_vpcc_extension_t, acp, fvv_atlas_camera_parameters_t);
+  FVV_SET_SETTER_PTR(fvv_aaps_vpcc_extension_t,
+                     aaps_vpcc_camera_parameters_present_flag);
+  FVV_SET_SETTER_PTR(
+      fvv_aaps_vpcc_extension_t, acp, fvv_atlas_camera_parameters_t);
 
   self->acp = (fvv_atlas_camera_parameters_t *)malloc(
       sizeof(fvv_atlas_camera_parameters_t));
@@ -31,7 +33,8 @@ fvv_aaps_vpcc_extension_destroy(fvv_aaps_vpcc_extension_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  FVV_DESTROY_OBJ(fvv_aaps_vpcc_extension_t, acp, fvv_atlas_camera_parameters_t);
+  FVV_DESTROY_OBJ(
+      fvv_aaps_vpcc_extension_t, acp, fvv_atlas_camera_parameters_t);
   *self = (fvv_aaps_vpcc_extension_t){0};
   return FVV_RET_SUCCESS;
 }
@@ -45,9 +48,11 @@ fvv_aaps_vpcc_extension_pack(fvv_aaps_vpcc_extension_t *self)
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
 
-  buff->write_bits(buff,
-            self->aaps_vpcc_camera_parameters_present_flag,
-            FVV_BIT_AAPS_VPCC_CAMERA_PARAMETERS_PRESENT_FLAG);
+  buff->write_bits(
+      buff,
+      self->aaps_vpcc_camera_parameters_present_flag,
+      FVV_BIT_AAPS_VPCC_CAMERA_PARAMETERS_PRESENT_FLAG,
+      FVV_DESCRIPTOR_AAPS_VPCC_CAMERA_PARAMETERS_PRESENT_FLAG);
 
   if (self->aaps_vpcc_camera_parameters_present_flag)
   {
@@ -71,7 +76,10 @@ fvv_aaps_vpcc_extension_copy_from(fvv_aaps_vpcc_extension_t *self,
   return FVV_RET_SUCCESS;
 }
 
-FVV_DEFINE_SCALAR_SETTER(fvv_aaps_vpcc_extension_t, aaps_vpcc_camera_parameters_present_flag);
-FVV_DEFINE_OBJ_SETTER(fvv_aaps_vpcc_extension_t, acp, fvv_atlas_camera_parameters_t);
+FVV_DEFINE_SCALAR_SETTER(fvv_aaps_vpcc_extension_t,
+                         aaps_vpcc_camera_parameters_present_flag);
+FVV_DEFINE_OBJ_SETTER(fvv_aaps_vpcc_extension_t,
+                      acp,
+                      fvv_atlas_camera_parameters_t);
 
 // }

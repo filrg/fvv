@@ -43,16 +43,20 @@ fvv_asps_vpcc_extension_pack(fvv_asps_vpcc_extension_t *self)
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
 
-  buff->write_bits(buff,
-            self->asps_vpcc_remove_duplicate_point_enabled_flag,
-            FVV_BIT_ASPS_VPCC_REMOVE_DUPLICATE_POINT_ENABLED_FLAG);
+  buff->write_bits(
+      buff,
+      self->asps_vpcc_remove_duplicate_point_enabled_flag,
+      FVV_BIT_ASPS_VPCC_REMOVE_DUPLICATE_POINT_ENABLED_FLAG,
+      FVV_DESCRIPTOR_ASPS_VPCC_REMOVE_DUPLICATE_POINT_ENABLED_FLAG);
 
   if (self->aspsr->asps_pixel_deinterleaving_enabled_flag ||
       self->aspsr->asps_plr_enabled_flag)
   {
-    buff->write_bits(buff,
-              self->asps_vpcc_surface_thickness_minus1,
-              FVV_BIT_ASPS_VPCC_SURFACE_THICKNESS_MINUS1);
+    buff->write_bits(
+        buff,
+        self->asps_vpcc_surface_thickness_minus1,
+        FVV_BIT_ASPS_VPCC_SURFACE_THICKNESS_MINUS1,
+        FVV_DESCRIPTOR_ASPS_VPCC_SURFACE_THICKNESS_MINUS1);
   }
 
   return FVV_RET_SUCCESS;
@@ -75,5 +79,5 @@ FVV_DEFINE_SCALAR_SETTER(
     fvv_asps_vpcc_extension_t,
     asps_vpcc_remove_duplicate_point_enabled_flag);
 FVV_DEFINE_SCALAR_SETTER(fvv_asps_vpcc_extension_t,
-                           asps_vpcc_surface_thickness_minus1);
+                         asps_vpcc_surface_thickness_minus1);
 // }

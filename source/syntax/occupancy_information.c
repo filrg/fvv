@@ -16,10 +16,18 @@ fvv_occupancy_information_init(fvv_occupancy_information_t *self,
 
   self->pack      = fvv_occupancy_information_pack;
   self->copy_from = fvv_occupancy_information_copy_from;
-  FVV_SET_SETTER_PTR(fvv_occupancy_information_t, oi_occupancy_codec_id, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-  FVV_SET_SETTER_PTR(fvv_occupancy_information_t, oi_lossy_occupancy_compression_threshold, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-  FVV_SET_SETTER_PTR(fvv_occupancy_information_t, oi_occupancy_2d_bit_depth_minus1, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-  FVV_SET_SETTER_PTR(fvv_occupancy_information_t, oi_occupancy_MSB_align_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_occupancy_information_t,
+                     oi_occupancy_codec_id,
+                     0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_occupancy_information_t,
+                     oi_lossy_occupancy_compression_threshold,
+                     0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_occupancy_information_t,
+                     oi_occupancy_2d_bit_depth_minus1,
+                     0x1 << FVV_BIT_VPS_ATLAS_ID);
+  FVV_SET_SETTER_PTR(fvv_occupancy_information_t,
+                     oi_occupancy_MSB_align_flag,
+                     0x1 << FVV_BIT_VPS_ATLAS_ID);
 
   return FVV_RET_SUCCESS;
 }
@@ -45,17 +53,22 @@ fvv_occupancy_information_pack(fvv_occupancy_information_t *self,
   buff                  = self->data;
 
   buff->write_bits(buff,
-            self->oi_occupancy_codec_id[atlasID],
-            FVV_BIT_OI_OCCUPANCY_CODEC_ID);
+                   self->oi_occupancy_codec_id[atlasID],
+                   FVV_BIT_OI_OCCUPANCY_CODEC_ID,
+                   FVV_DESCRIPTOR_OI_OCCUPANCY_CODEC_ID);
+  buff->write_bits(
+      buff,
+      self->oi_lossy_occupancy_compression_threshold[atlasID],
+      FVV_BIT_OI_LOSSY_OCCUPANCY_COMPRESSION_THRESHOLD,
+      FVV_DESCRIPTOR_OI_LOSSY_OCCUPANCY_COMPRESSION_THRESHOLD);
   buff->write_bits(buff,
-            self->oi_lossy_occupancy_compression_threshold[atlasID],
-            FVV_BIT_OI_LOSSY_OCCUPANCY_COMPRESSION_THRESHOLD);
+                   self->oi_occupancy_2d_bit_depth_minus1[atlasID],
+                   FVV_BIT_OI_OCCUPANCY_2D_BIT_DEPTH_MINUS1,
+                   FVV_DESCRIPTOR_OI_OCCUPANCY_2D_BIT_DEPTH_MINUS1);
   buff->write_bits(buff,
-            self->oi_occupancy_2d_bit_depth_minus1[atlasID],
-            FVV_BIT_OI_OCCUPANCY_2D_BIT_DEPTH_MINUS1);
-  buff->write_bits(buff,
-            self->oi_occupancy_MSB_align_flag[atlasID],
-            FVV_BIT_OI_OCCUPANCY_MSB_ALIGN_FLAG);
+                   self->oi_occupancy_MSB_align_flag[atlasID],
+                   FVV_BIT_OI_OCCUPANCY_MSB_ALIGN_FLAG,
+                   FVV_DESCRIPTOR_OI_OCCUPANCY_MSB_ALIGN_FLAG);
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t fvv_occupancy_information_copy_from(
@@ -66,8 +79,7 @@ fvv_ret_t fvv_occupancy_information_copy_from(
   {
     return FVV_RET_UNINITIALIZED;
   }
-  self->set_oi_occupancy_codec_id(self,
-                                  other->oi_occupancy_codec_id);
+  self->set_oi_occupancy_codec_id(self, other->oi_occupancy_codec_id);
   self->set_oi_lossy_occupancy_compression_threshold(
       self, other->oi_lossy_occupancy_compression_threshold);
   self->set_oi_occupancy_2d_bit_depth_minus1(
@@ -76,8 +88,17 @@ fvv_ret_t fvv_occupancy_information_copy_from(
       self, other->oi_occupancy_MSB_align_flag);
   return FVV_RET_SUCCESS;
 }
-FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_occupancy_information_t, oi_occupancy_codec_id, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_occupancy_information_t, oi_lossy_occupancy_compression_threshold, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_occupancy_information_t, oi_occupancy_2d_bit_depth_minus1, 0x1 << FVV_BIT_VPS_ATLAS_ID);
-FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_occupancy_information_t, oi_occupancy_MSB_align_flag, 0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_occupancy_information_t,
+                                oi_occupancy_codec_id,
+                                0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(
+    fvv_occupancy_information_t,
+    oi_lossy_occupancy_compression_threshold,
+    0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_occupancy_information_t,
+                                oi_occupancy_2d_bit_depth_minus1,
+                                0x1 << FVV_BIT_VPS_ATLAS_ID);
+FVV_DEFINE_1D_STATIC_ARR_SETTER(fvv_occupancy_information_t,
+                                oi_occupancy_MSB_align_flag,
+                                0x1 << FVV_BIT_VPS_ATLAS_ID);
 // }

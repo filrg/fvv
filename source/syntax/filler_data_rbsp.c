@@ -17,7 +17,8 @@ fvv_ret_t fvv_filler_data_rbsp_init(
   self->copy_from = fvv_filler_data_rbsp_copy_from;
 
   FVV_SET_SETTER_PTR(fvv_filler_data_rbsp_t, ff_byte);
-  FVV_SET_SETTER_PTR(fvv_filler_data_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
+  FVV_SET_SETTER_PTR(
+      fvv_filler_data_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 
   self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
@@ -31,7 +32,8 @@ fvv_ret_t fvv_filler_data_rbsp_destroy(fvv_filler_data_rbsp_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  FVV_DESTROY_OBJ(fvv_filler_data_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
+  FVV_DESTROY_OBJ(
+      fvv_filler_data_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
 
   *self = (fvv_filler_data_rbsp_t){0};
   return FVV_RET_SUCCESS;
@@ -49,7 +51,8 @@ fvv_ret_t fvv_filler_data_rbsp_pack(fvv_filler_data_rbsp_t *self)
   buff->next_bits(buff, 8, &next_bits);
   while (next_bits == 0xFF)
   {
-    buff->write_bits(buff, self->ff_byte, FVV_BIT_FF_BYTE);
+    buff->write_bits(
+        buff, self->ff_byte, FVV_BIT_FF_BYTE, FVV_DESCRIPTOR_FF_BYTE);
     buff->next_bits(buff, 8, &next_bits);
   }
   self->rtb->pack(self->rtb);
@@ -68,6 +71,8 @@ fvv_filler_data_rbsp_copy_from(fvv_filler_data_rbsp_t *self,
   return FVV_RET_SUCCESS;
 }
 FVV_DEFINE_SCALAR_SETTER(fvv_filler_data_rbsp_t, ff_byte);
-FVV_DEFINE_OBJ_SETTER(fvv_filler_data_rbsp_t, rtb, fvv_rbsp_trailing_bits_t);
+FVV_DEFINE_OBJ_SETTER(fvv_filler_data_rbsp_t,
+                      rtb,
+                      fvv_rbsp_trailing_bits_t);
 
 // }
