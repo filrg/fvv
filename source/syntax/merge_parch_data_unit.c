@@ -72,26 +72,26 @@ fvv_merge_patch_data_unit_pack(fvv_merge_patch_data_unit_t *self,
 
   if (NumRefIdxActive > 1)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->mpdu_ref_index[tileID][patchIdx],
               FVV_BIT_MPDU_REF_INDEX);
   }
   OverridePlrFlag = 0;
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->mpdu_override_2d_params_flag[tileID][patchIdx],
             FVV_BIT_MPDU_OVERRIDE_2D_PARAMS_FLAG);
   if (self->mpdu_override_2d_params_flag[tileID][patchIdx])
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->mpdu_2d_pos_x[tileID][patchIdx],
               FVV_BIT_MPDU_2D_POS_X);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->mpdu_2d_pos_y[tileID][patchIdx],
               FVV_BIT_MPDU_2D_POS_Y);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->mpdu_2d_delta_size_x[tileID][patchIdx],
               FVV_BIT_MPDU_2D_DELTA_SIZE_X);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->mpdu_2d_delta_size_y[tileID][patchIdx],
               FVV_BIT_MPDU_2D_DELTA_SIZE_Y);
     if (self->aspsr->asps_plr_enabled_flag)
@@ -99,27 +99,27 @@ fvv_merge_patch_data_unit_pack(fvv_merge_patch_data_unit_t *self,
   }
   else
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->mpdu_override_3d_params_flag[tileID][patchIdx],
               FVV_BIT_MPDU_OVERRIDE_3D_PARAMS_FLAG);
     if (self->mpdu_override_3d_params_flag[tileID][patchIdx])
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->mpdu_3d_offset_u[tileID][patchIdx],
                 FVV_BIT_MPDU_3D_OFFSET_U);
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->mpdu_3d_offset_v[tileID][patchIdx],
                 FVV_BIT_MPDU_3D_OFFSET_V);
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->mpdu_3d_offset_d[tileID][patchIdx],
                 FVV_BIT_MPDU_3D_OFFSET_D);
       if (self->aspsr->asps_normal_axis_max_delta_value_enabled_flag)
-        buff->pad(buff,
+        buff->write_bits(buff,
                   self->mpdu_3d_range_d[tileID][patchIdx],
                   FVV_BIT_MPDU_3D_RANGE_D);
       if (self->aspsr->asps_plr_enabled_flag)
       {
-        buff->pad(buff,
+        buff->write_bits(buff,
                   self->mpdu_override_plr_flag[tileID][patchIdx],
                   FVV_BIT_MPDU_OVERRIDE_PLR_FLAG);
         OverridePlrFlag =

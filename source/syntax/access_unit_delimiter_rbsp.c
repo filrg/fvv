@@ -45,7 +45,7 @@ fvv_ret_t fvv_access_unit_delimiter_rbsp_pack(
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
 
-  buff->pad(buff, self->aframe_type, FVV_BIT_AFRAME_TYPE);
+  buff->write_bits(buff, self->aframe_type, FVV_BIT_AFRAME_TYPE);
 
   self->rtb->pack(self->rtb);
 

@@ -59,37 +59,37 @@ fvv_ret_t fvv_profile_tier_level_pack(fvv_profile_tier_level_t *self)
   buff                  = self->data;
   uint64_t i            = 0;
 
-  buff->pad(buff, self->ptl_tier_flag, FVV_BIT_PTL_TIER_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff, self->ptl_tier_flag, FVV_BIT_PTL_TIER_FLAG);
+  buff->write_bits(buff,
             self->ptl_profile_codec_group_idc,
             FVV_BIT_PTL_PROFILE_CODEC_GROUP_IDC);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptl_profile_toolset_idc,
             FVV_BIT_PTL_PROFILE_TOOLSET_IDC);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptl_profile_reconstruction_idc,
             FVV_BIT_PTL_PROFILE_RECONSTRUCTION_IDC);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptl_reserved_zero_16bits,
             FVV_BIT_PTL_RESERVED_ZERO_16BITS);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptl_reserved_0xffff_16bits,
             FVV_BIT_PTL_RESERVED_0XFFFF_16BITS);
-  buff->pad(buff, self->ptl_level_idc, FVV_BIT_PTL_LEVEL_IDC);
-  buff->pad(buff,
+  buff->write_bits(buff, self->ptl_level_idc, FVV_BIT_PTL_LEVEL_IDC);
+  buff->write_bits(buff,
             self->ptl_num_sub_profiles,
             FVV_BIT_PTL_NUM_SUB_PROFILES);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptl_extended_sub_profile_flag,
             FVV_BIT_PTL_EXTENDED_SUB_PROFILE_FLAG);
 
   for (i = 0; i < self->ptl_num_sub_profiles; i++)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ptl_sub_profile_idc[i],
               FVV_BIT_PTL_SUB_PROFILE_IDC);
   }
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptl_tool_constraints_present_flag,
             FVV_BIT_PTL_TOOL_CONSTRAINTS_PRESENT_FLAG);
   if (self->ptl_tool_constraints_present_flag)

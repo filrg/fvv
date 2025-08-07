@@ -40,13 +40,13 @@ fvv_ret_t fvv_sei_message_pack(fvv_sei_message_t *self)
 
   do
   {
-    buff->pad(buff, self->sm_payload_type_byte, FVV_BIT_SM_PAYLOAD_TYPE_BYTE);
+    buff->write_bits(buff, self->sm_payload_type_byte, FVV_BIT_SM_PAYLOAD_TYPE_BYTE);
     payloadType += self->sm_payload_type_byte;
   } while (self->sm_payload_type_byte == 0xFF);
   payloadSize = 0;
   do
   {
-    buff->pad(buff, self->sm_payload_size_byte, FVV_BIT_SM_PAYLOAD_SIZE_BYTE);
+    buff->write_bits(buff, self->sm_payload_size_byte, FVV_BIT_SM_PAYLOAD_SIZE_BYTE);
     payloadSize += self->sm_payload_size_byte;
   } while (self->sm_payload_size_byte == 0xFF);
   self->sp->pack(self->sp, payloadType, payloadSize);

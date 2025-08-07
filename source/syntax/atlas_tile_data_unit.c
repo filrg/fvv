@@ -65,7 +65,7 @@ fvv_atlas_tile_data_unit_pack(fvv_atlas_tile_data_unit_t *self,
     p = 0;
     do
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->atdu_patch_mode[tileID][p],
                 FVV_BIT_ATDU_PATCH_MODE);
       isEnd = (self->ath->ath_type == FVV_P_TILE &&

@@ -87,29 +87,29 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
 
   if (nal_unit_type >= FVV_NAL_BLA_W_LP &&
       nal_unit_type <= FVV_NAL_RSV_IRAP_ACL_29)
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ath_no_output_of_prior_atlas_frames_flag,
               FVV_BIT_ATH_NO_OUTPUT_OF_PRIOR_ATLAS_FRAMES_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ath_atlas_frame_parameter_set_id,
             FVV_BIT_ATH_ATLAS_FRAME_PARAMETER_SET_ID);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ath_atlas_adaptation_parameter_set_id,
             FVV_BIT_ATH_ATLAS_ADAPTATION_PARAMETER_SET_ID);
-  buff->pad(buff, self->ath_id, FVV_BIT_ATH_ID);
+  buff->write_bits(buff, self->ath_id, FVV_BIT_ATH_ID);
   tileID = self->ath_id;
-  buff->pad(buff, self->ath_type, FVV_BIT_ATH_TYPE);
+  buff->write_bits(buff, self->ath_type, FVV_BIT_ATH_TYPE);
   if (self->afpsr->afps_output_flag_present_flag)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ath_atlas_output_flag,
               FVV_BIT_ATH_ATLAS_OUTPUT_FLAG);
   }
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ath_atlas_frm_order_cnt_lsb,
             FVV_BIT_ATH_ATLAS_FRM_ORDER_CNT_LSB);
   if (self->aspsr->asps_num_ref_atlas_frame_lists_in_asps > 0)
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ath_ref_atlas_frame_list_asps_flag,
               FVV_BIT_ATH_REF_ATLAS_FRAME_LIST_ASPS_FLAG);
   if (self->ath_ref_atlas_frame_list_asps_flag == 0)
@@ -117,16 +117,16 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
         self->rls,
         self->aspsr->asps_num_ref_atlas_frame_lists_in_asps);
   else if (self->aspsr->asps_num_ref_atlas_frame_lists_in_asps > 1)
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ath_ref_atlas_frame_list_idx,
               FVV_BIT_ATH_REF_ATLAS_FRAME_LIST_IDX);
   for (j = 0; j < NumLtrAtlasFrmEntries; j++)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ath_additional_afoc_lsb_present_flag[j],
               FVV_BIT_ATH_ADDITIONAL_AFOC_LSB_PRESENT_FLAG);
     if (self->ath_additional_afoc_lsb_present_flag[j])
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->ath_additional_afoc_lsb_val[j],
                 FVV_BIT_ATH_ADDITIONAL_AFOC_LSB_VAL);
   }
@@ -135,35 +135,35 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
     if (self->aspsr
             ->asps_normal_axis_limits_quantization_enabled_flag)
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->ath_pos_min_d_quantizer,
                 FVV_BIT_ATH_POS_MIN_D_QUANTIZER);
       if (self->aspsr->asps_normal_axis_max_delta_value_enabled_flag)
-        buff->pad(buff,
+        buff->write_bits(buff,
                   self->ath_pos_delta_max_d_quantizer,
                   FVV_BIT_ATH_POS_DELTA_MAX_D_QUANTIZER);
     }
     if (self->aspsr->asps_patch_size_quantizer_present_flag)
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->ath_patch_size_x_info_quantizer,
                 FVV_BIT_ATH_PATCH_SIZE_X_INFO_QUANTIZER);
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->ath_patch_size_y_info_quantizer,
                 FVV_BIT_ATH_PATCH_SIZE_Y_INFO_QUANTIZER);
     }
     if (self->afpsr->afps_raw_3d_offset_bit_count_explicit_mode_flag)
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->ath_raw_3d_offset_axis_bit_count_minus1,
                 FVV_BIT_ATH_RAW_3D_OFFSET_AXIS_BIT_COUNT_MINUS1);
     if (self->ath_type == FVV_P_TILE &&
         self->rls->num_ref_entries[RlsIdx] > 1)
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->ath_num_ref_idx_active_override_flag,
                 FVV_BIT_ATH_NUM_REF_IDX_ACTIVE_OVERRIDE_FLAG);
       if (self->ath_num_ref_idx_active_override_flag)
-        buff->pad(buff,
+        buff->write_bits(buff,
                   self->ath_num_ref_idx_active_minus1,
                   FVV_BIT_ATH_NUM_REF_IDX_ACTIVE_MINUS1);
     }

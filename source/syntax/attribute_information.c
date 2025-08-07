@@ -58,37 +58,37 @@ fvv_attribute_information_pack(fvv_attribute_information_t *self,
   uint64_t         remainingDimensions = 0;
   buff                                 = self->data;
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ai_attribute_count[atlasID],
             FVV_BIT_AI_ATTRIBUTE_COUNT);
   for (i = 0; i < self->ai_attribute_count[atlasID]; i++)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ai_attribute_type_id[atlasID][i],
               FVV_BIT_AI_ATTRIBUTE_TYPE_ID);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ai_attribute_codec_id[atlasID][i],
               FVV_BIT_AI_ATTRIBUTE_CODEC_ID);
     if (self->vps->vps_auxiliary_video_present_flag[atlasID])
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->ai_auxiliary_attribute_codec_id[atlasID][i],
                 FVV_BIT_AI_AUXILIARY_ATTRIBUTE_CODEC_ID);
     }
     if (self->vps->vps_map_count_minus1[atlasID] > 0)
     {
-      buff->pad(
+      buff->write_bits(
           buff,
           self->ai_attribute_map_absolute_coding_persistence_flag
               [atlasID][i],
           FVV_BIT_AI_ATTRIBUTE_MAP_ABSOLUTE_CODING_PERSISTENCE_FLAG);
     }
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ai_attribute_dimension_minus1[atlasID][i],
               FVV_BIT_AI_ATTRIBUTE_DIMENSION_MINUS1);
     if (self->ai_attribute_dimension_minus1[atlasID][i] > 0)
     {
-      buff->pad(
+      buff->write_bits(
           buff,
           self->ai_attribute_dimension_partitions_minus1[atlasID][i],
           FVV_BIT_AI_ATTRIBUTE_DIMENSION_PARTITIONS_MINUS1);
@@ -105,7 +105,7 @@ fvv_attribute_information_pack(fvv_attribute_information_t *self,
         }
         else
         {
-          buff->pad(
+          buff->write_bits(
               buff,
               self->ai_attribute_partition_channels_minus1[atlasID]
                                                           [i][j],
@@ -119,10 +119,10 @@ fvv_attribute_information_pack(fvv_attribute_information_t *self,
       self->ai_attribute_partition_channels_minus1[atlasID][i][k] =
           remainingDimensions;
     }
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ai_attribute_2d_bit_depth_minus1[atlasID][i],
               FVV_BIT_AI_ATTRIBUTE_2D_BIT_DEPTH_MINUS1);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ai_attribute_MSB_align_flag[atlasID][i],
               FVV_BIT_AI_ATTRIBUTE_MSB_ALIGN_FLAG);
   }

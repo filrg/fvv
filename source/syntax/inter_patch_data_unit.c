@@ -55,19 +55,19 @@ fvv_ret_t fvv_inter_patch_data_unit_pack(fvv_inter_patch_data_unit_t *self, uint
   buff                  = self->data;
   if (NumRefIdxActive > 1)
   {
-    buff->pad(buff, self->ipdu_ref_index[tileID][patchIdx], FVV_BIT_IPDU_REF_INDEX);
+    buff->write_bits(buff, self->ipdu_ref_index[tileID][patchIdx], FVV_BIT_IPDU_REF_INDEX);
   }
-  buff->pad(buff, self->ipdu_patch_index[tileID][patchIdx], FVV_BIT_IPDU_PATCH_INDEX);
-  buff->pad(buff, self->ipdu_2d_pos_x[tileID][patchIdx], FVV_BIT_IPDU_2D_POS_X);
-  buff->pad(buff, self->ipdu_2d_pos_y[tileID][patchIdx], FVV_BIT_IPDU_2D_POS_Y);
-  buff->pad(buff, self->ipdu_2d_delta_size_x[tileID][patchIdx], FVV_BIT_IPDU_2D_DELTA_SIZE_X);
-  buff->pad(buff, self->ipdu_2d_delta_size_y[tileID][patchIdx], FVV_BIT_IPDU_2D_DELTA_SIZE_Y);
-  buff->pad(buff, self->ipdu_3d_offset_u[tileID][patchIdx], FVV_BIT_IPDU_3D_OFFSET_U);
-  buff->pad(buff, self->ipdu_3d_offset_v[tileID][patchIdx], FVV_BIT_IPDU_3D_OFFSET_V);
-  buff->pad(buff, self->ipdu_3d_offset_d[tileID][patchIdx], FVV_BIT_IPDU_3D_OFFSET_D);
+  buff->write_bits(buff, self->ipdu_patch_index[tileID][patchIdx], FVV_BIT_IPDU_PATCH_INDEX);
+  buff->write_bits(buff, self->ipdu_2d_pos_x[tileID][patchIdx], FVV_BIT_IPDU_2D_POS_X);
+  buff->write_bits(buff, self->ipdu_2d_pos_y[tileID][patchIdx], FVV_BIT_IPDU_2D_POS_Y);
+  buff->write_bits(buff, self->ipdu_2d_delta_size_x[tileID][patchIdx], FVV_BIT_IPDU_2D_DELTA_SIZE_X);
+  buff->write_bits(buff, self->ipdu_2d_delta_size_y[tileID][patchIdx], FVV_BIT_IPDU_2D_DELTA_SIZE_Y);
+  buff->write_bits(buff, self->ipdu_3d_offset_u[tileID][patchIdx], FVV_BIT_IPDU_3D_OFFSET_U);
+  buff->write_bits(buff, self->ipdu_3d_offset_v[tileID][patchIdx], FVV_BIT_IPDU_3D_OFFSET_V);
+  buff->write_bits(buff, self->ipdu_3d_offset_d[tileID][patchIdx], FVV_BIT_IPDU_3D_OFFSET_D);
   if (self->aspsr->asps_normal_axis_max_delta_value_enabled_flag)
   {
-    buff->pad(buff, self->ipdu_3d_range_d[tileID][patchIdx], FVV_BIT_IPDU_3D_RANGE_D);
+    buff->write_bits(buff, self->ipdu_3d_range_d[tileID][patchIdx], FVV_BIT_IPDU_3D_RANGE_D);
   }
   if (self->aspsr->asps_plr_enabled_flag)
   {

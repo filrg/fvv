@@ -44,16 +44,16 @@ fvv_occupancy_information_pack(fvv_occupancy_information_t *self,
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->oi_occupancy_codec_id[atlasID],
             FVV_BIT_OI_OCCUPANCY_CODEC_ID);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->oi_lossy_occupancy_compression_threshold[atlasID],
             FVV_BIT_OI_LOSSY_OCCUPANCY_COMPRESSION_THRESHOLD);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->oi_occupancy_2d_bit_depth_minus1[atlasID],
             FVV_BIT_OI_OCCUPANCY_2D_BIT_DEPTH_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->oi_occupancy_MSB_align_flag[atlasID],
             FVV_BIT_OI_OCCUPANCY_MSB_ALIGN_FLAG);
   return FVV_RET_SUCCESS;

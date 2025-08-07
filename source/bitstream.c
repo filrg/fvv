@@ -1,12 +1,182 @@
 #include <fvv/bitstream.h>
 
+static fvv_ret_t fvv_bitstream_pad(fvv_bitstream_t *self,
+                                   uint64_t         value,
+                                   uint8_t          bit_width);
+static fvv_ret_t fvv_bitstream_padb(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width);
+static fvv_ret_t fvv_bitstream_padf(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width);
+static fvv_ret_t fvv_bitstream_padfl(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width);
+static fvv_ret_t fvv_bitstream_padi(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width);
+static fvv_ret_t fvv_bitstream_padse(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width);
+static fvv_ret_t fvv_bitstream_padst(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width);
+static fvv_ret_t fvv_bitstream_padu(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width);
+static fvv_ret_t fvv_bitstream_padue(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width);
+
+static fvv_ret_t fvv_bitstream_pad(fvv_bitstream_t *self,
+                                   uint64_t         value,
+                                   uint8_t          bit_width)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->byte_pos >= self->byte_count)
+  {
+    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
+  }
+  if (bit_width == 0 || bit_width > sizeof(value) * FVV_BITS_PER_BYTE)
+  {
+    return FVV_RET_FAIL;
+  }
+  uint8_t n = bit_width;
+  if (n == 0)
+    return FVV_RET_SUCCESS;
+
+  while (n > 0)
+  {
+    if (self->byte_pos >= self->byte_count)
+      return FVV_RET_ILLEGAL_MEMORY_ACCESS;
+
+    uint8_t remaining_bits_in_byte =
+        FVV_BITS_PER_BYTE - self->bit_offset;
+    uint8_t bits_to_write_now =
+        (n < remaining_bits_in_byte) ? n : remaining_bits_in_byte;
+
+    // Shift to extract the correct bits to write
+    uint8_t shift = n - bits_to_write_now;
+    uint8_t bits = (value >> shift) & ((1u << bits_to_write_now) - 1);
+
+    // Write bits into the current byte
+    uint8_t mask = ((1u << bits_to_write_now) - 1)
+                << (remaining_bits_in_byte - bits_to_write_now);
+    uint8_t data =
+        bits << (remaining_bits_in_byte - bits_to_write_now);
+
+    self->byte[self->byte_pos] &= ~mask; // clear bits
+    self->byte[self->byte_pos] |= data;  // set bits
+
+    self->bit_offset += bits_to_write_now;
+    if (self->bit_offset == FVV_BITS_PER_BYTE)
+    {
+      self->bit_offset = 0;
+      self->byte_pos++;
+    }
+
+    n -= bits_to_write_now;
+  }
+
+  return FVV_RET_SUCCESS;
+}
+
+static fvv_ret_t fvv_bitstream_padb(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width)
+{
+  return fvv_bitstream_pad(self, value, bit_width);
+}
+
+static fvv_ret_t fvv_bitstream_padf(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width)
+{
+  return fvv_bitstream_pad(self, value, bit_width);
+}
+
+static fvv_ret_t fvv_bitstream_padfl(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width)
+{
+}
+
+static fvv_ret_t fvv_bitstream_padi(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width)
+{
+  return fvv_bitstream_pad(self, value, bit_width);
+}
+
+static fvv_ret_t fvv_bitstream_padse(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->byte_pos >= self->byte_count)
+  {
+    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
+  }
+  return FVV_RET_SUCCESS;
+}
+static fvv_ret_t fvv_bitstream_padst(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  if (self->byte_pos >= self->byte_count)
+  {
+    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
+  }
+  return FVV_RET_SUCCESS;
+}
+
+static fvv_ret_t fvv_bitstream_padu(fvv_bitstream_t *self,
+                                    uint64_t         value,
+                                    uint8_t          bit_width)
+{
+  return fvv_bitstream_pad(self, value, bit_width);
+}
+
+static fvv_ret_t fvv_bitstream_padue(fvv_bitstream_t *self,
+                                     uint64_t         value,
+                                     uint8_t          bit_width)
+{
+  if (value == UINT64_MAX)
+  {
+    return FVV_RET_FAIL;
+  }
+  uint64_t codeNum   = 0;
+  uint8_t  bitLen    = 0;
+  uint8_t  totalBits = 0;
+  uint64_t bits      = 0;
+
+  codeNum            = value + 1;
+  bitLen             = sizeof(value) * FVV_BITS_PER_BYTE -
+           __builtin_clzll(codeNum); // fast log2
+  totalBits = bitLen * 2 - 1;
+
+  bits      = (1ULL << bitLen) | (codeNum ^ (1ULL << (bitLen - 1)));
+
+  return fvv_bitstream_pad(self, bits, totalBits);
+}
+
 fvv_ret_t fvv_bitstream_init(fvv_bitstream_t *self)
 {
   *self                = (fvv_bitstream_t){0};
 
   self->alloc          = fvv_bitstream_alloc;
   self->free           = fvv_bitstream_free;
-  self->pad            = fvv_bitstream_pad;
+  self->write_bits     = fvv_bitstream_write_bits;
   self->byte_aligned   = fvv_bitstream_byte_aligned;
   self->more_rbsp_data = fvv_bitstream_more_rbsp_data;
   self->next_bits      = fvv_bitstream_next_bits;
@@ -54,162 +224,36 @@ fvv_ret_t fvv_bitstream_free(fvv_bitstream_t *self)
   self->bit_offset = 0;
   return FVV_RET_SUCCESS;
 }
-
-static fvv_ret_t fvv_bitstream_padb(fvv_bitstream_t *self,
-                                    uint64_t         value,
-                                    uint8_t          bit_width)
+fvv_ret_t fvv_bitstream_write_bits(fvv_bitstream_t *self,
+                                   uint64_t         value,
+                                   uint8_t          bit_width,
+                                   uint8_t          descriptor)
 {
   if (!self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-  if (self->byte_pos >= self->byte_count)
+  switch (descriptor)
   {
-    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
-  }
-  return FVV_RET_SUCCESS;
-}
-
-static fvv_ret_t fvv_bitstream_padf(fvv_bitstream_t *self,
-                                    uint64_t         value,
-                                    uint8_t          bit_width)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->byte_pos >= self->byte_count)
-  {
-    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
-  }
-  return FVV_RET_SUCCESS;
-}
-
-static fvv_ret_t fvv_bitstream_padfl(fvv_bitstream_t *self,
-                                     uint64_t         value,
-                                     uint8_t          bit_width)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->byte_pos >= self->byte_count)
-  {
-    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
-  }
-  return FVV_RET_SUCCESS;
-}
-
-static fvv_ret_t fvv_bitstream_padi(fvv_bitstream_t *self,
-                                    uint64_t         value,
-                                    uint8_t          bit_width)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->byte_pos >= self->byte_count)
-  {
-    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
-  }
-  return FVV_RET_SUCCESS;
-}
-
-static fvv_ret_t fvv_bitstream_padse(fvv_bitstream_t *self,
-                                     uint64_t         value,
-                                     uint8_t          bit_width)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->byte_pos >= self->byte_count)
-  {
-    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
-  }
-  return FVV_RET_SUCCESS;
-}
-static fvv_ret_t fvv_bitstream_padst(fvv_bitstream_t *self,
-                                     uint64_t         value,
-                                     uint8_t          bit_width)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->byte_pos >= self->byte_count)
-  {
-    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
-  }
-  return FVV_RET_SUCCESS;
-}
-
-static fvv_ret_t fvv_bitstream_padu(fvv_bitstream_t *self,
-                                    uint64_t         value,
-                                    uint8_t          bit_width)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->byte_pos >= self->byte_count)
-  {
-    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
-  }
-  if (bit_width == 0 || bit_width > sizeof(value))
-  {
+  case FVV_DESCRIPTOR_B:
+    return fvv_bitstream_padb(self, value, bit_width);
+  case FVV_DESCRIPTOR_F:
+    return fvv_bitstream_padf(self, value, bit_width);
+  case FVV_DESCRIPTOR_FL:
+    return fvv_bitstream_padi(self, value, bit_width);
+  case FVV_DESCRIPTOR_SE:
+    return fvv_bitstream_padse(self, value, bit_width);
+  case FVV_DESCRIPTOR_ST:
+    return fvv_bitstream_padst(self, value, bit_width);
+  case FVV_DESCRIPTOR_U:
+    return fvv_bitstream_padu(self, value, bit_width);
+  case FVV_DESCRIPTOR_UE:
+    return fvv_bitstream_padue(seld, value, bit_width);
+  default:
     return FVV_RET_FAIL;
+    break;
   }
-
-  uint8_t *start_byte     = FVV_NULL;
-  uint8_t  chk1_bit_width = 0;
-  uint8_t  chk1           = 0xFF;
-  uint8_t *value_byte     = FVV_NULL;
-
-  start_byte              = &(self->byte[self->byte_pos]);
-  chk1_bit_width          = FVV_BITS_PER_BYTE - self->bit_offset;
-  value_byte              = (uint8_t *)&value;
-
-  value <<= sizeof(value) * FVV_BITS_PER_BYTE - bit_width;
-
-  chk1 <<= self->bit_offset;
-  chk1 &= value_byte[sizeof(value) - 1];
-  chk1 >>= self->bit_offset;
-
-  start_byte[0] |= chk1;
-  // done first chunk, now make up the 2nd chunk (8 bytes)
-
-  if (self->bit_offset + bit_width > FVV_BITS_PER_BYTE)
-  {
-    value <<= chk1_bit_width;
-    for (int i = 0;
-         i < sizeof(value) && self->byte_pos + i < self->byte_count;
-         i++)
-    {
-      start_byte[i + 1] = value_byte[sizeof(value) - 1 - i];
-    }
-  }
-  // done, now update the counter
-  self->byte_pos +=
-      (self->bit_offset + bit_width) / FVV_BITS_PER_BYTE;
-  self->bit_offset =
-      (self->bit_offset + bit_width) % FVV_BITS_PER_BYTE;
-  return FVV_RET_SUCCESS;
-}
-
-static fvv_ret_t fvv_bitstream_padue(fvv_bitstream_t *self,
-                                     uint64_t         value,
-                                     uint8_t          bit_width)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  if (self->byte_pos >= self->byte_count)
-  {
-    return FVV_RET_ILLEGAL_MEMORY_ACCESS;
-  }
-  return FVV_RET_SUCCESS;
+  return FVV_RET_FAIL;
 }
 
 fvv_ret_t fvv_bitstream_byte_aligned(fvv_bitstream_t *self,
@@ -286,8 +330,7 @@ fvv_ret_t fvv_bitstream_next_bits(fvv_bitstream_t *self,
   byte_pos               = self->byte_pos;
   bit_offset             = self->bit_offset;
 
-  if ((self->byte_count - byte_pos) * FVV_BITS_PER_BYTE -
-          bit_offset <
+  if ((self->byte_count - byte_pos) * FVV_BITS_PER_BYTE - bit_offset <
       n)
   {
     return FVV_RET_FAIL;
@@ -298,8 +341,7 @@ fvv_ret_t fvv_bitstream_next_bits(fvv_bitstream_t *self,
 
   for (uint64_t i = 0; i < bytes_to_read; ++i)
   {
-    buffer =
-        (buffer << FVV_BITS_PER_BYTE) | self->byte[byte_pos + i];
+    buffer = (buffer << FVV_BITS_PER_BYTE) | self->byte[byte_pos + i];
   }
 
   // align buffer to bit_offset

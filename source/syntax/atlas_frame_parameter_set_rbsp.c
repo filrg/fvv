@@ -66,37 +66,37 @@ fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_pack(
   fvv_bool_t       more_rbsp_data = 0;
   buff                            = self->data;
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->afps_atlas_frame_parameter_set_id,
             FVV_BIT_AFPS_ATLAS_FRAME_PARAMETER_SET_ID);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->afps_atlas_sequence_parameter_set_id,
             FVV_BIT_AFPS_ATLAS_SEQUENCE_PARAMETER_SET_ID);
 
   self->afti->pack(self->afti);
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->afps_output_flag_present_flag,
             FVV_BIT_AFPS_OUTPUT_FLAG_PRESENT_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->afps_num_ref_idx_default_active_minus1,
             FVV_BIT_AFPS_NUM_REF_IDX_DEFAULT_ACTIVE_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->afps_additional_lt_afoc_lsb_len,
             FVV_BIT_AFPS_ADDITIONAL_LT_AFOC_LSB_LEN);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->afps_lod_mode_enabled_flag,
             FVV_BIT_AFPS_LOD_MODE_ENABLED_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->afps_raw_3d_offset_bit_count_explicit_mode_flag,
             FVV_BIT_AFPS_RAW_3D_OFFSET_BIT_COUNT_EXPLICIT_MODE_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->afps_extension_present_flag,
             FVV_BIT_AFPS_EXTENSION_PRESENT_FLAG);
 
   if (self->afps_extension_present_flag)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->afps_extension_8bits,
               FVV_BIT_AFPS_EXTENSION_8BITS);
   }
@@ -106,7 +106,7 @@ fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_pack(
     buff->more_rbsp_data(buff, &more_rbsp_data);
     while (more_rbsp_data)
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->afps_extension_data_flag,
                 FVV_BIT_AFPS_EXTENSION_DATA_FLAG);
 

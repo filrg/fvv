@@ -38,10 +38,10 @@ fvv_ret_t fvv_sample_stream_nal_header_pack(
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ssnh_unit_size_precision_bytes_minus1,
             FVV_BIT_SSNH_UNIT_SIZE_PRECISION_BYTES_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ssnh_reserved_zero_5bits,
             FVV_BIT_SSNH_RESERVED_ZERO_5BITS);
 

@@ -37,13 +37,13 @@ fvv_ret_t fvv_rbsp_trailing_bits_pack(fvv_rbsp_trailing_bits_t *self)
   fvv_bool_t      *byte_aligned = 0;
   buff                          = self->data;
 
-  buff->pad(
+  buff->write_bits(
       buff, self->rbsp_stop_one_bit, FVV_BIT_RBSP_STOP_ONE_BIT);
 
   buff->byte_aligned(buff, &byte_aligned);
   while (!byte_aligned)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->rbsp_alignment_zero_bit,
               FVV_BIT_RBSP_ALIGNMENT_ZERO_BIT);
     buff->byte_aligned(buff, &byte_aligned);

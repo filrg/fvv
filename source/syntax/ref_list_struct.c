@@ -44,19 +44,19 @@ fvv_ret_t fvv_ref_list_struct_pack(fvv_ref_list_struct_t *self,
   fvv_bitstream_t *buff = FVV_NULL;
   uint64_t         i    = 0;
   buff                  = self->data;
-  buff->pad(buff, self->num_ref_entries[rlsIdx], FVV_BIT_NUM_REF_ENTRIES);
+  buff->write_bits(buff, self->num_ref_entries[rlsIdx], FVV_BIT_NUM_REF_ENTRIES);
   for (i = 0; i < num_ref_entries[rlsIdx]; i++)
   {
     if (self->aspsr->asps_long_term_ref_atlas_frames_flag)
-      buff->pad(buff, self->st_ref_atlas_frame_flag[rlsIdx][i], FVV_BIT_ST_REF_ATLAS_FRAME_FLAG);
+      buff->write_bits(buff, self->st_ref_atlas_frame_flag[rlsIdx][i], FVV_BIT_ST_REF_ATLAS_FRAME_FLAG);
     if (self->st_ref_atlas_frame_flag[rlsIdx][i])
     {
-      buff->pad(buff, self->abs_delta_afoc_st[rlsIdx][i], FVV_BIT_ABS_DELTA_AFOC_ST);
+      buff->write_bits(buff, self->abs_delta_afoc_st[rlsIdx][i], FVV_BIT_ABS_DELTA_AFOC_ST);
       if (self->abs_delta_afoc_st[rlsIdx][i] > 0)
-        buff->pad(buff, self->straf_entry_sign_flag[rlsIdx][i], FVV_BIT_STRAF_ENTRY_SIGN_FLAG);
+        buff->write_bits(buff, self->straf_entry_sign_flag[rlsIdx][i], FVV_BIT_STRAF_ENTRY_SIGN_FLAG);
     }
     else
-      buff->pad(buff, self->afoc_lsb_lt[rlsIdx][i], FVV_BIT_AFOC_LSB_LT);
+      buff->write_bits(buff, self->afoc_lsb_lt[rlsIdx][i], FVV_BIT_AFOC_LSB_LT);
   }
   return FVV_RET_SUCCESS;
 }

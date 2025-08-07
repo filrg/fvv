@@ -49,20 +49,20 @@ fvv_ret_t fvv_eom_patch_data_unit_pack(fvv_eom_patch_data_unit_t *self, uint64_t
 
   if (AuxTileHeight[TileIDToIndex[tileID]] > 0)
   {
-    buff->pad(buff, self->epdu_patch_in_auxiliary_video_flag[tileID][patchIdx], FVV_BIT_EPDU_PATCH_IN_AUXILIARY_VIDEO_FLAG);
+    buff->write_bits(buff, self->epdu_patch_in_auxiliary_video_flag[tileID][patchIdx], FVV_BIT_EPDU_PATCH_IN_AUXILIARY_VIDEO_FLAG);
   }
 
-  buff->pad(buff, self->epdu_2d_pos_x[tileID][patchIdx], FVV_BIT_EPDU_2D_POS_X);
-  buff->pad(buff, self->epdu_2d_pos_y[tileID][patchIdx], FVV_BIT_EPDU_2D_POS_Y);
-  buff->pad(buff, self->epdu_2d_size_x_minus1[tileID][patchIdx], FVV_BIT_EPDU_2D_SIZE_X_MINUS1);
-  buff->pad(buff, self->epdu_2d_size_y_minus1[tileID][patchIdx], FVV_BIT_EPDU_2D_SIZE_Y_MINUS1);
-  buff->pad(buff, self->epdu_patch_count_minus1[tileID][patchIdx], FVV_BIT_EPDU_PATCH_COUNT_MINUS1);
+  buff->write_bits(buff, self->epdu_2d_pos_x[tileID][patchIdx], FVV_BIT_EPDU_2D_POS_X);
+  buff->write_bits(buff, self->epdu_2d_pos_y[tileID][patchIdx], FVV_BIT_EPDU_2D_POS_Y);
+  buff->write_bits(buff, self->epdu_2d_size_x_minus1[tileID][patchIdx], FVV_BIT_EPDU_2D_SIZE_X_MINUS1);
+  buff->write_bits(buff, self->epdu_2d_size_y_minus1[tileID][patchIdx], FVV_BIT_EPDU_2D_SIZE_Y_MINUS1);
+  buff->write_bits(buff, self->epdu_patch_count_minus1[tileID][patchIdx], FVV_BIT_EPDU_PATCH_COUNT_MINUS1);
 
   uint64_t count = self->epdu_patch_count_minus1[tileID][patchIdx] + 1;
   for (uint64_t i = 0; i < count; ++i)
   {
-    buff->pad(buff, self->epdu_associated_patch_idx[tileID][patchIdx][i], FVV_BIT_EPDU_ASSOCIATED_PATCH_IDX);
-    buff->pad(buff, self->epdu_points[tileID][patchIdx][i], FVV_BIT_EPDU_POINTS);
+    buff->write_bits(buff, self->epdu_associated_patch_idx[tileID][patchIdx][i], FVV_BIT_EPDU_ASSOCIATED_PATCH_IDX);
+    buff->write_bits(buff, self->epdu_points[tileID][patchIdx][i], FVV_BIT_EPDU_POINTS);
   }
 
   return FVV_RET_SUCCESS;

@@ -77,30 +77,30 @@ fvv_asps_plr_information_pack(fvv_asps_plr_information_t *self,
 
   for (i = 0; i < mapCountMinus1 + 1; i++)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->plri_map_present_flag[i],
               FVV_BIT_PLRI_MAP_PRESENT_FLAG);
     if (self->plri_map_present_flag[i])
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->plri_number_of_modes_minus1[i],
                 FVV_BIT_PLRI_NUMBER_OF_MODES_MINUS1);
       for (j = 0; j < self->plri_number_of_modes_minus1[i] + 1; j++)
       {
-        buff->pad(buff,
+        buff->write_bits(buff,
                   self->plri_interpolate_flag[i][j],
                   FVV_BIT_PLRI_INTERPOLATE_FLAG);
-        buff->pad(buff,
+        buff->write_bits(buff,
                   self->plri_filling_flag[i][j],
                   FVV_BIT_PLRI_FILLING_FLAG);
-        buff->pad(buff,
+        buff->write_bits(buff,
                   self->plri_minimum_depth[i][j],
                   FVV_BIT_PLRI_MINIMUM_DEPTH);
-        buff->pad(buff,
+        buff->write_bits(buff,
                   self->plri_neighbour_minus1[i][j],
                   FVV_BIT_PLRI_NEIGHBOUR_MINUS1);
       }
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->plri_block_threshold_per_patch_minus1[i],
                 FVV_BIT_PLRI_BLOCK_THRESHOLD_PER_PATCH_MINUS1);
     }

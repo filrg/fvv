@@ -59,18 +59,18 @@ fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_pack(
   fvv_bool_t       more_rbsp_data = 0;
   buff                            = self->data;
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->aaps_atlas_adaptation_parameter_set_id,
             FVV_BIT_AAPS_ATLAS_ADAPTATION_PARAMETER_SET_ID);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->aaps_extension_present_flag,
             FVV_BIT_AAPS_EXTENSION_PRESENT_FLAG);
   if (self->aaps_extension_present_flag)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->aaps_vpcc_extension_present_flag,
               FVV_BIT_AAPS_VPCC_EXTENSION_PRESENT_FLAG);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->aaps_extension_7bits,
               FVV_BIT_AAPS_EXTENSION_7BITS);
   }
@@ -83,7 +83,7 @@ fvv_ret_t fvv_atlas_adaptation_parameter_set_rbsp_pack(
     buff->more_rbsp_data(buff, &more_rbsp_data);
     while (more_rbsp_data)
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->aaps_extension_data_flag,
                 FVV_BIT_AAPS_EXTENSION_DATA_FLAG);
       buff->more_rbsp_data(buff, &more_rbsp_data);

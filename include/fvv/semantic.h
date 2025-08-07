@@ -5,14 +5,14 @@
 #define FVV_BIT_VARIABLE 0
 
 // Descriptors type
-#define FVV_DESCRIPTOR_B
-#define FVV_DESCRIPTOR_F
-#define FVV_DESCRIPTOR_FL
-#define FVV_DESCRIPTOR_I
-#define FVV_DESCRIPTOR_SE
-#define FVV_DESCRIPTOR_ST
-#define FVV_DESCRIPTOR_U
-#define FVV_DESCRIPTOR_UE
+#define FVV_DESCRIPTOR_B  0x00
+#define FVV_DESCRIPTOR_F  0x01
+#define FVV_DESCRIPTOR_FL 0x02
+#define FVV_DESCRIPTOR_I  0x03
+#define FVV_DESCRIPTOR_SE 0x04
+#define FVV_DESCRIPTOR_ST 0x05
+#define FVV_DESCRIPTOR_U  0x06
+#define FVV_DESCRIPTOR_UE 0x07
 
 // Bit size
 #define FVV_BIT_TRAILING_ZERO_8BITS                               8

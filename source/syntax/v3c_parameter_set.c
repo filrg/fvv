@@ -90,29 +90,29 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
   buff                  = self->data;
 
   self->ptl->pack(self->ptl);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->vps_v3c_parameter_set_id,
             FVV_BIT_VPS_V3C_PARAMETER_SET_ID);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->vps_reserved_zero_8bits,
             FVV_BIT_VPS_RESERVED_ZERO_8BITS);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->vps_atlas_count_minus1,
             FVV_BIT_VPS_ATLAS_COUNT_MINUS1);
   for (k = 0; k < self->vps_atlas_count_minus1 + 1; k++)
   {
-    buff->pad(buff, self->vps_atlas_id[k], FVV_BIT_VPS_ATLAS_ID);
+    buff->write_bits(buff, self->vps_atlas_id[k], FVV_BIT_VPS_ATLAS_ID);
     j = self->vps_atlas_id[k];
-    buff->pad(
+    buff->write_bits(
         buff, self->vps_frame_width[j], FVV_BIT_VPS_FRAME_WIDTH);
-    buff->pad(
+    buff->write_bits(
         buff, self->vps_frame_height[j], FVV_BIT_VPS_FRAME_HEIGHT);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vps_map_count_minus1[j],
               FVV_BIT_VPS_MAP_COUNT_MINUS1);
     if (self->vps_map_count_minus1[j] > 0)
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->vps_multiple_map_streams_present_flag[j],
                 FVV_BIT_VPS_MULTIPLE_MAP_STREAMS_PRESENT_FLAG);
     }
@@ -122,7 +122,7 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
     {
       if (self->vps_multiple_map_streams_present_flag[j])
       {
-        buff->pad(buff,
+        buff->write_bits(buff,
                   self->vps_map_absolute_coding_enabled_flag[j][i],
                   FVV_BIT_VPS_MAP_ABSOLUTE_CODING_ENABLED_FLAG);
       }
@@ -132,21 +132,21 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
       }
       if (self->vps_map_absolute_coding_enabled_flag[j][i] == 0)
       {
-        buff->pad(buff,
+        buff->write_bits(buff,
                   self->vps_map_predictor_index_diff[j][i],
                   FVV_BIT_VPS_MAP_PREDICTOR_INDEX_DIFF);
       }
     }
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vps_auxiliary_video_present_flag[j],
               FVV_BIT_VPS_AUXILIARY_VIDEO_PRESENT_FLAG);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vps_occupancy_video_present_flag[j],
               FVV_BIT_VPS_OCCUPANCY_VIDEO_PRESENT_FLAG);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vps_geometry_video_present_flag[j],
               FVV_BIT_VPS_GEOMETRY_VIDEO_PRESENT_FLAG);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vps_attribute_video_present_flag[j],
               FVV_BIT_VPS_ATTRIBUTE_VIDEO_PRESENT_FLAG);
     if (self->vps_occupancy_video_present_flag[j])
@@ -162,23 +162,23 @@ fvv_ret_t fvv_v3c_parameter_set_pack(fvv_v3c_parameter_set_t *self)
       self->ai->pack(self->ai, j);
     }
   }
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->vps_extension_present_flag,
             FVV_BIT_VPS_EXTENSION_PRESENT_FLAG);
   if (self->vps_extension_present_flag)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vps_extension_8bits,
               FVV_BIT_VPS_EXTENSION_8BITS);
   }
   if (self->vps_extension_8bits)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vps_extension_length_minus1,
               FVV_BIT_VPS_EXTENSION_LENGTH_MINUS1);
     for (j = 0; j < self->vps_extension_length_minus1 + 1; j++)
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->vps_extension_data_byte,
                 FVV_BIT_VPS_EXTENSION_DATA_BYTE);
     }

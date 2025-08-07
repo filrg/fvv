@@ -9,17 +9,17 @@ struct fvv_bitstream_t
   uint64_t byte_count; // total buffer size in bytes
   uint64_t byte_pos;   // current write position in bytes
   uint8_t  bit_offset; // current bit offset (0–7) within current
-                      // bytes which bit is not written yet, 0 is MSB
+                       // bytes which bit is not written yet, 0 is MSB
 
   fvv_ret_t (*alloc)(fvv_bitstream_t *self, uint64_t size);
   fvv_ret_t (*free)(fvv_bitstream_t *self);
-  fvv_ret_t (*pad)(fvv_bitstream_t *self,
-                   uint64_t         value,
-                   uint8_t          bit_width);
+  fvv_ret_t (*write_bits)(fvv_bitstream_t *self,
+                          uint64_t         value,
+                          uint8_t          bit_width,
+                          uint8_t          descriptor);
 
   fvv_ret_t (*byte_aligned)(fvv_bitstream_t *self, fvv_bool_t *ret);
-  fvv_ret_t (*more_rbsp_data)(fvv_bitstream_t *self,
-                              fvv_bool_t      *ret);
+  fvv_ret_t (*more_rbsp_data)(fvv_bitstream_t *self, fvv_bool_t *ret);
   fvv_ret_t (*next_bits)(fvv_bitstream_t *self,
                          uint64_t         n,
                          uint64_t        *ret);
@@ -35,9 +35,10 @@ fvv_ret_t fvv_bitstream_destroy(fvv_bitstream_t *self);
 
 fvv_ret_t fvv_bitstream_alloc(fvv_bitstream_t *self, uint64_t size);
 fvv_ret_t fvv_bitstream_free(fvv_bitstream_t *self);
-fvv_ret_t fvv_bitstream_pad(fvv_bitstream_t *self,
-                            uint64_t         value,
-                            uint8_t          bit_width);
+fvv_ret_t fvv_bitstream_write_bits(fvv_bitstream_t *self,
+                                   uint64_t         value,
+                                   uint8_t          bit_width,
+                                   uint8_t          descriptor);
 fvv_ret_t fvv_bitstream_byte_aligned(fvv_bitstream_t *self,
                                      fvv_bool_t      *ret);
 fvv_ret_t fvv_bitstream_more_rbsp_data(fvv_bitstream_t *self,

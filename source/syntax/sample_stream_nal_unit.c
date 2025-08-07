@@ -54,7 +54,7 @@ fvv_sample_stream_nal_unit_pack(fvv_sample_stream_nal_unit_t *self)
   ssnh_unit_size_precision_bytes_minus1 =
       self->asb->ssnh->ssnh_unit_size_precision_bytes_minus1;
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ssnu_nal_unit_size,
             (ssnh_unit_size_precision_bytes_minus1 + 1) *
                 FVV_BITS_PER_BYTE);

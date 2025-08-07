@@ -47,50 +47,50 @@ fvv_ret_t fvv_v3c_unit_header_pack(fvv_v3c_unit_header_t *self)
   buff                  = self->data;
 
   // now fill the buffer
-  buff->pad(buff, self->vuh_unit_type, FVV_BIT_VUH_UNIT_TYPE);
+  buff->write_bits(buff, self->vuh_unit_type, FVV_BIT_VUH_UNIT_TYPE);
   if (self->vuh_unit_type == FVV_V3C_AVD ||
       self->vuh_unit_type == FVV_V3C_GVD ||
       self->vuh_unit_type == FVV_V3C_OVD ||
       self->vuh_unit_type == FVV_V3C_AD)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vuh_v3c_parameter_set_id,
               FVV_BIT_VUH_V3C_PARAMETER_SET_ID);
-    buff->pad(buff, self->vuh_atlas_id, FVV_BIT_VUH_ATLAS_ID);
+    buff->write_bits(buff, self->vuh_atlas_id, FVV_BIT_VUH_ATLAS_ID);
   }
   if (self->vuh_unit_type == FVV_V3C_AVD)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vuh_attribute_index,
               FVV_BIT_VUH_ATTRIBUTE_INDEX);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vuh_attribute_partition_index,
               FVV_BIT_VUH_ATTRIBUTE_PARTITION_INDEX);
-    buff->pad(buff, self->vuh_map_index, FVV_BIT_VUH_MAP_INDEX);
-    buff->pad(buff,
+    buff->write_bits(buff, self->vuh_map_index, FVV_BIT_VUH_MAP_INDEX);
+    buff->write_bits(buff,
               self->vuh_auxiliary_video_flag,
               FVV_BIT_VUH_AUXILIARY_VIDEO_FLAG);
   }
   else if (self->vuh_unit_type == FVV_V3C_GVD)
   {
-    buff->pad(buff, self->vuh_map_index, FVV_BIT_VUH_MAP_INDEX);
-    buff->pad(buff,
+    buff->write_bits(buff, self->vuh_map_index, FVV_BIT_VUH_MAP_INDEX);
+    buff->write_bits(buff,
               self->vuh_auxiliary_video_flag,
               FVV_BIT_VUH_AUXILIARY_VIDEO_FLAG);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vuh_reserved_zero_12bits,
               FVV_BIT_VUH_RESERVED_ZERO_12BITS);
   }
   else if (self->vuh_unit_type == FVV_V3C_OVD ||
            self->vuh_unit_type == FVV_V3C_AD)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vuh_reserved_zero_17bits,
               FVV_BIT_VUH_RESERVED_ZERO_17BITS);
   }
   else
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->vuh_reserved_zero_27bits,
               FVV_BIT_VUH_RESERVED_ZERO_27BITS);
   }

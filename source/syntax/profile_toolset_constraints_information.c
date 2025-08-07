@@ -53,47 +53,47 @@ fvv_ret_t fvv_profile_toolset_constraints_information_pack(
   uint64_t         i    = 0;
   buff                  = self->data;
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptc_one_v3c_frame_only_flag,
             FVV_BIT_PTC_ONE_V3C_FRAME_ONLY_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptc_eom_constraint_flag,
             FVV_BIT_PTC_EOM_CONSTRAINT_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptc_max_map_count_minus1,
             FVV_BIT_PTC_MAX_MAP_COUNT_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptc_max_atlas_count_minus1,
             FVV_BIT_PTC_MAX_ATLAS_COUNT_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptc_multiple_map_streams_constraint_flag,
             FVV_BIT_PTC_MULTIPLE_MAP_STREAMS_CONSTRAINT_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptc_plr_constraint_flag,
             FVV_BIT_PTC_PLR_CONSTRAINT_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptc_attribute_max_dimension_minus1,
             FVV_BIT_PTC_ATTRIBUTE_MAX_DIMENSION_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptc_attribute_max_dimension_partitions_minus1,
             FVV_BIT_PTC_ATTRIBUTE_MAX_DIMENSION_PARTITIONS_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptc_no_eight_orientations_constraint_flag,
             FVV_BIT_PTC_NO_EIGHT_ORIENTATIONS_CONSTRAINT_FLAG);
-  buff->pad(
+  buff->write_bits(
       buff,
       self->ptc_no_45degree_projection_patch_constraint_flag,
       FVV_BIT_PTC_NO_45DEGREE_PROJECTION_PATCH_CONSTRAINT_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptc_reserved_zero_6bits,
             FVV_BIT_PTC_RESERVED_ZERO_6BITS);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->ptc_num_reserved_constraint_bytes,
             FVV_BIT_PTC_NUM_RESERVED_CONSTRAINT_BYTES);
 
   for (i = 0; i < self->ptc_num_reserved_constraint_bytes; i++)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->ptc_reserved_constraint_byte[i],
               FVV_BIT_PTC_RESERVED_CONSTRAINT_BYTE);
   }

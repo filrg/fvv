@@ -75,48 +75,48 @@ fvv_ret_t fvv_patch_data_unit_pack(fvv_patch_data_unit_t *self,
   }
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->pdu_2d_pos_x[tileID][patchIdx],
             FVV_BIT_PDU_2D_POS_X);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->pdu_2d_pos_y[tileID][patchIdx],
             FVV_BIT_PDU_2D_POS_Y);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->pdu_2d_size_x_minus1[tileID][patchIdx],
             FVV_BIT_PDU_2D_SIZE_X_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->pdu_2d_size_y_minus1[tileID][patchIdx],
             FVV_BIT_PDU_2D_SIZE_Y_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->pdu_3d_offset_u[tileID][patchIdx],
             FVV_BIT_PDU_3D_OFFSET_U);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->pdu_3d_offset_v[tileID][patchIdx],
             FVV_BIT_PDU_3D_OFFSET_V);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->pdu_3d_offset_d[tileID][patchIdx],
             FVV_BIT_PDU_3D_OFFSET_D);
   if (self->aspsr->asps_normal_axis_max_delta_value_enabled_flag)
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->pdu_3d_range_d[tileID][patchIdx],
               FVV_BIT_PDU_3D_RANGE_D);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->pdu_projection_id[tileID][patchIdx],
             FVV_BIT_PDU_PROJECTION_ID);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->pdu_orientation_index[tileID][patchIdx],
             FVV_BIT_PDU_ORIENTATION_INDEX);
   if (self->afpsr->afps_lod_mode_enabled_flag)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->pdu_lod_enabled_flag[tileID][patchIdx],
               FVV_BIT_PDU_LOD_ENABLED_FLAG);
     if (self->pdu_lod_enabled_flag[tileID][patchIdx] > 0)
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->pdu_lod_scale_x_minus1[tileID][patchIdx],
                 FVV_BIT_PDU_LOD_SCALE_X_MINUS1);
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->pdu_lod_scale_y_idc[tileID][patchIdx],
                 FVV_BIT_PDU_LOD_SCALE_Y_IDC);
     }

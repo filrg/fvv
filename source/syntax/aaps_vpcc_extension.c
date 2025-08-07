@@ -45,7 +45,7 @@ fvv_aaps_vpcc_extension_pack(fvv_aaps_vpcc_extension_t *self)
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->aaps_vpcc_camera_parameters_present_flag,
             FVV_BIT_AAPS_VPCC_CAMERA_PARAMETERS_PRESENT_FLAG);
 

@@ -104,28 +104,28 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
   fvv_bool_t       ret  = 0;
   buff                  = self->data;
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_atlas_sequence_parameter_set_id,
             FVV_BIT_ASPS_ATLAS_SEQUENCE_PARAMETER_SET_ID);
-  buff->pad(buff, self->asps_frame_width, FVV_BIT_ASPS_FRAME_WIDTH);
-  buff->pad(
+  buff->write_bits(buff, self->asps_frame_width, FVV_BIT_ASPS_FRAME_WIDTH);
+  buff->write_bits(
       buff, self->asps_frame_height, FVV_BIT_ASPS_FRAME_HEIGHT);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_geometry_3d_bit_depth_minus1,
             FVV_BIT_ASPS_GEOMETRY_3D_BIT_DEPTH_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_geometry_2d_bit_depth_minus1,
             FVV_BIT_ASPS_GEOMETRY_2D_BIT_DEPTH_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_log2_max_atlas_frame_order_cnt_lsb_minus4,
             FVV_BIT_ASPS_LOG2_MAX_ATLAS_FRAME_ORDER_CNT_LSB_MINUS4);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_max_dec_atlas_frame_buffering_minus1,
             FVV_BIT_ASPS_MAX_DEC_ATLAS_FRAME_BUFFERING_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_long_term_ref_atlas_frames_flag,
             FVV_BIT_ASPS_LONG_TERM_REF_ATLAS_FRAMES_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_num_ref_atlas_frame_lists_in_asps,
             FVV_BIT_ASPS_NUM_REF_ATLAS_FRAME_LISTS_IN_ASPS);
 
@@ -134,38 +134,38 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
     self->rls->pack(self->rls, i);
   }
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_use_eight_orientations_flag,
             FVV_BIT_ASPS_USE_EIGHT_ORIENTATIONS_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_extended_projection_enabled_flag,
             FVV_BIT_ASPS_EXTENDED_PROJECTION_ENABLED_FLAG);
   if (self->asps_extended_projection_enabled_flag)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->asps_max_number_projections_minus1,
               FVV_BIT_ASPS_MAX_NUMBER_PROJECTIONS_MINUS1);
   }
-  buff->pad(
+  buff->write_bits(
       buff,
       self->asps_normal_axis_limits_quantization_enabled_flag,
       FVV_BIT_ASPS_NORMAL_AXIS_LIMITS_QUANTIZATION_ENABLED_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_normal_axis_max_delta_value_enabled_flag,
             FVV_BIT_ASPS_NORMAL_AXIS_MAX_DELTA_VALUE_ENABLED_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_patch_precedence_order_flag,
             FVV_BIT_ASPS_PATCH_PRECEDENCE_ORDER_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_log2_patch_packing_block_size,
             FVV_BIT_ASPS_LOG2_PATCH_PACKING_BLOCK_SIZE);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_patch_size_quantizer_present_flag,
             FVV_BIT_ASPS_PATCH_SIZE_QUANTIZER_PRESENT_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_map_count_minus1,
             FVV_BIT_ASPS_MAP_COUNT_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_pixel_deinterleaving_enabled_flag,
             FVV_BIT_ASPS_PIXEL_DEINTERLEAVING_ENABLED_FLAG);
 
@@ -173,33 +173,33 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
   {
     for (j = 0; j <= self->asps_map_count_minus1; j++)
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->asps_map_pixel_deinterleaving_flag[j],
                 FVV_BIT_ASPS_MAP_PIXEL_DEINTERLEAVING_FLAG);
     }
   }
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_raw_patch_enabled_flag,
             FVV_BIT_ASPS_RAW_PATCH_ENABLED_FLAG);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_eom_patch_enabled_flag,
             FVV_BIT_ASPS_EOM_PATCH_ENABLED_FLAG);
   if (self->asps_eom_patch_enabled_flag &&
       self->asps_map_count_minus1 == 0)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->asps_eom_fix_bit_count_minus1,
               FVV_BIT_ASPS_EOM_FIX_BIT_COUNT_MINUS1);
   }
   if (self->asps_raw_patch_enabled_flag ||
       self->asps_eom_patch_enabled_flag)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->asps_auxiliary_video_enabled_flag,
               FVV_BIT_ASPS_AUXILIARY_VIDEO_ENABLED_FLAG);
   }
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_plr_enabled_flag,
             FVV_BIT_ASPS_PLR_ENABLED_FLAG);
 
@@ -208,7 +208,7 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
     self->api->pack(self->api, self->asps_map_count_minus1);
   }
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_vui_parameters_present_flag,
             FVV_BIT_ASPS_VUI_PARAMETERS_PRESENT_FLAG);
 
@@ -217,15 +217,15 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
     self->vp->pack(self->vp);
   }
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_extension_present_flag,
             FVV_BIT_ASPS_EXTENSION_PRESENT_FLAG);
   if (self->asps_extension_present_flag)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->asps_vpcc_extension_present_flag,
               FVV_BIT_ASPS_VPCC_EXTENSION_PRESENT_FLAG);
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->asps_extension_7bits,
               FVV_BIT_ASPS_EXTENSION_7BITS);
   }
@@ -239,7 +239,7 @@ fvv_ret_t fvv_atlas_sequence_parameter_set_rbsp_pack(
     buff->more_rbsp_data(buff, &ret);
     while (ret)
     {
-      buff->pad(buff,
+      buff->write_bits(buff,
                 self->asps_extension_data_flag,
                 FVV_BIT_ASPS_EXTENSION_DATA_FLAG);
 

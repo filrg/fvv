@@ -34,12 +34,12 @@ fvv_ret_t fvv_nal_unit_header_pack(fvv_nal_unit_header_t *self)
   }
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->nal_forbidden_zero_bit,
             FVV_BIT_NAL_FORBIDDEN_ZERO_BIT);
-  buff->pad(buff, self->nal_unit_type, FVV_BIT_NAL_UNIT_TYPE);
-  buff->pad(buff, self->nal_layer_id, FVV_BIT_NAL_LAYER_ID);
-  buff->pad(buff,
+  buff->write_bits(buff, self->nal_unit_type, FVV_BIT_NAL_UNIT_TYPE);
+  buff->write_bits(buff, self->nal_layer_id, FVV_BIT_NAL_LAYER_ID);
+  buff->write_bits(buff,
             self->nal_temporal_id_plus1,
             FVV_BIT_NAL_TEMPORAL_ID_PLUS1);
   return FVV_RET_SUCCESS;

@@ -11,9 +11,9 @@ int main()
   fvv_bitstream_init(&bits);
   
   bits.alloc(&bits, 3);
-  bits.pad(&bits, foo, 8);
-  bits.pad(&bits, bar, 13);
-  bits.pad(&bits, baz, 3);
+  bits.write_bits(&bits, foo, 8);
+  bits.write_bits(&bits, bar, 13);
+  bits.write_bits(&bits, baz, 3);
 
   fvv_bitstream_destroy(&bits);
 }

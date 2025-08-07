@@ -40,13 +40,13 @@ fvv_ret_t fvv_byte_alignment_pack(fvv_byte_alignment_t *self)
 
   buff                          = self->data;
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->alignment_bit_equal_to_one,
             FVV_BIT_ALIGNMENT_BIT_EQUAL_TO_ONE);
   buff->byte_aligned(buff, &byte_aligned);
   while (!byte_aligned)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->alignment_bit_equal_to_zero,
               FVV_BIT_ALIGNMENT_BIT_EQUAL_TO_ZERO);
     buff->byte_aligned(buff, &byte_aligned);

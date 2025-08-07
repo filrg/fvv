@@ -52,7 +52,7 @@ fvv_ret_t fvv_plr_data_pack(fvv_plr_data_t *self, uint64_t tileID, uint64_t patc
     {
       if (blockCnt > self->plri->plri_block_threshold_per_patch_minus1[i] + 1)
       {
-        buff->pad(buff, self->plrd_level[tileID][patchIdx][i], FVV_BIT_PLRD_LEVEL);
+        buff->write_bits(buff, self->plrd_level[tileID][patchIdx][i], FVV_BIT_PLRD_LEVEL);
       }
       else
       {
@@ -63,19 +63,19 @@ fvv_ret_t fvv_plr_data_pack(fvv_plr_data_t *self, uint64_t tileID, uint64_t patc
       {
         for (uint64_t j = 0; j < blockCnt; ++j)
         {
-          buff->pad(buff, self->plrd_present_block_flag[tileID][patchIdx][i][j], FVV_BIT_PLRD_PRESENT_BLOCK_FLAG);
+          buff->write_bits(buff, self->plrd_present_block_flag[tileID][patchIdx][i][j], FVV_BIT_PLRD_PRESENT_BLOCK_FLAG);
           if (self->plrd_present_block_flag[tileID][patchIdx][i][j])
           {
-            buff->pad(buff, self->plrd_block_mode_minus1[tileID][patchIdx][i][j], FVV_BIT_PLRD_BLOCK_MODE_MINUS1);
+            buff->write_bits(buff, self->plrd_block_mode_minus1[tileID][patchIdx][i][j], FVV_BIT_PLRD_BLOCK_MODE_MINUS1);
           }
         }
       }
       else
       {
-        buff->pad(buff, self->plrd_present_flag[tileID][patchIdx][i], FVV_BIT_PLRD_PRESENT_FLAG);
+        buff->write_bits(buff, self->plrd_present_flag[tileID][patchIdx][i], FVV_BIT_PLRD_PRESENT_FLAG);
         if (self->plrd_present_flag[tileID][patchIdx][i])
         {
-          buff->pad(buff, self->plrd_mode_minus1[tileID][patchIdx][i], FVV_BIT_PLRD_MODE_MINUS1);
+          buff->write_bits(buff, self->plrd_mode_minus1[tileID][patchIdx][i], FVV_BIT_PLRD_MODE_MINUS1);
         }
       }
     }

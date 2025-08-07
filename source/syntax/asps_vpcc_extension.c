@@ -43,14 +43,14 @@ fvv_asps_vpcc_extension_pack(fvv_asps_vpcc_extension_t *self)
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
 
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->asps_vpcc_remove_duplicate_point_enabled_flag,
             FVV_BIT_ASPS_VPCC_REMOVE_DUPLICATE_POINT_ENABLED_FLAG);
 
   if (self->aspsr->asps_pixel_deinterleaving_enabled_flag ||
       self->aspsr->asps_plr_enabled_flag)
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->asps_vpcc_surface_thickness_minus1,
               FVV_BIT_ASPS_VPCC_SURFACE_THICKNESS_MINUS1);
   }

@@ -49,7 +49,7 @@ fvv_ret_t fvv_filler_data_rbsp_pack(fvv_filler_data_rbsp_t *self)
   buff->next_bits(buff, 8, &next_bits);
   while (next_bits == 0xFF)
   {
-    buff->pad(buff, self->ff_byte, FVV_BIT_FF_BYTE);
+    buff->write_bits(buff, self->ff_byte, FVV_BIT_FF_BYTE);
     buff->next_bits(buff, 8, &next_bits);
   }
   self->rtb->pack(self->rtb);

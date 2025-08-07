@@ -46,22 +46,22 @@ fvv_geometry_information_pack(fvv_geometry_information_t *self,
 
   fvv_bitstream_t *buff = FVV_NULL;
   buff                  = self->data;
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->gi_geometry_codec_id[atlasID],
             FVV_BIT_GI_GEOMETRY_CODEC_ID);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->gi_geometry_2d_bit_depth_minus1[atlasID],
             FVV_BIT_GI_GEOMETRY_2D_BIT_DEPTH_MINUS1);
-  buff->pad(buff,
+  buff->write_bits(buff,
             self->gi_geometry_MSB_align_flag[atlasID],
             FVV_BIT_GI_GEOMETRY_MSB_ALIGN_FLAG);
-  buff->pad(
+  buff->write_bits(
       buff,
       self->gi_geometry_3d_coordinates_bit_depth_minus1[atlasID],
       FVV_BIT_GI_GEOMETRY_3D_COORDINATES_BIT_DEPTH_MINUS1);
   if (self->vps->vps_auxiliary_video_present_flag[atlasID])
   {
-    buff->pad(buff,
+    buff->write_bits(buff,
               self->gi_auxiliary_geometry_codec_id[atlasID],
               FVV_BIT_GI_AUXILIARY_GEOMETRY_CODEC_ID);
   }

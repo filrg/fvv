@@ -54,17 +54,17 @@ fvv_ret_t fvv_raw_patch_data_unit_pack(fvv_raw_patch_data_unit_t *self, uint64_t
 
   if (AuxTileHeight[TileIDToIndex[tileID]] > 0)
   {
-    buff->pad(buff, self->rpdu_patch_in_auxiliary_video_flag[tileID][patchIdx], FVV_BIT_RPDU_PATCH_IN_AUXILIARY_VIDEO_FLAG);
+    buff->write_bits(buff, self->rpdu_patch_in_auxiliary_video_flag[tileID][patchIdx], FVV_BIT_RPDU_PATCH_IN_AUXILIARY_VIDEO_FLAG);
   }
 
-  buff->pad(buff, self->rpdu_2d_pos_x[tileID][patchIdx], FVV_BIT_RPDU_2D_POS_X);
-  buff->pad(buff, self->rpdu_2d_pos_y[tileID][patchIdx], FVV_BIT_RPDU_2D_POS_Y);
-  buff->pad(buff, self->rpdu_2d_size_x_minus1[tileID][patchIdx], FVV_BIT_RPDU_2D_SIZE_X_MINUS1);
-  buff->pad(buff, self->rpdu_2d_size_y_minus1[tileID][patchIdx], FVV_BIT_RPDU_2D_SIZE_Y_MINUS1);
-  buff->pad(buff, self->rpdu_3d_offset_u[tileID][patchIdx], FVV_BIT_RPDU_3D_OFFSET_U);
-  buff->pad(buff, self->rpdu_3d_offset_v[tileID][patchIdx], FVV_BIT_RPDU_3D_OFFSET_V);
-  buff->pad(buff, self->rpdu_3d_offset_d[tileID][patchIdx], FVV_BIT_RPDU_3D_OFFSET_D);
-  buff->pad(buff, self->rpdu_points_minus1[tileID][patchIdx], FVV_BIT_RPDU_POINTS_MINUS1);
+  buff->write_bits(buff, self->rpdu_2d_pos_x[tileID][patchIdx], FVV_BIT_RPDU_2D_POS_X);
+  buff->write_bits(buff, self->rpdu_2d_pos_y[tileID][patchIdx], FVV_BIT_RPDU_2D_POS_Y);
+  buff->write_bits(buff, self->rpdu_2d_size_x_minus1[tileID][patchIdx], FVV_BIT_RPDU_2D_SIZE_X_MINUS1);
+  buff->write_bits(buff, self->rpdu_2d_size_y_minus1[tileID][patchIdx], FVV_BIT_RPDU_2D_SIZE_Y_MINUS1);
+  buff->write_bits(buff, self->rpdu_3d_offset_u[tileID][patchIdx], FVV_BIT_RPDU_3D_OFFSET_U);
+  buff->write_bits(buff, self->rpdu_3d_offset_v[tileID][patchIdx], FVV_BIT_RPDU_3D_OFFSET_V);
+  buff->write_bits(buff, self->rpdu_3d_offset_d[tileID][patchIdx], FVV_BIT_RPDU_3D_OFFSET_D);
+  buff->write_bits(buff, self->rpdu_points_minus1[tileID][patchIdx], FVV_BIT_RPDU_POINTS_MINUS1);
 
   return FVV_RET_SUCCESS;
 }
