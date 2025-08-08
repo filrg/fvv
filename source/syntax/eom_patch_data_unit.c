@@ -1,14 +1,16 @@
 #include <fvv/bitstream.h>
+#include <fvv/syntax/atlas_frame_parameter_set_rbsp.h>
 #include <fvv/syntax/eom_patch_data_unit.h>
-
 // 8.3.7.8 EOM patch data unit syntax
 // {
-fvv_ret_t
-fvv_eom_patch_data_unit_init(fvv_eom_patch_data_unit_t *self,
-                             fvv_bitstream_t           *data)
+fvv_ret_t fvv_eom_patch_data_unit_init(
+    fvv_eom_patch_data_unit_t            *self,
+    fvv_atlas_frame_parameter_set_rbsp_t *afps,
+    fvv_bitstream_t                      *data)
 {
   *self           = (fvv_eom_patch_data_unit_t){0};
   self->data      = data;
+  self->afps      = afps;
   self->pack      = fvv_eom_patch_data_unit_pack;
   self->copy_from = fvv_eom_patch_data_unit_copy_from;
 
@@ -61,9 +63,16 @@ fvv_eom_patch_data_unit_pack(fvv_eom_patch_data_unit_t *self,
   if (!self)
     return FVV_RET_UNINITIALIZED;
 
-  fvv_bitstream_t *buff = self->data;
+  fvv_bitstream_t *buff          = FVV_NULL;
+  uint64_t         AuxTileHeight = 0;
+  buff                           = self->data;
 
-  if (AuxTileHeight[TileIDToIndex[tileID]] > 0)
+  buff->sem.AuxTileHeight(&buff->sem,
+                          self->afps->afti,
+                          buff->sem.TileIDToIndex[tileID],
+                          &AuxTileHeight);
+
+  if (AuxTileHeight > 0)
   {
     buff->write_bits(
         buff,

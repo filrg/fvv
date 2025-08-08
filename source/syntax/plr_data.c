@@ -49,6 +49,7 @@ fvv_ret_t fvv_plr_data_pack(fvv_plr_data_t *self,
     return FVV_RET_UNINITIALIZED;
 
   fvv_bitstream_t *buff = self->data;
+  // TODO: here boi
   uint32_t blockCnt     = BlockCnt(TilePatch2dSizeX[tileID][patchIdx],
                                TilePatch2dSizeY[tileID][patchIdx]);
 

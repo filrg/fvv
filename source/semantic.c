@@ -2,6 +2,7 @@
 #include <fvv/process/tile_partition_scanning.h>
 #include <fvv/semantic.h>
 #include <fvv/syntax/atlas_frame_parameter_set_rbsp.h>
+#include <fvv/syntax/atlas_frame_tile_information.h>
 #include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
 #include <fvv/syntax/atlas_tile_header.h>
 #include <fvv/syntax/ref_list_struct.h>
@@ -14,6 +15,7 @@ fvv_ret_t fvv_semantic_init(fvv_semantic_t *self)
   self->NumLtrAtlasFrmEntries = fvv_semantic_NumLtrAtlasFrmEntries;
   self->NumRefIdxActive       = fvv_semantic_NumRefIdxActive;
   self->rangeDBitDepth        = fvv_semantic_rangeDBitDepth;
+  self->AuxTileHeight         = fvv_semantic_AuxTileHeight;
 
   FVV_SET_SETTER_PTR(fvv_semantic_t, TileIDToIndex);
   FVV_SET_SETTER_PTR(fvv_semantic_t, TileIndexToID);
@@ -136,5 +138,19 @@ fvv_ret_t fvv_semantic_rangeDBitDepth(
          1;
   return FVV_RET_SUCCESS;
 }
+fvv_ret_t
+fvv_semantic_AuxTileHeight(fvv_semantic_t                     *self,
+                           fvv_atlas_frame_tile_information_t *afti,
+                           uint64_t                            i,
+                           uint64_t                           *ret)
+{
+  if (!self)
+  {
+    return FVV_RET_UNINITIALIZED;
+  }
+  *ret = afti->afti_auxiliary_video_tile_row_height[i] * 64;
+  return FVV_RET_SUCCESS;
+}
+
 FVV_DEFINE_1D_ARR_SETTER(fvv_semantic_t, TileIDToIndex);
 FVV_DEFINE_1D_ARR_SETTER(fvv_semantic_t, TileIndexToID);

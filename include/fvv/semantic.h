@@ -38,6 +38,11 @@ struct fvv_semantic_t
       fvv_semantic_t                          *self,
       fvv_atlas_sequence_parameter_set_rbsp_t *asps,
       uint64_t                                *ret);
+  fvv_ret_t (*AuxTileHeight)(fvv_semantic_t                     *self,
+                             fvv_atlas_frame_tile_information_t *afti,
+                             uint64_t                            i,
+                             uint64_t                           *ret);
+  ;
 };
 
 fvv_ret_t fvv_semantic_init(fvv_semantic_t *self);
@@ -67,6 +72,11 @@ fvv_ret_t fvv_semantic_rangeDBitDepth(
     fvv_semantic_t                          *self,
     fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     uint64_t                                *ret);
+fvv_ret_t
+fvv_semantic_AuxTileHeight(fvv_semantic_t                     *self,
+                           fvv_atlas_frame_tile_information_t *afti,
+                           uint64_t                            i,
+                           uint64_t                           *ret);
 
 FVV_DECLARE_1D_ARR_SETTER(fvv_semantic_t, TileIDToIndex);
 FVV_DECLARE_1D_ARR_SETTER(fvv_semantic_t, TileIndexToID);

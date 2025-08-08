@@ -146,13 +146,23 @@ fvv_ret_t fvv_hrd_parameters_copy_from(fvv_hrd_parameters_t *self,
   self->set_hrd_cab_size_scale(self, other->hrd_cab_size_scale);
 
   self->set_hrd_fixed_atlas_rate_general_flag(
-      self, other->hrd_fixed_atlas_rate_general_flag);
+      self,
+      other->hrd_fixed_atlas_rate_general_flag,
+      other->hrd_fixed_atlas_rate_general_flag_size);
   self->set_hrd_fixed_atlas_rate_within_cas_flag(
-      self, other->hrd_fixed_atlas_rate_within_cas_flag);
+      self,
+      other->hrd_fixed_atlas_rate_within_cas_flag,
+      other->hrd_fixed_atlas_rate_within_cas_flag_size);
   self->set_hrd_elemental_duration_in_tc_minus1(
-      self, other->hrd_elemental_duration_in_tc_minus1);
-  self->set_hrd_low_delay_flag(self, other->hrd_low_delay_flag);
-  self->set_hrd_cab_cnt_minus1(self, other->hrd_cab_cnt_minus1);
+      self,
+      other->hrd_elemental_duration_in_tc_minus1,
+      other->hrd_elemental_duration_in_tc_minus1_size);
+  self->set_hrd_low_delay_flag(self,
+                               other->hrd_low_delay_flag,
+                               other->hrd_low_delay_flag_size);
+  self->set_hrd_cab_cnt_minus1(self,
+                               other->hrd_cab_cnt_minus1,
+                               other->hrd_cab_cnt_minus1_size);
 
   self->set_hslp(self, other->hslp);
   return FVV_RET_SUCCESS;
