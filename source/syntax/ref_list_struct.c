@@ -5,11 +5,11 @@
 // 8.3.6.12 Reference list structure syntax
 fvv_ret_t fvv_ref_list_struct_init(
     fvv_ref_list_struct_t                   *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data)
 {
   *self       = (fvv_ref_list_struct_t){0};
-  self->aspsr = aspsr;
+  self->asps = asps;
   self->data  = data;
 
   FVV_SET_SETTER_PTR(fvv_ref_list_struct_t, num_ref_entries);
@@ -50,7 +50,7 @@ fvv_ret_t fvv_ref_list_struct_pack(fvv_ref_list_struct_t *self,
                    FVV_DESCRIPTOR_NUM_REF_ENTRIES);
   for (i = 0; i < num_ref_entries[rlsIdx]; i++)
   {
-    if (self->aspsr->asps_long_term_ref_atlas_frames_flag)
+    if (self->asps->asps_long_term_ref_atlas_frames_flag)
       buff->write_bits(buff,
                        self->st_ref_atlas_frame_flag[rlsIdx][i],
                        FVV_BIT_ST_REF_ATLAS_FRAME_FLAG,

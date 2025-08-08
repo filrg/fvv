@@ -6,12 +6,12 @@
 // {
 fvv_ret_t fvv_merge_patch_data_unit_init(
     fvv_merge_patch_data_unit_t             *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_merge_patch_data_unit_t){0};
   self->data      = data;
-  self->aspsr     = aspsr;
+  self->asps     = asps;
   self->pack      = fvv_merge_patch_data_unit_pack;
   self->copy_from = fvv_merge_patch_data_unit_copy_from;
 
@@ -111,7 +111,7 @@ fvv_merge_patch_data_unit_pack(fvv_merge_patch_data_unit_t *self,
                      self->mpdu_2d_delta_size_y[tileID][patchIdx],
                      FVV_BIT_MPDU_2D_DELTA_SIZE_Y,
                      FVV_DESCRIPTOR_MPDU_2D_DELTA_SIZE_Y);
-    if (self->aspsr->asps_plr_enabled_flag)
+    if (self->asps->asps_plr_enabled_flag)
       OverridePlrFlag = 1;
   }
   else
@@ -135,12 +135,12 @@ fvv_merge_patch_data_unit_pack(fvv_merge_patch_data_unit_t *self,
                        self->mpdu_3d_offset_d[tileID][patchIdx],
                        FVV_BIT_MPDU_3D_OFFSET_D,
                        FVV_DESCRIPTOR_MPDU_3D_OFFSET_D);
-      if (self->aspsr->asps_normal_axis_max_delta_value_enabled_flag)
+      if (self->asps->asps_normal_axis_max_delta_value_enabled_flag)
         buff->write_bits(buff,
                          self->mpdu_3d_range_d[tileID][patchIdx],
                          FVV_BIT_MPDU_3D_RANGE_D,
                          FVV_DESCRIPTOR_MPDU_3D_RANGE_D);
-      if (self->aspsr->asps_plr_enabled_flag)
+      if (self->asps->asps_plr_enabled_flag)
       {
         buff->write_bits(
             buff,
@@ -152,7 +152,7 @@ fvv_merge_patch_data_unit_pack(fvv_merge_patch_data_unit_t *self,
       }
     }
   }
-  if (OverridePlrFlag && self->aspsr->asps_plr_enabled_flag)
+  if (OverridePlrFlag && self->asps->asps_plr_enabled_flag)
     self->pd->pack(self->pd, tileID, patchIdx);
 
   return FVV_RET_SUCCESS;

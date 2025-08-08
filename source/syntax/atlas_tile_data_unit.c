@@ -1,6 +1,8 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/atlas_tile_data_unit.h>
 #include <fvv/syntax/atlas_tile_header.h>
+#include <fvv/syntax/patch_information_data.h>
+#include <fvv/syntax/skip_patch_data_unit.h>
 
 // 8.3.7.1 General atlas tile data unit syntax
 // {
@@ -28,7 +30,7 @@ fvv_atlas_tile_data_unit_init(fvv_atlas_tile_data_unit_t *self,
       sizeof(fvv_patch_information_data_t));
 
   fvv_skip_patch_data_unit_init(self->spdu, data);
-  fvv_patch_information_data_init(self->pid, data);
+  fvv_patch_information_data_init(self->pid, ath, data);
 
   return FVV_RET_SUCCESS;
 }

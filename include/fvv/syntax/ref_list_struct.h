@@ -13,7 +13,7 @@ struct fvv_ref_list_struct_t
   FVV_DECLARE_2D_ARR_SETTER_PTR(fvv_ref_list_struct_t, straf_entry_sign_flag);
   FVV_DECLARE_2D_ARR_SETTER_PTR(fvv_ref_list_struct_t, afoc_lsb_lt);
 
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
   fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(fvv_ref_list_struct_t *self, uint64_t rlsIdx);
@@ -22,7 +22,7 @@ struct fvv_ref_list_struct_t
 
 fvv_ret_t fvv_ref_list_struct_init(
     fvv_ref_list_struct_t                   *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data);
 fvv_ret_t fvv_ref_list_struct_destroy(fvv_ref_list_struct_t *self);
 fvv_ret_t fvv_ref_list_struct_pack(fvv_ref_list_struct_t *self,

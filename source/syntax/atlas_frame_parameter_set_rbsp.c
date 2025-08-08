@@ -7,13 +7,13 @@
 // {
 fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_init(
     fvv_atlas_frame_parameter_set_rbsp_t    *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_atlas_frame_parameter_set_rbsp_t){0};
 
   self->data      = data;
-  self->aspsr     = aspsr;
+  self->asps      = asps;
   self->pack      = fvv_atlas_frame_parameter_set_rbsp_pack;
   self->copy_from = fvv_atlas_frame_parameter_set_rbsp_copy_from;
 
@@ -51,7 +51,7 @@ fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_init(
       sizeof(fvv_rbsp_trailing_bits_t));
 
   fvv_atlas_frame_tile_information_init(
-      self->afti, self->aspsr, data);
+      self->afti, self->asps, self->afti, data);
   fvv_rbsp_trailing_bits_init(self->rtb, data);
 
   return FVV_RET_SUCCESS;

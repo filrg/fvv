@@ -7,12 +7,12 @@
 fvv_ret_t
 fvv_plr_data_init(fvv_plr_data_t                          *self,
                   fvv_bitstream_t                         *data,
-                  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+                  fvv_atlas_sequence_parameter_set_rbsp_t *asps,
                   fvv_asps_plr_information_t              *plri)
 {
   *self           = (fvv_plr_data_t){0};
   self->data      = data;
-  self->aspsr     = aspsr;
+  self->asps     = asps;
   self->plri      = plri;
 
   self->pack      = fvv_plr_data_pack;
@@ -53,7 +53,7 @@ fvv_ret_t fvv_plr_data_pack(fvv_plr_data_t *self,
   uint32_t blockCnt     = BlockCnt(TilePatch2dSizeX[tileID][patchIdx],
                                TilePatch2dSizeY[tileID][patchIdx]);
 
-  for (uint64_t i = 0; i <= self->aspsr->asps_map_count_minus1; ++i)
+  for (uint64_t i = 0; i <= self->asps->asps_map_count_minus1; ++i)
   {
     if (self->plri->plri_map_present_flag[i])
     {

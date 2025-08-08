@@ -6,7 +6,7 @@
 // 8.3.6.2.1 General atlas frame parameter set RBSP syntax
 struct fvv_atlas_frame_parameter_set_rbsp_t
 {
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
   fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(fvv_atlas_frame_parameter_set_rbsp_t *self);
@@ -30,7 +30,7 @@ struct fvv_atlas_frame_parameter_set_rbsp_t
 };
 fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_init(
     fvv_atlas_frame_parameter_set_rbsp_t    *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data);
 fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_destroy(
     fvv_atlas_frame_parameter_set_rbsp_t *self);

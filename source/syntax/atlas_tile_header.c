@@ -12,15 +12,15 @@
 // {
 fvv_ret_t fvv_atlas_tile_header_init(
     fvv_atlas_tile_header_t                 *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
-    fvv_atlas_frame_parameter_set_rbsp_t    *afpsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+    fvv_atlas_frame_parameter_set_rbsp_t    *afps,
     fvv_nal_unit_header_t                   *nuh,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_atlas_tile_header_t){0};
 
-  self->aspsr     = aspsr;
-  self->afpsr     = afpsr;
+  self->asps     = asps;
+  self->afps     = afps;
   self->nuh       = nuh;
   self->data      = data;
 
@@ -69,7 +69,7 @@ fvv_ret_t fvv_atlas_tile_header_init(
   self->ba =
       (fvv_byte_alignment_t *)malloc(sizeof(fvv_byte_alignment_t));
 
-  fvv_ref_list_struct_init(self->rls, self->aspsr, data);
+  fvv_ref_list_struct_init(self->rls, self->asps, data);
   fvv_byte_alignment_init(self->ba, data);
 
   return FVV_RET_SUCCESS;
@@ -127,7 +127,7 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
                    self->ath_type,
                    FVV_BIT_ATH_TYPE,
                    FVV_DESCRIPTOR_ATH_TYPE);
-  if (self->afpsr->afps_output_flag_present_flag)
+  if (self->afps->afps_output_flag_present_flag)
   {
     buff->write_bits(buff,
                      self->ath_atlas_output_flag,
@@ -138,7 +138,7 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
                    self->ath_atlas_frm_order_cnt_lsb,
                    FVV_BIT_ATH_ATLAS_FRM_ORDER_CNT_LSB,
                    FVV_DESCRIPTOR_ATH_ATLAS_FRM_ORDER_CNT_LSB);
-  if (self->aspsr->asps_num_ref_atlas_frame_lists_in_asps > 0)
+  if (self->asps->asps_num_ref_atlas_frame_lists_in_asps > 0)
     buff->write_bits(
         buff,
         self->ath_ref_atlas_frame_list_asps_flag,
@@ -147,8 +147,8 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
   if (self->ath_ref_atlas_frame_list_asps_flag == 0)
     self->rls->pack(
         self->rls,
-        self->aspsr->asps_num_ref_atlas_frame_lists_in_asps);
-  else if (self->aspsr->asps_num_ref_atlas_frame_lists_in_asps > 1)
+        self->asps->asps_num_ref_atlas_frame_lists_in_asps);
+  else if (self->asps->asps_num_ref_atlas_frame_lists_in_asps > 1)
     buff->write_bits(buff,
                      self->ath_ref_atlas_frame_list_idx,
                      FVV_BIT_ATH_REF_ATLAS_FRAME_LIST_IDX,
@@ -168,21 +168,21 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
   }
   if (self->ath_type != FVV_SKIP_TILE)
   {
-    if (self->aspsr
+    if (self->asps
             ->asps_normal_axis_limits_quantization_enabled_flag)
     {
       buff->write_bits(buff,
                        self->ath_pos_min_d_quantizer,
                        FVV_BIT_ATH_POS_MIN_D_QUANTIZER,
                        FVV_DESCRIPTOR_ATH_POS_MIN_D_QUANTIZER);
-      if (self->aspsr->asps_normal_axis_max_delta_value_enabled_flag)
+      if (self->asps->asps_normal_axis_max_delta_value_enabled_flag)
         buff->write_bits(
             buff,
             self->ath_pos_delta_max_d_quantizer,
             FVV_BIT_ATH_POS_DELTA_MAX_D_QUANTIZER,
             FVV_DESCRIPTOR_ATH_POS_DELTA_MAX_D_QUANTIZER);
     }
-    if (self->aspsr->asps_patch_size_quantizer_present_flag)
+    if (self->asps->asps_patch_size_quantizer_present_flag)
     {
       buff->write_bits(
           buff,
@@ -195,7 +195,7 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
           FVV_BIT_ATH_PATCH_SIZE_Y_INFO_QUANTIZER,
           FVV_DESCRIPTOR_ATH_PATCH_SIZE_Y_INFO_QUANTIZER);
     }
-    if (self->afpsr->afps_raw_3d_offset_bit_count_explicit_mode_flag)
+    if (self->afps->afps_raw_3d_offset_bit_count_explicit_mode_flag)
       buff->write_bits(
           buff,
           self->ath_raw_3d_offset_axis_bit_count_minus1,

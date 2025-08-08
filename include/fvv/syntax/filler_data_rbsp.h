@@ -7,7 +7,7 @@
 // 8.3.6.8 Filler data RBSP syntax
 struct fvv_filler_data_rbsp_t
 {
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
   fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(fvv_filler_data_rbsp_t *self);
@@ -19,7 +19,7 @@ struct fvv_filler_data_rbsp_t
 };
 fvv_ret_t fvv_filler_data_rbsp_init(
     fvv_filler_data_rbsp_t                  *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data);
 fvv_ret_t fvv_filler_data_rbsp_destroy(fvv_filler_data_rbsp_t *self);
 fvv_ret_t fvv_filler_data_rbsp_pack(fvv_filler_data_rbsp_t *self);

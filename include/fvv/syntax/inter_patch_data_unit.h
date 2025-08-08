@@ -8,7 +8,7 @@
 struct fvv_inter_patch_data_unit_t
 {
   fvv_bitstream_t                         *data;
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
 
   fvv_ret_t (*pack)(fvv_inter_patch_data_unit_t *self, uint64_t tileID, uint64_t patchIdx);
   fvv_ret_t (*copy_from)(fvv_inter_patch_data_unit_t *self, fvv_inter_patch_data_unit_t *other);
@@ -24,7 +24,7 @@ struct fvv_inter_patch_data_unit_t
   FVV_DECLARE_2D_ARR_SETTER_PTR(fvv_inter_patch_data_unit_t, ipdu_3d_range_d);
   FVV_DECLARE_OBJ_SETTER_PTR(fvv_inter_patch_data_unit_t, pd, fvv_plr_data_t);
 };
-fvv_ret_t fvv_inter_patch_data_unit_init(fvv_inter_patch_data_unit_t *self, fvv_atlas_sequence_parameter_set_rbsp_t *aspsr, fvv_bitstream_t *data);
+fvv_ret_t fvv_inter_patch_data_unit_init(fvv_inter_patch_data_unit_t *self, fvv_atlas_sequence_parameter_set_rbsp_t *asps, fvv_bitstream_t *data);
 fvv_ret_t fvv_inter_patch_data_unit_destroy(fvv_inter_patch_data_unit_t *self);
 fvv_ret_t fvv_inter_patch_data_unit_pack(fvv_inter_patch_data_unit_t *self, uint64_t tileID, uint64_t patchIdx);
 fvv_ret_t fvv_inter_patch_data_unit_copy_from(fvv_inter_patch_data_unit_t *self, fvv_inter_patch_data_unit_t *other);

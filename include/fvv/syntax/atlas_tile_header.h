@@ -7,8 +7,8 @@
 // 8.3.6.11 Atlas tile header syntax
 struct fvv_atlas_tile_header_t
 {
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
-  fvv_atlas_frame_parameter_set_rbsp_t    *afpsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
+  fvv_atlas_frame_parameter_set_rbsp_t    *afps;
   fvv_nal_unit_header_t                   *nuh;
   fvv_bitstream_t                         *data;
 
@@ -40,8 +40,8 @@ struct fvv_atlas_tile_header_t
 
 fvv_ret_t fvv_atlas_tile_header_init(
     fvv_atlas_tile_header_t                 *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
-    fvv_atlas_frame_parameter_set_rbsp_t    *afpsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+    fvv_atlas_frame_parameter_set_rbsp_t    *afps,
     fvv_nal_unit_header_t                   *nuh,
     fvv_bitstream_t                         *data);
 fvv_ret_t

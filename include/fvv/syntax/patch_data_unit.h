@@ -8,8 +8,8 @@
 struct fvv_patch_data_unit_t
 {
 
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
-  fvv_atlas_frame_parameter_set_rbsp_t    *afpsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
+  fvv_atlas_frame_parameter_set_rbsp_t    *afps;
   fvv_atlas_tile_header_t                 *ath;
   fvv_bitstream_t                         *data;
 
@@ -48,8 +48,8 @@ struct fvv_patch_data_unit_t
 };
 fvv_ret_t fvv_patch_data_unit_init(
     fvv_patch_data_unit_t                   *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
-    fvv_atlas_frame_parameter_set_rbsp_t    *afpsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+    fvv_atlas_frame_parameter_set_rbsp_t    *afps,
     fvv_atlas_tile_header_t                 *ath,
     fvv_bitstream_t                         *data);
 fvv_ret_t fvv_patch_data_unit_destroy(fvv_patch_data_unit_t *self);

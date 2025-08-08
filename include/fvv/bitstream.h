@@ -2,6 +2,7 @@
 #define FVV_BITSTREAM_H
 
 #include <fvv/defs.h>
+#include <fvv/semantic.h>
 
 struct fvv_bitstream_t
 {
@@ -10,6 +11,8 @@ struct fvv_bitstream_t
   uint64_t byte_pos;   // current write position in bytes
   uint8_t  bit_offset; // current bit offset (0–7) within current
                        // bytes which bit is not written yet, 0 is MSB
+
+  fvv_semantic_t sem; // dont know if this fits here, but lets see
 
   fvv_ret_t (*alloc)(fvv_bitstream_t *self, uint64_t size);
   fvv_ret_t (*free)(fvv_bitstream_t *self);

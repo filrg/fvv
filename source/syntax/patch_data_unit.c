@@ -10,15 +10,15 @@
 // {
 fvv_ret_t fvv_patch_data_unit_init(
     fvv_patch_data_unit_t                   *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
-    fvv_atlas_frame_parameter_set_rbsp_t    *afpsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+    fvv_atlas_frame_parameter_set_rbsp_t    *afps,
     fvv_atlas_tile_header_t                 *ath,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_patch_data_unit_t){0};
   self->data      = data;
-  self->afpsr     = afpsr;
-  self->aspsr     = aspsr;
+  self->afps     = afps;
+  self->asps     = asps;
   self->ath       = ath;
 
   self->pack      = fvv_patch_data_unit_pack;
@@ -97,18 +97,18 @@ fvv_ret_t fvv_patch_data_unit_pack(fvv_patch_data_unit_t *self,
                    FVV_DESCRIPTOR_PDU_2D_SIZE_Y_MINUS1);
   buff->write_bits(buff,
                    self->pdu_3d_offset_u[tileID][patchIdx],
-                   self->aspsr->asps_geometry_3d_bit_depth_minus1 + 1,
+                   self->asps->asps_geometry_3d_bit_depth_minus1 + 1,
                    FVV_DESCRIPTOR_PDU_3D_OFFSET_U);
   buff->write_bits(buff,
                    self->pdu_3d_offset_v[tileID][patchIdx],
-                   self->aspsr->asps_geometry_3d_bit_depth_minus1 + 1,
+                   self->asps->asps_geometry_3d_bit_depth_minus1 + 1,
                    FVV_DESCRIPTOR_PDU_3D_OFFSET_V);
   buff->write_bits(buff,
                    self->pdu_3d_offset_d[tileID][patchIdx],
-                   self->aspsr->asps_geometry_3d_bit_depth_minus1 -
+                   self->asps->asps_geometry_3d_bit_depth_minus1 -
                        self->ath->ath_pos_min_d_quantizer + 1,
                    FVV_DESCRIPTOR_PDU_3D_OFFSET_D);
-  if (self->aspsr->asps_normal_axis_max_delta_value_enabled_flag)
+  if (self->asps->asps_normal_axis_max_delta_value_enabled_flag)
     buff->write_bits(buff,
                      self->pdu_3d_range_d[tileID][patchIdx],
                      rangeDBitDepth -
@@ -118,15 +118,15 @@ fvv_ret_t fvv_patch_data_unit_pack(fvv_patch_data_unit_t *self,
       buff,
       self->pdu_projection_id[tileID][patchIdx],
       (uint8_t)(fvv_ceil(fvv_log2(
-          (double)(self->aspsr->asps_max_number_projections_minus1 +
+          (double)(self->asps->asps_max_number_projections_minus1 +
                    1)))),
       FVV_DESCRIPTOR_PDU_PROJECTION_ID);
   buff->write_bits(buff,
                    self->pdu_orientation_index[tileID][patchIdx],
-                   self->aspsr->asps_use_eight_orientations_flag ? 3
+                   self->asps->asps_use_eight_orientations_flag ? 3
                                                                  : 1,
                    FVV_DESCRIPTOR_PDU_ORIENTATION_INDEX);
-  if (self->afpsr->afps_lod_mode_enabled_flag)
+  if (self->afps->afps_lod_mode_enabled_flag)
   {
     buff->write_bits(buff,
                      self->pdu_lod_enabled_flag[tileID][patchIdx],
@@ -144,7 +144,7 @@ fvv_ret_t fvv_patch_data_unit_pack(fvv_patch_data_unit_t *self,
                        FVV_DESCRIPTOR_PDU_LOD_SCALE_Y_IDC);
     }
   }
-  if (self->aspsr->asps_plr_enabled_flag)
+  if (self->asps->asps_plr_enabled_flag)
     self->pd->pack(self->pd, tileID, patchIdx);
 
   return FVV_RET_SUCCESS;

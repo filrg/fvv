@@ -7,7 +7,7 @@
 // 8.3.6.1.2 Point local reconstruction information syntax
 struct fvv_asps_plr_information_t
 {
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
   fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(fvv_asps_plr_information_t *self,
@@ -51,7 +51,7 @@ struct fvv_asps_plr_information_t
 };
 
 fvv_ret_t fvv_asps_plr_information_init(fvv_asps_plr_information_t              *self,
-                                        fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+                                        fvv_atlas_sequence_parameter_set_rbsp_t *asps,
                                         fvv_bitstream_t                         *data);
 fvv_ret_t fvv_asps_plr_information_destroy(fvv_asps_plr_information_t *self);
 fvv_ret_t fvv_asps_plr_information_pack(fvv_asps_plr_information_t *self,

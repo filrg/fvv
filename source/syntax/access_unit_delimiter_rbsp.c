@@ -5,11 +5,11 @@
 // {
 fvv_ret_t fvv_access_unit_delimiter_rbsp_init(
     fvv_access_unit_delimiter_rbsp_t        *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_access_unit_delimiter_rbsp_t){0};
-  self->aspsr     = aspsr;
+  self->asps     = asps;
   self->data      = data;
   self->pack      = fvv_access_unit_delimiter_rbsp_pack;
   self->copy_from = fvv_access_unit_delimiter_rbsp_copy_from;

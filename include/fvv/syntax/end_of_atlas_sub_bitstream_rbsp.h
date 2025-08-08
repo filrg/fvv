@@ -7,7 +7,7 @@
 // 8.3.6.7 End of bitstream RBSP syntax
 struct fvv_end_of_atlas_sub_bitstream_rbsp_t
 {
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
   fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(fvv_end_of_atlas_sub_bitstream_rbsp_t *self);
@@ -18,7 +18,7 @@ struct fvv_end_of_atlas_sub_bitstream_rbsp_t
 
 fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_init(
     fvv_end_of_atlas_sub_bitstream_rbsp_t   *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data);
 fvv_ret_t fvv_end_of_atlas_sub_bitstream_rbsp_destroy(
     fvv_end_of_atlas_sub_bitstream_rbsp_t *self);

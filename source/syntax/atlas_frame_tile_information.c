@@ -1,4 +1,5 @@
 #include <fvv/bitstream.h>
+#include <fvv/math.h>
 #include <fvv/syntax/atlas_frame_tile_information.h>
 #include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
 #include <string.h>
@@ -6,11 +7,13 @@
 // {
 fvv_ret_t fvv_atlas_frame_tile_information_init(
     fvv_atlas_frame_tile_information_t      *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+    fvv_atlas_frame_tile_information_t      *afti,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_atlas_frame_tile_information_t){0};
-  self->aspsr     = aspsr;
+  self->asps      = asps;
+  self->afti      = afti;
   self->data      = data;
   self->pack      = fvv_atlas_frame_tile_information_pack;
   self->copy_from = fvv_atlas_frame_tile_information_copy_from;
@@ -86,9 +89,21 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
   {
     return FVV_RET_UNINITIALIZED;
   }
-  fvv_bitstream_t *buff = FVV_NULL;
-  uint64_t         i    = 0;
-  buff                  = self->data;
+  fvv_bitstream_t *buff                      = FVV_NULL;
+  uint64_t         NumPartitionsInAtlasFrame = 0;
+  uint64_t         i                         = 0;
+  uint64_t        *TileIDToIndex             = FVV_NULL;
+  uint64_t        *TileIndexToID             = FVV_NULL;
+
+  TileIDToIndex =
+      (uint64_t *)calloc(self->afti_tile_id_size, sizeof(uint64_t));
+  TileIndexToID =
+      (uint64_t *)calloc(self->afti_tile_id_size, sizeof(uint64_t));
+
+  buff = self->data;
+  buff->sem.tile_partition_scan(&buff->sem, self->afti, self->asps);
+  NumPartitionsInAtlasFrame =
+      buff->sem.NumPartitionColumns * buff->sem.NumPartitionRows;
 
   buff->write_bits(
       buff,
@@ -156,7 +171,8 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
       {
         buff->write_bits(buff,
                          self->afti_top_left_partition_idx[i],
-                         FVV_BIT_AFTI_TOP_LEFT_PARTITION_IDX,
+                         (uint8_t)(fvv_ceil(fvv_log2(
+                             (double)(NumPartitionsInAtlasFrame)))),
                          FVV_DESCRIPTOR_AFTI_TOP_LEFT_PARTITION_IDX);
         buff->write_bits(
             buff,
@@ -178,7 +194,7 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
   {
     self->afti_num_tiles_in_atlas_frame_minus1 = 0;
   }
-  if (self->aspsr->asps_auxiliary_video_enabled_flag)
+  if (self->asps->asps_auxiliary_video_enabled_flag)
   {
     buff->write_bits(
         buff,
@@ -209,10 +225,15 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
     for (i = 0; i < self->afti_num_tiles_in_atlas_frame_minus1 + 1;
          i++)
     {
-      buff->write_bits(buff,
-                       self->afti_tile_id[i],
-                       FVV_BIT_AFTI_TILE_ID,
-                       FVV_DESCRIPTOR_AFTI_TILE_ID);
+      buff->write_bits(
+          buff,
+          self->afti_tile_id[i],
+          (uint8_t)(fvv_ceil(fvv_log2(
+              (double)(self->afti_num_tiles_in_atlas_frame_minus1 +
+                       1)))) -
+              1,
+          FVV_DESCRIPTOR_AFTI_TILE_ID);
+
       TileIDToIndex[self->afti_tile_id[i]] = i;
       TileIndexToID[i]                     = self->afti_tile_id[i];
     }
@@ -225,6 +246,14 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
       TileIDToIndex[i]      = i;
       TileIndexToID[i]      = i;
     }
+
+  buff->sem.set_TileIDToIndex(
+      &buff->sem, TileIDToIndex, self->afti_tile_id_size);
+  buff->sem.set_TileIndexToID(
+      &buff->sem, TileIndexToID, self->afti_tile_id_size);
+
+  free(TileIDToIndex);
+  free(TileIndexToID);
 
   return FVV_RET_SUCCESS;
 }

@@ -5,7 +5,7 @@
 // {
 fvv_ret_t fvv_asps_vpcc_extension_init(
     fvv_asps_vpcc_extension_t               *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data)
 {
   if (!self)
@@ -14,7 +14,7 @@ fvv_ret_t fvv_asps_vpcc_extension_init(
   }
   *self           = (fvv_asps_vpcc_extension_t){0};
   self->data      = data;
-  self->aspsr     = aspsr;
+  self->asps     = asps;
   self->pack      = fvv_asps_vpcc_extension_pack;
   self->copy_from = fvv_asps_vpcc_extension_copy_from;
   FVV_SET_SETTER_PTR(fvv_asps_vpcc_extension_t,
@@ -49,8 +49,8 @@ fvv_asps_vpcc_extension_pack(fvv_asps_vpcc_extension_t *self)
       FVV_BIT_ASPS_VPCC_REMOVE_DUPLICATE_POINT_ENABLED_FLAG,
       FVV_DESCRIPTOR_ASPS_VPCC_REMOVE_DUPLICATE_POINT_ENABLED_FLAG);
 
-  if (self->aspsr->asps_pixel_deinterleaving_enabled_flag ||
-      self->aspsr->asps_plr_enabled_flag)
+  if (self->asps->asps_pixel_deinterleaving_enabled_flag ||
+      self->asps->asps_plr_enabled_flag)
   {
     buff->write_bits(
         buff,

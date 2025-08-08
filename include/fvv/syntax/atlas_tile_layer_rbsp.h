@@ -7,8 +7,8 @@
 // 8.3.6.9 Atlas tile layer RBSP syntax
 struct fvv_atlas_tile_layer_rbsp_t
 {
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
-  fvv_atlas_frame_tile_information_t      *afpsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
+  fvv_atlas_frame_tile_information_t      *afps;
   fvv_nal_unit_header_t                   *nuh;
 
   fvv_bitstream_t                         *data;
@@ -20,8 +20,8 @@ struct fvv_atlas_tile_layer_rbsp_t
 
 fvv_ret_t fvv_atlas_tile_layer_rbsp_init(
     fvv_atlas_tile_layer_rbsp_t             *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
-    fvv_atlas_frame_tile_information_t      *afpsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+    fvv_atlas_frame_tile_information_t      *afps,
     fvv_nal_unit_header_t                   *nuh,
     fvv_bitstream_t                         *data);
 fvv_ret_t

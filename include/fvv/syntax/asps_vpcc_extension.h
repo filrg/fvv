@@ -7,7 +7,7 @@
 // H.8.3.6.1.3 ASPS V-PCC extension syntax
 struct fvv_asps_vpcc_extension_t
 {
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
   fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(struct fvv_asps_vpcc_extension_t *self);
@@ -21,7 +21,7 @@ struct fvv_asps_vpcc_extension_t
 };
 fvv_ret_t fvv_asps_vpcc_extension_init(
     fvv_asps_vpcc_extension_t               *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data);
 fvv_ret_t
 fvv_asps_vpcc_extension_destroy(fvv_asps_vpcc_extension_t *self);

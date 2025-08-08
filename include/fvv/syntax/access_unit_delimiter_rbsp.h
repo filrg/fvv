@@ -7,7 +7,7 @@
 // 8.3.6.5 Access unit delimiter RBSP syntax
 struct fvv_access_unit_delimiter_rbsp_t
 {
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
   fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(fvv_access_unit_delimiter_rbsp_t *self);
@@ -20,7 +20,7 @@ struct fvv_access_unit_delimiter_rbsp_t
 };
 fvv_ret_t fvv_access_unit_delimiter_rbsp_init(
     fvv_access_unit_delimiter_rbsp_t        *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data);
 fvv_ret_t fvv_access_unit_delimiter_rbsp_destroy(
     fvv_access_unit_delimiter_rbsp_t *self);

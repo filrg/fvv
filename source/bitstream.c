@@ -174,7 +174,7 @@ static fvv_ret_t fvv_bitstream_padue(fvv_bitstream_t *self,
 fvv_ret_t fvv_bitstream_init(fvv_bitstream_t *self)
 {
   *self                = (fvv_bitstream_t){0};
-
+  self->sem            = (fvv_semantic_t){0};
   self->alloc          = fvv_bitstream_alloc;
   self->free           = fvv_bitstream_free;
   self->write_bits     = fvv_bitstream_write_bits;
@@ -183,7 +183,7 @@ fvv_ret_t fvv_bitstream_init(fvv_bitstream_t *self)
   self->next_bits      = fvv_bitstream_next_bits;
   self->read_bits      = fvv_bitstream_read_bits;
   self->more_data      = fvv_bitstream_more_data;
-
+  fvv_semantic_init(&self->sem);
   return FVV_RET_SUCCESS;
 }
 fvv_ret_t fvv_bitstream_destroy(fvv_bitstream_t *self)
@@ -192,9 +192,8 @@ fvv_ret_t fvv_bitstream_destroy(fvv_bitstream_t *self)
   {
     return FVV_RET_UNINITIALIZED;
   }
-
   self->free(self);
-
+  fvv_semantic_destroy(&self->sem);
   *self = (fvv_bitstream_t){0};
   return FVV_RET_SUCCESS;
 }

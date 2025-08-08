@@ -5,15 +5,15 @@
 // 8.3.6.9 Atlas tile layer RBSP syntax
 fvv_ret_t fvv_atlas_tile_layer_rbsp_init(
     fvv_atlas_tile_layer_rbsp_t             *self,
-    fvv_atlas_sequence_parameter_set_rbsp_t *aspsr,
-    fvv_atlas_frame_tile_information_t      *afpsr,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+    fvv_atlas_frame_tile_information_t      *afps,
     fvv_nal_unit_header_t                   *nuh,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_atlas_tile_layer_rbsp_t){0};
 
-  self->aspsr     = aspsr;
-  self->afpsr     = afpsr;
+  self->asps     = asps;
+  self->afps     = afps;
   self->nuh       = nuh;
   self->data      = data;
 
@@ -32,7 +32,7 @@ fvv_ret_t fvv_atlas_tile_layer_rbsp_init(
       sizeof(fvv_rbsp_trailing_bits_t));
 
   fvv_atlas_tile_header_init(
-      self->ath, self->aspsr, self->afpsr, self->nuh, data);
+      self->ath, self->asps, self->afps, self->nuh, data);
   fvv_atlas_tile_data_unit_init(self->ath, data);
   fvv_rbsp_trailing_bits_init(self->rtb, data);
 

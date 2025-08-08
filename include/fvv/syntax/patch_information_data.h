@@ -7,8 +7,8 @@
 // 8.3.7.2 Patch information data syntax
 typedef struct fvv_patch_information_data_t
 {
-  fvv_atlas_sequence_parameter_set_rbsp_t *aspsr;
-  fvv_atlas_frame_parameter_set_rbsp_t    *afpsr;
+  fvv_atlas_sequence_parameter_set_rbsp_t *asps;
+  fvv_atlas_frame_parameter_set_rbsp_t    *afps;
   fvv_atlas_tile_header_t                 *ath;
   fvv_bitstream_t                         *data;
 
