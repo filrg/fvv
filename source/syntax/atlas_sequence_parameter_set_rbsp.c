@@ -4,7 +4,7 @@
 #include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
 #include <fvv/syntax/rbsp_trailing_bits.h>
 #include <fvv/syntax/ref_list_struct.h>
-#include <string.h>
+#include <fvv/syntax/vui_parameters.h>
 
 // 8.3.6.1.1 General atlas sequence parameter set RBSP syntax
 // {
