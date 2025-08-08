@@ -8,7 +8,7 @@
 // {
 fvv_ret_t
 fvv_sample_stream_nal_unit_init(fvv_sample_stream_nal_unit_t *self,
-                                fvv_v3c_unit_t               *asb,
+                                fvv_atlas_sub_bitstream_t    *asb,
                                 fvv_bitstream_t              *data)
 {
   *self      = (fvv_sample_stream_nal_unit_t){0};
@@ -79,27 +79,6 @@ fvv_ret_t fvv_sample_stream_nal_unit_copy_from(
   }
   self->set_ssnu_nal_unit_size(self, other->ssnu_nal_unit_size);
   self->set_nu(self, other->nu);
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t fvv_sample_stream_nal_unit_set_ssnu_nal_unit_size(
-    fvv_sample_stream_nal_unit_t *self, uint64_t ssnu_nal_unit_size)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->ssnu_nal_unit_size = ssnu_nal_unit_size;
-  return FVV_RET_SUCCESS;
-}
-fvv_ret_t
-fvv_sample_stream_nal_unit_set_nu(fvv_sample_stream_nal_unit_t *self,
-                                  fvv_nal_unit_t               *nu)
-{
-  if (!self)
-  {
-    return FVV_RET_UNINITIALIZED;
-  }
-  self->nu->copy_from(self->nu, nu);
   return FVV_RET_SUCCESS;
 }
 FVV_DEFINE_SCALAR_SETTER(fvv_sample_stream_nal_unit_t,

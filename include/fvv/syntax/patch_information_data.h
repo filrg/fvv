@@ -38,10 +38,12 @@ typedef struct fvv_patch_information_data_t
                              fvv_eom_patch_data_unit_t);
 } fvv_patch_information_data_t;
 
-fvv_ret_t
-fvv_patch_information_data_init(fvv_patch_information_data_t *self,
-                                fvv_atlas_tile_header_t      *ath,
-                                fvv_bitstream_t              *data);
+fvv_ret_t fvv_patch_information_data_init(
+    fvv_patch_information_data_t            *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+    fvv_atlas_frame_parameter_set_rbsp_t    *afps,
+    fvv_atlas_tile_header_t                 *ath,
+    fvv_bitstream_t                         *data);
 fvv_ret_t fvv_patch_information_data_destroy(
     fvv_patch_information_data_t *self);
 fvv_ret_t

@@ -4,6 +4,7 @@
 #include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
 #include <fvv/syntax/atlas_tile_header.h>
 #include <fvv/syntax/patch_data_unit.h>
+#include <fvv/syntax/plr_data.h>
 #include <string.h>
 
 // 8.3.7.3 Patch data unit syntax
@@ -17,8 +18,8 @@ fvv_ret_t fvv_patch_data_unit_init(
 {
   *self           = (fvv_patch_data_unit_t){0};
   self->data      = data;
-  self->afps     = afps;
-  self->asps     = asps;
+  self->afps      = afps;
+  self->asps      = asps;
   self->ath       = ath;
 
   self->pack      = fvv_patch_data_unit_pack;
@@ -41,7 +42,7 @@ fvv_ret_t fvv_patch_data_unit_init(
 
   self->pd = (fvv_plr_data_t *)malloc(sizeof(fvv_plr_data_t));
 
-  fvv_plr_data_init(self->pd, data);
+  fvv_plr_data_init(self->pd, self->asps, data);
 
   return FVV_RET_SUCCESS;
 }
@@ -77,8 +78,9 @@ fvv_ret_t fvv_patch_data_unit_pack(fvv_patch_data_unit_t *self,
   {
     return FVV_RET_UNINITIALIZED;
   }
-  fvv_bitstream_t *buff = FVV_NULL;
-  buff                  = self->data;
+  fvv_bitstream_t *buff           = FVV_NULL;
+  uint64_t         rangeDBitDepth = 0;
+  buff                            = self->data;
   buff->write_bits(buff,
                    self->pdu_2d_pos_x[tileID][patchIdx],
                    FVV_BIT_PDU_2D_POS_X,
@@ -109,11 +111,14 @@ fvv_ret_t fvv_patch_data_unit_pack(fvv_patch_data_unit_t *self,
                        self->ath->ath_pos_min_d_quantizer + 1,
                    FVV_DESCRIPTOR_PDU_3D_OFFSET_D);
   if (self->asps->asps_normal_axis_max_delta_value_enabled_flag)
+  {
+    buff->sem.rangeDBitDepth(&buff->sem, self->asps, &rangeDBitDepth);
     buff->write_bits(buff,
                      self->pdu_3d_range_d[tileID][patchIdx],
                      rangeDBitDepth -
                          self->ath->ath_pos_delta_max_d_quantizer,
                      FVV_DESCRIPTOR_PDU_3D_RANGE_D);
+  }
   buff->write_bits(
       buff,
       self->pdu_projection_id[tileID][patchIdx],
@@ -124,7 +129,7 @@ fvv_ret_t fvv_patch_data_unit_pack(fvv_patch_data_unit_t *self,
   buff->write_bits(buff,
                    self->pdu_orientation_index[tileID][patchIdx],
                    self->asps->asps_use_eight_orientations_flag ? 3
-                                                                 : 1,
+                                                                : 1,
                    FVV_DESCRIPTOR_PDU_ORIENTATION_INDEX);
   if (self->afps->afps_lod_mode_enabled_flag)
   {

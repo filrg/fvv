@@ -1,16 +1,21 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
 #include <fvv/syntax/inter_patch_data_unit.h>
+#include <fvv/syntax/plr_data.h>
 // 8.3.7.6 Inter patch data unit syntax
 // {
 fvv_ret_t fvv_inter_patch_data_unit_init(
     fvv_inter_patch_data_unit_t             *self,
+    fvv_atlas_tile_header_t                 *ath,
+    fvv_atlas_frame_parameter_set_rbsp_t    *afps,
     fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_inter_patch_data_unit_t){0};
   self->data      = data;
-  self->asps     = asps;
+  self->ath       = ath;
+  self->afps      = afps;
+  self->asps      = asps;
   self->pack      = fvv_inter_patch_data_unit_pack;
   self->copy_from = fvv_inter_patch_data_unit_copy_from;
 
@@ -62,8 +67,15 @@ fvv_inter_patch_data_unit_pack(fvv_inter_patch_data_unit_t *self,
   {
     return FVV_RET_UNINITIALIZED;
   }
-  fvv_bitstream_t *buff = FVV_NULL;
-  buff                  = self->data;
+  fvv_bitstream_t *buff            = FVV_NULL;
+  uint64_t         NumRefIdxActive = 0;
+  buff                             = self->data;
+
+  buff->sem.NumRefIdxActive(&buff->sem,
+                            self->ath,
+                            self->afps,
+                            self->asps,
+                            &NumRefIdxActive);
   if (NumRefIdxActive > 1)
   {
     buff->write_bits(buff,

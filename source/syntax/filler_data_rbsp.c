@@ -10,7 +10,7 @@ fvv_ret_t fvv_filler_data_rbsp_init(
 {
   *self           = (fvv_filler_data_rbsp_t){0};
 
-  self->asps     = asps;
+  self->asps      = asps;
   self->data      = data;
 
   self->pack      = fvv_filler_data_rbsp_pack;
@@ -59,6 +59,7 @@ fvv_ret_t fvv_filler_data_rbsp_pack(fvv_filler_data_rbsp_t *self)
 
   return FVV_RET_SUCCESS;
 }
+fvv_ret_t
 fvv_filler_data_rbsp_copy_from(fvv_filler_data_rbsp_t *self,
                                fvv_filler_data_rbsp_t *other)
 {

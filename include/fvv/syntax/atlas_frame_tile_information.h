@@ -8,7 +8,6 @@
 struct fvv_atlas_frame_tile_information_t
 {
   fvv_atlas_sequence_parameter_set_rbsp_t *asps;
-  fvv_atlas_frame_tile_information_t      *afti;
   fvv_bitstream_t                         *data;
 
   fvv_ret_t (*pack)(fvv_atlas_frame_tile_information_t *self);
@@ -60,7 +59,6 @@ struct fvv_atlas_frame_tile_information_t
 fvv_ret_t fvv_atlas_frame_tile_information_init(
     fvv_atlas_frame_tile_information_t      *self,
     fvv_atlas_sequence_parameter_set_rbsp_t *asps,
-    fvv_atlas_frame_tile_information_t      *afti,
     fvv_bitstream_t                         *data);
 
 fvv_ret_t fvv_atlas_frame_tile_information_destroy(

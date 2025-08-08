@@ -6,6 +6,10 @@
 #include <string.h>
 
 typedef struct fvv_bitstream_t           fvv_bitstream_t;
+typedef struct fvv_process_t             fvv_process_t;
+typedef struct fvv_semantic_t            fvv_semantic_t;
+typedef uint16_t                         fvv_ret_t;
+
 typedef struct fvv_v3c_unit_t            fvv_v3c_unit_t;
 typedef struct fvv_v3c_unit_header_t     fvv_v3c_unit_header_t;
 typedef struct fvv_v3c_unit_payload_t    fvv_v3c_unit_payload_t;
@@ -75,10 +79,11 @@ typedef struct fvv_max_coded_video_resolution_t
 typedef struct fvv_coordinate_system_parameters_t
     fvv_coordinate_system_parameters_t;
 typedef struct fvv_hrd_sub_layer_parameters_t
-                              fvv_hrd_sub_layer_parameters_t;
+    fvv_hrd_sub_layer_parameters_t;
 
-typedef struct fvv_semantic_t fvv_semantic_t;
-typedef uint16_t              fvv_ret_t;
+// processes
+typedef struct fvv_tile_partition_scanning_t
+    fvv_tile_partition_scanning_t;
 
 #define FVV_CONCAT(a, b)                    a##b
 #define FVV_EXPAND_CONCAT(a, b)             FVV_CONCAT(a, b)
@@ -149,6 +154,9 @@ typedef uint16_t              fvv_ret_t;
   coordinate_system_parameters
 #define TYPE_NAME_fvv_hrd_sub_layer_parameters_t \
   fvv_hrd_sub_layer_parameters
+// processes
+#define TYPE_NAME_fvv_tile_partition_scanning_t \
+  tile_partition_scanning
 
 #define FVV_RET_SUCCESS               0x0000
 #define FVV_RET_FAIL                  0x0001

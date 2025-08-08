@@ -1,6 +1,7 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/rbsp_trailing_bits.h>
 #include <fvv/syntax/sei_rbsp.h>
+#include <fvv/syntax/sei_message.h>
 
 // 8.3.6.4 Supplemental enhancement information RBSP syntax
 // {

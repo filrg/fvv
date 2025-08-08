@@ -50,8 +50,7 @@ fvv_ret_t fvv_atlas_frame_parameter_set_rbsp_init(
   self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
 
-  fvv_atlas_frame_tile_information_init(
-      self->afti, self->asps, self->afti, data);
+  fvv_atlas_frame_tile_information_init(self->afti, self->asps, data);
   fvv_rbsp_trailing_bits_init(self->rtb, data);
 
   return FVV_RET_SUCCESS;

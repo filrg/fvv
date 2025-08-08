@@ -8,12 +8,10 @@
 fvv_ret_t fvv_atlas_frame_tile_information_init(
     fvv_atlas_frame_tile_information_t      *self,
     fvv_atlas_sequence_parameter_set_rbsp_t *asps,
-    fvv_atlas_frame_tile_information_t      *afti,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_atlas_frame_tile_information_t){0};
   self->asps      = asps;
-  self->afti      = afti;
   self->data      = data;
   self->pack      = fvv_atlas_frame_tile_information_pack;
   self->copy_from = fvv_atlas_frame_tile_information_copy_from;
@@ -101,9 +99,8 @@ fvv_ret_t fvv_atlas_frame_tile_information_pack(
       (uint64_t *)calloc(self->afti_tile_id_size, sizeof(uint64_t));
 
   buff = self->data;
-  buff->sem.tile_partition_scan(&buff->sem, self->afti, self->asps);
-  NumPartitionsInAtlasFrame =
-      buff->sem.NumPartitionColumns * buff->sem.NumPartitionRows;
+  buff->sem.NumPartitionsInAtlasFrame(
+      &buff->sem, self->asps, self, &NumPartitionsInAtlasFrame);
 
   buff->write_bits(
       buff,

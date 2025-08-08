@@ -16,11 +16,11 @@ fvv_ret_t fvv_patch_information_data_init(
     fvv_atlas_tile_header_t                 *ath,
     fvv_bitstream_t                         *data)
 {
-  *self       = (fvv_patch_information_data_t){0};
+  *self      = (fvv_patch_information_data_t){0};
   self->asps = asps;
   self->afps = afps;
-  self->ath   = ath;
-  self->data  = data;
+  self->ath  = ath;
+  self->data = data;
 
   FVV_SET_SETTER_PTR(
       fvv_patch_information_data_t, spdu, fvv_skip_patch_data_unit_t);
@@ -51,11 +51,13 @@ fvv_ret_t fvv_patch_information_data_init(
       sizeof(fvv_eom_patch_data_unit_t));
 
   fvv_skip_patch_data_unit_init(self->spdu, data);
-  fvv_merge_patch_data_unit_init(self->mpdu, data);
+  fvv_merge_patch_data_unit_init(
+      self->mpdu, self->ath, self->afps, self->asps, data);
   fvv_patch_data_unit_init(
       self->pdu, self->asps, self->afps, self->ath, data);
-  fvv_inter_patch_data_unit_init(self->ipdu, self->asps, data);
-  fvv_raw_patch_data_unit_init(self->rpdu, data);
+  fvv_inter_patch_data_unit_init(
+      self->ipdu, self->ath, self->afps, self->asps, data);
+  fvv_raw_patch_data_unit_init(self->rpdu, self->ath, data);
   fvv_eom_patch_data_unit_init(self->epdu, data);
 
   return FVV_RET_SUCCESS;

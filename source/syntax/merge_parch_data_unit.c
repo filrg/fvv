@@ -1,17 +1,22 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
 #include <fvv/syntax/merge_patch_data_unit.h>
+#include <fvv/syntax/plr_data.h>
 #include <string.h>
 // 8.3.7.5 Merge patch data unit syntax
 // {
 fvv_ret_t fvv_merge_patch_data_unit_init(
     fvv_merge_patch_data_unit_t             *self,
+    fvv_atlas_tile_header_t                 *ath,
+    fvv_atlas_frame_parameter_set_rbsp_t    *afps,
     fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_bitstream_t                         *data)
 {
   *self           = (fvv_merge_patch_data_unit_t){0};
   self->data      = data;
-  self->asps     = asps;
+  self->ath       = ath;
+  self->afps      = afps;
+  self->asps      = asps;
   self->pack      = fvv_merge_patch_data_unit_pack;
   self->copy_from = fvv_merge_patch_data_unit_copy_from;
 
@@ -35,7 +40,7 @@ fvv_ret_t fvv_merge_patch_data_unit_init(
   FVV_SET_SETTER_PTR(fvv_merge_patch_data_unit_t, pd, fvv_plr_data_t);
 
   self->pd = (fvv_plr_data_t *)malloc(sizeof(fvv_plr_data_t));
-  fvv_plr_data_init(self->pd, data);
+  fvv_plr_data_init(self->pd, self->asps, data);
 
   return FVV_RET_SUCCESS;
 }
@@ -78,7 +83,14 @@ fvv_merge_patch_data_unit_pack(fvv_merge_patch_data_unit_t *self,
   }
   fvv_bitstream_t *buff            = FVV_NULL;
   uint64_t         OverridePlrFlag = 0;
+  uint64_t         NumRefIdxActive = 0;
   buff                             = self->data;
+
+  buff->sem.NumRefIdxActive(&buff->sem,
+                            self->ath,
+                            self->afps,
+                            self->asps,
+                            &NumRefIdxActive);
 
   if (NumRefIdxActive > 1)
   {

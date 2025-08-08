@@ -12,35 +12,61 @@
 // use the processes struct stuff.
 struct fvv_semantic_t
 {
-  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_semantic_t, NumPartitionColumns);
-  FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_semantic_t, PartitionWidth);
-  FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_semantic_t, PartitionPosX);
-  FVV_DECLARE_SCALAR_SETTER_PTR(fvv_semantic_t, NumPartitionRows);
-  FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_semantic_t, PartitionHeight);
-  FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_semantic_t, PartitionPosY);
-
   FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_semantic_t, TileIDToIndex);
   FVV_DECLARE_1D_ARR_SETTER_PTR(fvv_semantic_t, TileIndexToID);
 
-  fvv_ret_t (*tile_partition_scan)(
+  fvv_ret_t (*NumPartitionsInAtlasFrame)(
       fvv_semantic_t                          *self,
+      fvv_atlas_sequence_parameter_set_rbsp_t *asps,
       fvv_atlas_frame_tile_information_t      *afti,
-      fvv_atlas_sequence_parameter_set_rbsp_t *asps);
+      uint64_t                                *ret);
+  fvv_ret_t (*RlsIdx)(fvv_semantic_t                          *self,
+                      fvv_atlas_tile_header_t                 *ath,
+                      fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+                      uint64_t                                *ret);
+  fvv_ret_t (*NumLtrAtlasFrmEntries)(fvv_semantic_t        *self,
+                                     fvv_ref_list_struct_t *rls,
+                                     uint64_t               rlsIdx,
+                                     uint64_t              *ret);
+  fvv_ret_t (*NumRefIdxActive)(
+      fvv_semantic_t                          *self,
+      fvv_atlas_tile_header_t                 *ath,
+      fvv_atlas_frame_parameter_set_rbsp_t    *afps,
+      fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+      uint64_t                                *ret);
+  fvv_ret_t (*rangeDBitDepth)(
+      fvv_semantic_t                          *self,
+      fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+      uint64_t                                *ret);
 };
 
 fvv_ret_t fvv_semantic_init(fvv_semantic_t *self);
 fvv_ret_t fvv_semantic_destroy(fvv_semantic_t *self);
-fvv_ret_t fvv_semantic_tile_partition_scan(
+fvv_ret_t fvv_semantic_NumPartitionsInAtlasFrame(
     fvv_semantic_t                          *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
     fvv_atlas_frame_tile_information_t      *afti,
-    fvv_atlas_sequence_parameter_set_rbsp_t *asps);
-
-FVV_DECLARE_SCALAR_SETTER(fvv_semantic_t, NumPartitionColumns);
-FVV_DECLARE_1D_ARR_SETTER(fvv_semantic_t, PartitionWidth);
-FVV_DECLARE_1D_ARR_SETTER(fvv_semantic_t, PartitionPosX);
-FVV_DECLARE_SCALAR_SETTER(fvv_semantic_t, NumPartitionRows);
-FVV_DECLARE_1D_ARR_SETTER(fvv_semantic_t, PartitionHeight);
-FVV_DECLARE_1D_ARR_SETTER(fvv_semantic_t, PartitionPosY);
+    uint64_t                                *ret);
+fvv_ret_t
+fvv_semantic_RlsIdx(fvv_semantic_t                          *self,
+                    fvv_atlas_tile_header_t                 *ath,
+                    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+                    uint64_t                                *ret);
+fvv_ret_t
+          fvv_semantic_NumLtrAtlasFrmEntries(fvv_semantic_t        *self,
+                                             fvv_ref_list_struct_t *rls,
+                                             uint64_t               rlsIdx,
+                                             uint64_t              *ret);
+fvv_ret_t fvv_semantic_NumRefIdxActive(
+    fvv_semantic_t                          *self,
+    fvv_atlas_tile_header_t                 *ath,
+    fvv_atlas_frame_parameter_set_rbsp_t    *afps,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+    uint64_t                                *ret);
+fvv_ret_t fvv_semantic_rangeDBitDepth(
+    fvv_semantic_t                          *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+    uint64_t                                *ret);
 
 FVV_DECLARE_1D_ARR_SETTER(fvv_semantic_t, TileIDToIndex);
 FVV_DECLARE_1D_ARR_SETTER(fvv_semantic_t, TileIndexToID);

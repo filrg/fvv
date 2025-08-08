@@ -6,14 +6,18 @@
 
 // 8.3.7.1 General atlas tile data unit syntax
 // {
-fvv_ret_t
-fvv_atlas_tile_data_unit_init(fvv_atlas_tile_data_unit_t *self,
-                              fvv_atlas_tile_header_t    *ath,
-                              fvv_bitstream_t            *data)
+fvv_ret_t fvv_atlas_tile_data_unit_init(
+    fvv_atlas_tile_data_unit_t              *self,
+    fvv_atlas_sequence_parameter_set_rbsp_t *asps,
+    fvv_atlas_frame_parameter_set_rbsp_t    *afps,
+    fvv_atlas_tile_header_t                 *ath,
+    fvv_bitstream_t                         *data)
 {
   *self           = (fvv_atlas_tile_data_unit_t){0};
   self->data      = data;
   self->ath       = ath;
+  self->asps      = asps;
+  self->afps      = afps;
 
   self->pack      = fvv_atlas_tile_data_unit_pack;
   self->copy_from = fvv_atlas_tile_data_unit_copy_from;
@@ -30,7 +34,8 @@ fvv_atlas_tile_data_unit_init(fvv_atlas_tile_data_unit_t *self,
       sizeof(fvv_patch_information_data_t));
 
   fvv_skip_patch_data_unit_init(self->spdu, data);
-  fvv_patch_information_data_init(self->pid, ath, data);
+  fvv_patch_information_data_init(
+      self->pid, self->asps, self->afps, ath, data);
 
   return FVV_RET_SUCCESS;
 }
@@ -65,8 +70,11 @@ fvv_atlas_tile_data_unit_pack(fvv_atlas_tile_data_unit_t *self,
 
   if (self->ath->ath_type == FVV_SKIP_TILE)
   {
-    for (p = 0; p < RefAtduTotalNumPatches[tileID]; p++)
-      self->spdu->pack(self->spdu);
+    // TODO: check this please, idk why tmc2 comment this out, so I
+    // did this too
+
+    // for (p = 0; p < RefAtduTotalNumPatches[tileID]; p++)
+    self->spdu->pack(self->spdu);
   }
   else
   {
@@ -87,9 +95,12 @@ fvv_atlas_tile_data_unit_pack(fvv_atlas_tile_data_unit_t *self,
             self->pid, tileID, p, self->atdu_patch_mode[tileID][p]);
         p++;
       }
-    } while (!isEnd)
+    } while (!isEnd);
   }
-  AtduTotalNumPatches[tileID] = p;
+  // TODO: check this please, idk why tmc2 comment this out, so I
+  // did this too
+
+  // AtduTotalNumPatches[tileID] = p;
 
   return FVV_RET_SUCCESS;
 }
@@ -101,7 +112,8 @@ fvv_atlas_tile_data_unit_copy_from(fvv_atlas_tile_data_unit_t *self,
   {
     return FVV_RET_UNINITIALIZED;
   }
-  self->set_atdu_patch_mode(self, other->atdu_patch_mode);
+  self->set_atdu_patch_mode(
+      self, other->atdu_patch_mode, other->atdu_patch_mode_size);
   self->set_spdu(self, other->spdu);
   self->set_pid(self, other->pid);
   return FVV_RET_SUCCESS;

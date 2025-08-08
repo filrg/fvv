@@ -19,8 +19,8 @@ fvv_ret_t fvv_atlas_tile_header_init(
 {
   *self           = (fvv_atlas_tile_header_t){0};
 
-  self->asps     = asps;
-  self->afps     = afps;
+  self->asps      = asps;
+  self->afps      = afps;
   self->nuh       = nuh;
   self->data      = data;
 
@@ -97,12 +97,14 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
     return FVV_RET_UNINITIALIZED;
   }
 
-  fvv_bitstream_t *buff          = FVV_NULL;
-  uint64_t         nal_unit_type = 0;
-  uint64_t         tileID        = 0;
-  uint64_t         j             = 0;
-  buff                           = self->data;
-  nal_unit_type                  = self->nuh->nal_unit_type;
+  fvv_bitstream_t *buff                  = FVV_NULL;
+  uint64_t         nal_unit_type         = 0;
+  uint64_t         tileID                = 0;
+  uint64_t         j                     = 0;
+  uint64_t         RlsIdx                = 0;
+  uint64_t         NumLtrAtlasFrmEntries = 0;
+  buff                                   = self->data;
+  nal_unit_type                          = self->nuh->nal_unit_type;
 
   if (nal_unit_type >= FVV_NAL_BLA_W_LP &&
       nal_unit_type <= FVV_NAL_RSV_IRAP_ACL_29)
@@ -153,6 +155,10 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
                      self->ath_ref_atlas_frame_list_idx,
                      FVV_BIT_ATH_REF_ATLAS_FRAME_LIST_IDX,
                      FVV_DESCRIPTOR_ATH_REF_ATLAS_FRAME_LIST_IDX);
+
+  buff->sem.RlsIdx(&buff->sem, self, self->asps, &RlsIdx);
+  buff->sem.NumLtrAtlasFrmEntries(
+      &buff->sem, self->rls, RlsIdx, &NumLtrAtlasFrmEntries);
   for (j = 0; j < NumLtrAtlasFrmEntries; j++)
   {
     buff->write_bits(
@@ -168,8 +174,7 @@ fvv_ret_t fvv_atlas_tile_header_pack(fvv_atlas_tile_header_t *self)
   }
   if (self->ath_type != FVV_SKIP_TILE)
   {
-    if (self->asps
-            ->asps_normal_axis_limits_quantization_enabled_flag)
+    if (self->asps->asps_normal_axis_limits_quantization_enabled_flag)
     {
       buff->write_bits(buff,
                        self->ath_pos_min_d_quantizer,

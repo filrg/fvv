@@ -6,14 +6,13 @@
 // {
 fvv_ret_t
 fvv_plr_data_init(fvv_plr_data_t                          *self,
-                  fvv_bitstream_t                         *data,
                   fvv_atlas_sequence_parameter_set_rbsp_t *asps,
-                  fvv_asps_plr_information_t              *plri)
+                  fvv_bitstream_t                         *data)
+
 {
   *self           = (fvv_plr_data_t){0};
   self->data      = data;
-  self->asps     = asps;
-  self->plri      = plri;
+  self->asps      = asps;
 
   self->pack      = fvv_plr_data_pack;
   self->copy_from = fvv_plr_data_copy_from;
@@ -55,10 +54,11 @@ fvv_ret_t fvv_plr_data_pack(fvv_plr_data_t *self,
 
   for (uint64_t i = 0; i <= self->asps->asps_map_count_minus1; ++i)
   {
-    if (self->plri->plri_map_present_flag[i])
+    if (self->asps->api->plri_map_present_flag[i])
     {
       if (blockCnt >
-          self->plri->plri_block_threshold_per_patch_minus1[i] + 1)
+          self->asps->api->plri_block_threshold_per_patch_minus1[i] +
+              1)
       {
         buff->write_bits(buff,
                          self->plrd_level[tileID][patchIdx][i],
