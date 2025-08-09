@@ -7,8 +7,9 @@
 // 8.3.7.7 Raw patch data unit syntax
 struct fvv_raw_patch_data_unit_t
 {
-  fvv_atlas_tile_header_t *ath;
-  fvv_bitstream_t         *data;
+  fvv_atlas_tile_header_t              *ath;
+  fvv_atlas_frame_parameter_set_rbsp_t *afps;
+  fvv_bitstream_t                      *data;
 
   fvv_ret_t (*pack)(fvv_raw_patch_data_unit_t *self,
                     uint64_t                   tileID,
@@ -35,10 +36,11 @@ struct fvv_raw_patch_data_unit_t
                                 rpdu_points_minus1);
 };
 
-fvv_ret_t
-fvv_raw_patch_data_unit_init(fvv_raw_patch_data_unit_t *self,
-                             fvv_atlas_tile_header_t   *ath,
-                             fvv_bitstream_t           *data);
+fvv_ret_t fvv_raw_patch_data_unit_init(
+    fvv_raw_patch_data_unit_t            *self,
+    fvv_atlas_tile_header_t              *ath,
+    fvv_atlas_frame_parameter_set_rbsp_t *afps,
+    fvv_bitstream_t                      *data);
 fvv_ret_t
 fvv_raw_patch_data_unit_destroy(fvv_raw_patch_data_unit_t *self);
 fvv_ret_t

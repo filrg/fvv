@@ -8,6 +8,7 @@
 typedef struct fvv_bitstream_t           fvv_bitstream_t;
 typedef struct fvv_process_t             fvv_process_t;
 typedef struct fvv_semantic_t            fvv_semantic_t;
+typedef struct fvv_uint128_t             fvv_uint128_t;
 typedef uint16_t                         fvv_ret_t;
 
 typedef struct fvv_v3c_unit_t            fvv_v3c_unit_t;
@@ -79,7 +80,44 @@ typedef struct fvv_max_coded_video_resolution_t
 typedef struct fvv_coordinate_system_parameters_t
     fvv_coordinate_system_parameters_t;
 typedef struct fvv_hrd_sub_layer_parameters_t
-    fvv_hrd_sub_layer_parameters_t;
+                                      fvv_hrd_sub_layer_parameters_t;
+typedef struct fvv_buffering_period_t fvv_buffering_period_t;
+typedef struct fvv_atlas_frame_timing_t fvv_atlas_frame_timing_t;
+typedef struct fvv_filler_payload_t     fvv_filler_payload_t;
+typedef struct fvv_user_data_registered_itu_t_t35_t
+    fvv_user_data_registered_itu_t_t35_t;
+typedef struct fvv_user_data_unregistered_t
+                                    fvv_user_data_unregistered_t;
+typedef struct fvv_recovery_point_t fvv_recovery_point_t;
+typedef struct fvv_no_display_t     fvv_no_display_t;
+typedef struct fvv_time_code_t      fvv_time_code_t;
+typedef struct fvv_sei_manifest_t   fvv_sei_manifest_t;
+typedef struct fvv_sei_prefix_indication_t
+    fvv_sei_prefix_indication_t;
+typedef struct fvv_active_sub_bitstreams_t
+    fvv_active_sub_bitstreams_t;
+typedef struct fvv_component_codec_mapping_t
+    fvv_component_codec_mapping_t;
+typedef struct fvv_scene_object_information_t
+    fvv_scene_object_information_t;
+typedef struct fvv_object_label_information_t
+                                       fvv_object_label_information_t;
+typedef struct fvv_patch_information_t fvv_patch_information_t;
+typedef struct fvv_volumetric_rectangle_information_t
+    fvv_volumetric_rectangle_information_t;
+typedef struct fvv_atlas_object_association_t
+    fvv_atlas_object_association_t;
+typedef struct fvv_viewport_camera_parameters_t
+    fvv_viewport_camera_parameters_t;
+typedef struct fvv_viewport_position_t fvv_viewport_position_t;
+typedef struct fvv_attribute_transformation_params_t
+    fvv_attribute_transformation_params_t;
+typedef struct fvv_occupancy_synthesis_t fvv_occupancy_synthesis_t;
+typedef struct fvv_geometry_smoothing_t  fvv_geometry_smoothing_t;
+typedef struct fvv_attribute_smoothing_t fvv_attribute_smoothing_t;
+typedef struct fvv_decoded_atlas_information_hash_t
+    fvv_decoded_atlas_information_hash_t;
+typedef struct fvv_reserved_sei_message_t fvv_reserved_sei_message_t;
 
 // processes
 typedef struct fvv_tile_partition_scanning_t
@@ -153,7 +191,41 @@ typedef struct fvv_tile_partition_scanning_t
 #define TYPE_NAME_fvv_coordinate_system_parameters_t \
   coordinate_system_parameters
 #define TYPE_NAME_fvv_hrd_sub_layer_parameters_t \
-  fvv_hrd_sub_layer_parameters
+  hrd_sub_layer_parameters
+#define TYPE_NAME_fvv_buffering_period_t   buffering_period
+#define TYPE_NAME_fvv_atlas_frame_timing_t atlas_frame_timing
+#define TYPE_NAME_fvv_filler_payload_t     filler_payload
+#define TYPE_NAME_fvv_user_data_registered_itu_t_t35_t \
+  user_data_registered_itu_t_t35
+#define TYPE_NAME_fvv_user_data_unregistered_t user_data_unregistered
+#define TYPE_NAME_fvv_recovery_point_t         recovery_point
+#define TYPE_NAME_fvv_no_display_t             no_display
+#define TYPE_NAME_fvv_time_code_t              time_code
+#define TYPE_NAME_fvv_sei_manifest_t           sei_manifest
+#define TYPE_NAME_fvv_sei_prefix_indication_t  sei_prefix_indication
+#define TYPE_NAME_fvv_active_sub_bitstreams_t  active_sub_bitstreams
+#define TYPE_NAME_fvv_component_codec_mapping_t \
+  component_codec_mapping
+#define TYPE_NAME_fvv_scene_object_information_t \
+  scene_object_information
+#define TYPE_NAME_fvv_object_label_information_t \
+  object_label_information
+#define TYPE_NAME_fvv_patch_information_t patch_information
+#define TYPE_NAME_fvv_volumetric_rectangle_information_t \
+  volumetric_rectangle_information
+#define TYPE_NAME_fvv_atlas_object_association_t \
+  atlas_object_association
+#define TYPE_NAME_fvv_viewport_camera_parameters_t \
+  viewport_camera_parameters
+#define TYPE_NAME_fvv_viewport_position_t viewport_position
+#define TYPE_NAME_fvv_attribute_transformation_params_t \
+  attribute_transformation_params
+#define TYPE_NAME_fvv_occupancy_synthesis_t occupancy_synthesis
+#define TYPE_NAME_fvv_geometry_smoothing_t  geometry_smoothing
+#define TYPE_NAME_fvv_attribute_smoothing_t attribute_smoothing
+#define TYPE_NAME_fvv_decoded_atlas_information_hash_t \
+  decoded_atlas_information_hash
+#define TYPE_NAME_fvv_reserved_sei_message_t reserved_sei_message
 // processes
 #define TYPE_NAME_fvv_tile_partition_scanning_t \
   tile_partition_scanning
@@ -831,6 +903,37 @@ typedef uint8_t fvv_bool_t;
 #define FVV_BIT_CSP_FORWARD_SIGN                              1
 #define FVV_BIT_CSP_LEFT_SIGN                                 1
 #define FVV_BIT_CSP_UP_SIGN                                   1
+#define FVV_BIT_ITU_T_T35_COUNTRY_CODE                        8
+#define FVV_BIT_ITU_T_T35_COUNTRY_CODE_EXTENSION_BYTE         8
+#define FVV_BIT_ITU_T_T35_PAYLOAD_BYTE                        8
+#define FVV_BIT_UUID_ISO_IEC_11578                            128
+#define FVV_BIT_USER_DATA_PAYLOAD_BYTE                        8
+#define FVV_BIT_RECOVERY_AFOC_CNT                             FVV_BIT_VARIABLE
+#define FVV_BIT_EXACT_MATCH_FLAG                              1
+#define FVV_BIT_BROKEN_LINK_FLAG                              1
+#define FVV_BIT_RESERVED_SEI_MESSAGE_PAYLOAD_BYTE             8
+#define FVV_BIT_MANIFEST_NUM_SEI_MSG_TYPES                    16
+#define FVV_BIT_MANIFEST_SEI_PAYLOAD_TYPE                     16
+#define FVV_BIT_MANIFEST_SEI_DESCRIPTION                      8
+#define FVV_BIT_PREFIX_SEI_PAYLOAD_TYPE                       16
+#define FVV_BIT_NUM_SEI_PREFIX_INDICATIONS_MINUS1             8
+#define FVV_BIT_NUM_BITS_IN_PREFIX_INDICATION_MINUS1          16
+#define FVV_BIT_SEI_PREFIX_DATA_BIT                           1
+#define FVV_BIT_BYTE_ALIGNMENT_BIT_EQUAL_TO_ONE               1
+#define FVV_BIT_ASB_ACTIVE_SUB_BITSTREAMS_CANCEL_FLAG         1
+#define FVV_BIT_ASB_ACTIVE_ATTRIBUTES_CHANGES_FLAG            1
+#define FVV_BIT_ASB_ACTIVE_MAPS_CHANGES_FLAG                  1
+#define FVV_BIT_ASB_AUXILIARY_SUB_BITSTREAMS_ACTIVE_FLAG      1
+#define FVV_BIT_ASB_ALL_ATTRIBUTES_ACTIVE_FLAG                1
+#define FVV_BIT_ASB_ACTIVE_ATTRIBUTE_COUNT_MINUS1             7
+#define FVV_BIT_ASB_ACTIVE_ATTRIBUTE_IDX                      7
+#define FVV_BIT_ASB_ALL_MAPS_ACTIVE_FLAG                      1
+#define FVV_BIT_ASB_ACTIVE_MAP_COUNT_MINUS1                   4
+#define FVV_BIT_ASB_ACTIVE_MAP_IDX                            4
+#define FVV_BIT_CCM_COMPONENT_CODEC_CANCEL_FLAG               1
+#define FVV_BIT_CCM_CODEC_MAPPINGS_COUNT_MINUS1               8
+#define FVV_BIT_CCM_CODEC_ID                                  8
+#define FVV_BIT_CCM_CODEC_4CC                                 FVV_BIT_VARIABLE
 // Descriptors
 
 #define FVV_DESCRIPTOR_VUH_UNIT_TYPE                          FVV_DESCRIPTOR_U
@@ -1227,6 +1330,51 @@ typedef uint8_t fvv_bool_t;
 #define FVV_DESCRIPTOR_CSP_FORWARD_SIGN           FVV_DESCRIPTOR_U
 #define FVV_DESCRIPTOR_CSP_LEFT_SIGN              FVV_DESCRIPTOR_U
 #define FVV_DESCRIPTOR_CSP_UP_SIGN                FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_SP_RESERVED_PAYLOAD_EXTENSION_DATA \
+  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ITU_T_T35_COUNTRY_CODE FVV_DESCRIPTOR_B
+#define FVV_DESCRIPTOR_ITU_T_T35_COUNTRY_CODE_EXTENSION_BYTE \
+  FVV_DESCRIPTOR_B
+#define FVV_DESCRIPTOR_ITU_T_T35_PAYLOAD_BYTE FVV_DESCRIPTOR_B
+#define FVV_DESCRIPTOR_UUID_ISO_IEC_11578     FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_USER_DATA_PAYLOAD_BYTE FVV_DESCRIPTOR_B
+#define FVV_DESCRIPTOR_RECOVERY_AFOC_CNT      FVV_DESCRIPTOR_SE
+#define FVV_DESCRIPTOR_EXACT_MATCH_FLAG       FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_BROKEN_LINK_FLAG       FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_RESERVED_SEI_MESSAGE_PAYLOAD_BYTE \
+  FVV_DESCRIPTOR_B
+
+#define FVV_DESCRIPTOR_MANIFEST_NUM_SEI_MSG_TYPES FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_MANIFEST_SEI_PAYLOAD_TYPE  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_MANIFEST_SEI_DESCRIPTION   FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_PREFIX_SEI_PAYLOAD_TYPE    FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_NUM_SEI_PREFIX_INDICATIONS_MINUS1 \
+  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_NUM_BITS_IN_PREFIX_INDICATION_MINUS1 \
+  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_SEI_PREFIX_DATA_BIT FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_BYTE_ALIGNMENT_BIT_EQUAL_TO_ONE \
+  FVV_DESCRIPTOR_F
+#define FVV_DESCRIPTOR_ASB_ACTIVE_SUB_BITSTREAMS_CANCEL_FLAG \
+  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ASB_ACTIVE_ATTRIBUTES_CHANGES_FLAG \
+  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ASB_ACTIVE_MAPS_CHANGES_FLAG FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ASB_AUXILIARY_SUB_BITSTREAMS_ACTIVE_FLAG \
+  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ASB_ALL_ATTRIBUTES_ACTIVE_FLAG FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ASB_ACTIVE_ATTRIBUTE_COUNT_MINUS1 \
+  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ASB_ACTIVE_ATTRIBUTE_IDX    FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ASB_ALL_MAPS_ACTIVE_FLAG    FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ASB_ACTIVE_MAP_COUNT_MINUS1 FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_ASB_ACTIVE_MAP_IDX          FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_CCM_COMPONENT_CODEC_CANCEL_FLAG \
+  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_CCM_CODEC_MAPPINGS_COUNT_MINUS1 \
+  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_CCM_CODEC_ID  FVV_DESCRIPTOR_U
+#define FVV_DESCRIPTOR_CCM_CODEC_4CC FVV_DESCRIPTOR_ST
 
 typedef enum
 {

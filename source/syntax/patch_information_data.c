@@ -57,7 +57,8 @@ fvv_ret_t fvv_patch_information_data_init(
       self->pdu, self->asps, self->afps, self->ath, data);
   fvv_inter_patch_data_unit_init(
       self->ipdu, self->ath, self->afps, self->asps, data);
-  fvv_raw_patch_data_unit_init(self->rpdu, self->ath, data);
+  fvv_raw_patch_data_unit_init(
+      self->rpdu, self->ath, self->afps, data);
   fvv_eom_patch_data_unit_init(self->epdu, self->afps, data);
 
   return FVV_RET_SUCCESS;

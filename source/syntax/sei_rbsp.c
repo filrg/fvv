@@ -1,15 +1,16 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/rbsp_trailing_bits.h>
-#include <fvv/syntax/sei_rbsp.h>
 #include <fvv/syntax/sei_message.h>
+#include <fvv/syntax/sei_rbsp.h>
 
 // 8.3.6.4 Supplemental enhancement information RBSP syntax
 // {
-fvv_ret_t fvv_sei_rbsp_init(fvv_sei_rbsp_t  *self,
-                            fvv_bitstream_t *data)
+fvv_ret_t fvv_sei_rbsp_init(fvv_sei_rbsp_t        *self,
+                            fvv_nal_unit_header_t *nuh,
+                            fvv_bitstream_t       *data)
 {
   *self           = (fvv_sei_rbsp_t){0};
-
+  self->nuh       = nuh;
   self->data      = data;
 
   self->pack      = fvv_sei_rbsp_pack;
@@ -22,7 +23,7 @@ fvv_ret_t fvv_sei_rbsp_init(fvv_sei_rbsp_t  *self,
   self->rtb = (fvv_rbsp_trailing_bits_t *)malloc(
       sizeof(fvv_rbsp_trailing_bits_t));
 
-  fvv_sei_message_init(self->sm, data);
+  fvv_sei_message_init(self->sm, self->nuh, data);
   fvv_rbsp_trailing_bits_init(self->rtb, data);
 
   return FVV_RET_SUCCESS;

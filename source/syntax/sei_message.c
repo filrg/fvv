@@ -1,11 +1,14 @@
 #include <fvv/bitstream.h>
 #include <fvv/syntax/sei_message.h>
+#include <fvv/syntax/sei_payload.h>
 
-fvv_ret_t fvv_sei_message_init(fvv_sei_message_t *self,
-                               fvv_bitstream_t   *data)
+fvv_ret_t fvv_sei_message_init(fvv_sei_message_t     *self,
+                               fvv_nal_unit_header_t *nuh,
+                               fvv_bitstream_t       *data)
 {
   *self           = (fvv_sei_message_t){0};
   self->data      = data;
+  self->nuh       = nuh;
   self->pack      = fvv_sei_message_pack;
   self->copy_from = fvv_sei_message_copy_from;
 
@@ -15,6 +18,9 @@ fvv_ret_t fvv_sei_message_init(fvv_sei_message_t *self,
                                 sm_payload_size_byte);
   FVV_DECLARE_OBJ_SETTER_PTR(
       fvv_sei_message_t, sp, fvv_sei_payload_t);
+
+  self->sp = (fvv_sei_payload_t *)malloc(sizeof(fvv_sei_payload_t));
+  fvv_sei_payload_init(self->sp, self->nuh, data);
 
   return FVV_RET_SUCCESS;
 }

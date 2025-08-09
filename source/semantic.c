@@ -5,6 +5,7 @@
 #include <fvv/syntax/atlas_frame_tile_information.h>
 #include <fvv/syntax/atlas_sequence_parameter_set_rbsp.h>
 #include <fvv/syntax/atlas_tile_header.h>
+#include <fvv/syntax/patch_information_data.h>
 #include <fvv/syntax/ref_list_struct.h>
 fvv_ret_t fvv_semantic_init(fvv_semantic_t *self)
 {

@@ -1,16 +1,18 @@
 #include <fvv/bitstream.h>
+#include <fvv/syntax/atlas_frame_parameter_set_rbsp.h>
 #include <fvv/syntax/atlas_tile_header.h>
 #include <fvv/syntax/raw_patch_data_unit.h>
-
 // 8.3.7.7 Raw patch data unit syntax
 // {
-fvv_ret_t
-fvv_raw_patch_data_unit_init(fvv_raw_patch_data_unit_t *self,
-                             fvv_atlas_tile_header_t   *ath,
-                             fvv_bitstream_t           *data)
+fvv_ret_t fvv_raw_patch_data_unit_init(
+    fvv_raw_patch_data_unit_t            *self,
+    fvv_atlas_tile_header_t              *ath,
+    fvv_atlas_frame_parameter_set_rbsp_t *afps,
+    fvv_bitstream_t                      *data)
 {
   *self           = (fvv_raw_patch_data_unit_t){0};
   self->ath       = ath;
+  self->afps      = afps;
   self->data      = data;
   self->pack      = fvv_raw_patch_data_unit_pack;
   self->copy_from = fvv_raw_patch_data_unit_copy_from;
@@ -64,10 +66,16 @@ fvv_raw_patch_data_unit_pack(fvv_raw_patch_data_unit_t *self,
   {
     return FVV_RET_UNINITIALIZED;
   }
-  fvv_bitstream_t *buff = FVV_NULL;
-  buff                  = self->data;
+  fvv_bitstream_t *buff          = FVV_NULL;
+  uint64_t         AuxTileHeight = 0;
+  buff                           = self->data;
 
-  if (AuxTileHeight[TileIDToIndex[tileID]] > 0)
+  buff->sem.AuxTileHeight(&buff->sem,
+                          self->afps->afti,
+                          buff->sem.TileIDToIndex[tileID],
+                          &AuxTileHeight);
+
+  if (AuxTileHeight > 0)
   {
     buff->write_bits(
         buff,

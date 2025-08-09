@@ -48,10 +48,12 @@ fvv_ret_t fvv_plr_data_pack(fvv_plr_data_t *self,
   if (!self)
     return FVV_RET_UNINITIALIZED;
 
-  fvv_bitstream_t *buff = self->data;
+  fvv_bitstream_t *buff = FVV_NULL;
+  buff                  = self->data;
   // TODO: here boi
-  uint32_t blockCnt     = BlockCnt(TilePatch2dSizeX[tileID][patchIdx],
-                               TilePatch2dSizeY[tileID][patchIdx]);
+  uint64_t blockCnt     = 0;
+  // blockCnt              = BlockCnt(TilePatch2dSizeX[tileID][patchIdx],
+  //                     TilePatch2dSizeY[tileID][patchIdx]);
 
   for (uint64_t i = 0; i <= self->asps->asps_map_count_minus1; ++i)
   {

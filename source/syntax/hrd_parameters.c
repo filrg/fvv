@@ -57,7 +57,7 @@ fvv_ret_t fvv_hrd_parameters_pack(fvv_hrd_parameters_t *self,
     return FVV_RET_UNINITIALIZED;
 
   fvv_bitstream_t *buff = self->data;
-  uint32_t         i    = 0;
+  uint64_t         i    = 0;
 
   buff->write_bits(buff,
                    self->hrd_nal_parameters_present_flag,
